@@ -6,21 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>805</width>
+    <height>629</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Визуализация движения шарика на качелях</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QWidget" name="widget" native="true">
+   <widget class="GLWidget" name="widget" native="true">
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>631</width>
-      <height>531</height>
+      <width>621</width>
+      <height>591</height>
      </rect>
     </property>
    </widget>
@@ -30,13 +30,21 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>805</width>
      <height>30</height>
     </rect>
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>GLWidget</class>
+   <extends>QWidget</extends>
+   <header>glwidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
