@@ -1,19 +1,20 @@
 #ifndef GLWIDGET_H
 #define GLWIDGET_H
 
-#include <QGLWidget>
+#include <QOpenGLWidget>
 #include <QMatrix4x4>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLTexture>
 #include <QApplication>
 
+#include "baseobject.h"
 #include "errmsg.h"
 
-#define NEAR_PLANE 0.5f
+#define NEAR_PLANE 0.1f
 #define FAR_PLANE 100.0f
 
 
-class GLWidget : public QGLWidget
+class GLWidget : public QOpenGLWidget
 {
 	Q_OBJECT
 public:
@@ -21,15 +22,13 @@ public:
 	~GLWidget();
 protected:
 	void initializeGL();
-	void resizeGL(int width, int height);
+	void resizeGL(int w, int h);
 	void paintGL();
 
 	void initShaders();
 private:
 	QMatrix4x4 projectionMatrix;
 	QOpenGLShaderProgram shaderProgram;
-	QImage texImg = QImage("/home/nastya/cg-course-work/sphere-mov-viz/pink.png");
-	QOpenGLTexture *texture = new QOpenGLTexture(texImg.mirrored());
 };
 
 #endif // GLWIDGET_H

@@ -5,6 +5,8 @@
 #include <QOpenGLBuffer>
 #include <QOpenGLTexture>
 #include <QFile>
+#include <QOpenGLShaderProgram>
+#include <QOpenGLFunctions>
 #include "errmsg.h"
 #include "structures.h"
 
@@ -16,7 +18,7 @@ public:
 	BaseObject(const QVector<vertex_t> &vertexes, const QVector<GLuint> &indexes, const QString &texturePath);
 	~BaseObject();
 
-	void draw();
+	void draw(QOpenGLShaderProgram *program, QOpenGLFunctions *functions, QMatrix4x4 projectionMatrix, QMatrix4x4 viewMatrix);
 protected:
 	void free();
 	void loadFromFile(const QString &filename);
@@ -28,7 +30,10 @@ private:
 	QOpenGLTexture *texture;
 
 	QMatrix4x4 modelMatrix;
-	QMatrix4x4 viewMatrix;
+//	QMatrix4x4 viewMatrix;
+
+	QVector<GLuint> indexes;
+	QVector<vertex_t> vertexes;
 };
 
 #endif // BASEOBJECT_H

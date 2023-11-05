@@ -4,10 +4,14 @@
 #include <QVector2D>
 #include <QVector3D>
 
-typedef struct vertex {
-	QVector3D coordinate;
-	QVector2D textureCoordinate;
+struct vertex_t
+{
+	vertex_t() {}
+	vertex_t(QVector3D p, QVector2D t, QVector3D n)
+		: position(p), textcoord(t), normal(n) {}
+	QVector3D position;
+	QVector2D textcoord;
 	QVector3D normal;
-} vertex_t;
+};
 
 #endif // STRUCTURES_H

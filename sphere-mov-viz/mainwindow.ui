@@ -17,10 +17,10 @@
    <widget class="GLWidget" name="widget" native="true">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>20</x>
       <y>10</y>
-      <width>621</width>
-      <height>591</height>
+      <width>591</width>
+      <height>551</height>
      </rect>
     </property>
    </widget>

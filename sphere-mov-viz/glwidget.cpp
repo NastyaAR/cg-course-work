@@ -1,6 +1,6 @@
 #include "glwidget.h"
 
-GLWidget::GLWidget(QWidget *parent) : QGLWidget(parent)
+GLWidget::GLWidget(QWidget *parent) : QOpenGLWidget(parent)
 {
 
 }
@@ -12,33 +12,44 @@ GLWidget::~GLWidget()
 
 void GLWidget::initializeGL()
 {
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 
 	initShaders();
 }
 
-void GLWidget::resizeGL(int width, int height)
+void GLWidget::resizeGL(int w, int h)
 {
-	float param = (float) width / height;
+	float param = w / (float) h;
 	projectionMatrix.setToIdentity();
-	projectionMatrix.perspective(45, param, NEAR_PLANE, FAR_PLANE);
+	projectionMatrix.perspective(90.0f, param, 0.1f, 100.0f);
 }
 
 void GLWidget::paintGL()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	QMatrix4x4 modelViewMatrix;
+	modelViewMatrix.setToIdentity();
+	modelViewMatrix.translate(QVector3D(0.0f, 0.0f, -2.0f));
+
+	shaderProgram.bind();
+	shaderProgram.setUniformValue("qt_ModelViewProjectionMatrix", projectionMatrix * modelViewMatrix);
+//	viewMatrix.lookAt(QVector3D(0.0f, 0.0f, -4.0f), QVector3D(0.0f, 0.0f, 0.0f), QVector3D(0.0f, 0.0f, 1.0f));
+
+	BaseObject obj = BaseObject("/home/nastya/sphere.obj", "/home/nastya/cg-course-work/sphere-mov-viz/green.jpg");
+	obj.draw(&shaderProgram, context()->functions(), projectionMatrix, modelViewMatrix);
 }
 
 void GLWidget::initShaders()
 {
-	if (!shaderProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vertexShader.vert")) {
+	if (!shaderProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vert.vsh")) {
 		ErrMsg(ERROR, "Ошибка", "Ошибка при компиляции вершинного шейдера!").getMessage();
 		exit(EXIT_FAILURE);
 	}
 
-	if (!shaderProgram.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/fragmentShader.frag")) {
+	if (!shaderProgram.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/frag.fsh")) {
 		ErrMsg(ERROR, "Ошибка", "Ошибка при компиляции фрагментного шейдера!").getMessage();
 		exit(EXIT_FAILURE);
 	}
