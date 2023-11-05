@@ -12,6 +12,7 @@ SOURCES += \
     baseobject.cpp \
     errmsg.cpp \
     glwidget.cpp \
+    light.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -19,7 +20,9 @@ HEADERS += \
     baseobject.h \
     errmsg.h \
     glwidget.h \
+    light.h \
     mainwindow.h \
+    property.h \
     structures.h
 
 FORMS += \

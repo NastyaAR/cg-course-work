@@ -29,8 +29,11 @@ BaseObject::~BaseObject()
 
 void BaseObject::draw(QOpenGLShaderProgram *program, QOpenGLFunctions *functions, QMatrix4x4 projectionMatrix, QMatrix4x4 viewMatrix)
 {
-//	modelMatrix.translate(QVector3D(0.0f, 0.0f, 10.0f));
-//	modelMatrix.scale(0.5);
+	modelMatrix.translate(QVector3D(0.0f, 0.0f, 5.0f));
+	modelMatrix.scale(5);
+
+	program->bind();
+	program->setUniformValue("qt_ModelViewProjectionMatrix", projectionMatrix * viewMatrix * modelMatrix);
 
 	texture->bind(0);
 	program->setUniformValue("qt_Texture0", 0);
@@ -56,9 +59,6 @@ void BaseObject::draw(QOpenGLShaderProgram *program, QOpenGLFunctions *functions
 
 void BaseObject::free()
 {
-//	indexes.clear();
-//	vertexes.clear();
-
 	if (vertexesBuffer.isCreated()) {
 		vertexesBuffer.destroy();
 	}

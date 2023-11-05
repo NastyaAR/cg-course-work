@@ -30,16 +30,12 @@ void GLWidget::paintGL()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	QMatrix4x4 modelViewMatrix;
-	modelViewMatrix.setToIdentity();
-	modelViewMatrix.translate(QVector3D(0.0f, 0.0f, -2.0f));
-
-	shaderProgram.bind();
-	shaderProgram.setUniformValue("qt_ModelViewProjectionMatrix", projectionMatrix * modelViewMatrix);
-//	viewMatrix.lookAt(QVector3D(0.0f, 0.0f, -4.0f), QVector3D(0.0f, 0.0f, 0.0f), QVector3D(0.0f, 0.0f, 1.0f));
+	QMatrix4x4 viewMatrix;
+	viewMatrix.setToIdentity();
+	viewMatrix.translate(QVector3D(0.0f, 0.0f, -20.0f));
 
 	BaseObject obj = BaseObject("/home/nastya/sphere.obj", "/home/nastya/cg-course-work/sphere-mov-viz/green.jpg");
-	obj.draw(&shaderProgram, context()->functions(), projectionMatrix, modelViewMatrix);
+	obj.draw(&shaderProgram, context()->functions(), projectionMatrix, viewMatrix);
 }
 
 void GLWidget::initShaders()
