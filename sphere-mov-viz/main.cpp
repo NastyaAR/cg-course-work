@@ -5,9 +5,13 @@
 int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
-	GLWidget oglw;
-	oglw.show();
 
-//	return a.exec();
+	QSurfaceFormat format;
+	format.setSamples(16);
+
+	QSurfaceFormat::setDefaultFormat(format);
+	GLWidget oglw;
+
+	oglw.show();
 	return a.exec();
 }

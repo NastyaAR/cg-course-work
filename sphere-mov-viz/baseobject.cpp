@@ -27,13 +27,16 @@ BaseObject::~BaseObject()
 	free();
 }
 
-void BaseObject::draw(QOpenGLShaderProgram *program, QOpenGLFunctions *functions, QMatrix4x4 projectionMatrix, QMatrix4x4 viewMatrix)
+void BaseObject::draw(QOpenGLShaderProgram *program, QOpenGLFunctions *functions, QMatrix4x4 projectionMatrix, QMatrix4x4 viewMatrix, QQuaternion rotation)
 {
-	modelMatrix.translate(QVector3D(0.0f, 0.0f, 5.0f));
-	modelMatrix.scale(5);
+	modelMatrix.translate(QVector3D(0.5f, -1.0f, 0.0f));
+	modelMatrix.rotate(rotation);
+//	modelMatrix.scale(0.5);
 
 	program->bind();
-	program->setUniformValue("qt_ModelViewProjectionMatrix", projectionMatrix * viewMatrix * modelMatrix);
+	program->setUniformValue("qt_ProjectionMatrix", projectionMatrix);
+	program->setUniformValue("mvMatrix", viewMatrix * modelMatrix);
+	program->setUniformValue("lightPos", QVector4D(10.0f, 0.0f, 10.0f, 0.0f));
 
 	texture->bind(0);
 	program->setUniformValue("qt_Texture0", 0);
@@ -47,6 +50,10 @@ void BaseObject::draw(QOpenGLShaderProgram *program, QOpenGLFunctions *functions
 	auto texLocation = program->attributeLocation("qt_MultiTexCoord0");
 	program->enableAttributeArray(texLocation);
 	program->setAttributeBuffer(texLocation, GL_FLOAT, sizeof(QVector3D), 2, sizeof(vertex_t));
+
+	auto normLocation = program->attributeLocation("qt_Normal");
+	program->enableAttributeArray(normLocation);
+	program->setAttributeBuffer(normLocation, GL_FLOAT, sizeof(QVector3D)+sizeof(QVector2D), 3, sizeof(vertex_t));
 
 	indexesBuffer.bind();
 

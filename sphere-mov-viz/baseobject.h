@@ -18,7 +18,7 @@ public:
 	BaseObject(const QVector<vertex_t> &vertexes, const QVector<GLuint> &indexes, const QString &texturePath);
 	~BaseObject();
 
-	void draw(QOpenGLShaderProgram *program, QOpenGLFunctions *functions, QMatrix4x4 projectionMatrix, QMatrix4x4 viewMatrix);
+	void draw(QOpenGLShaderProgram *program, QOpenGLFunctions *functions, QMatrix4x4 projectionMatrix, QMatrix4x4 viewMatrix, QQuaternion rotation);
 protected:
 	void free();
 	void loadFromFile(const QString &filename);

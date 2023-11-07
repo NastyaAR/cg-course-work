@@ -6,6 +6,8 @@
 #include <QOpenGLShaderProgram>
 #include <QOpenGLTexture>
 #include <QApplication>
+#include <QMouseEvent>
+#include <QWheelEvent>
 
 #include "baseobject.h"
 #include "errmsg.h"
@@ -13,6 +15,7 @@
 #define NEAR_PLANE 0.1f
 #define FAR_PLANE 100.0f
 
+#define SCALE_FACTOR 0.25f
 
 class GLWidget : public QOpenGLWidget
 {
@@ -26,9 +29,17 @@ protected:
 	void paintGL();
 
 	void initShaders();
+
+	void mousePressEvent(QMouseEvent *event);
+	void mouseMoveEvent(QMouseEvent *event);
+	void wheelEvent(QWheelEvent *event);
 private:
 	QMatrix4x4 projectionMatrix;
 	QOpenGLShaderProgram shaderProgram;
+	QVector2D mousePos;
+	QQuaternion rotation;
+
+	float zoom = -5.0f;
 };
 
 #endif // GLWIDGET_H
