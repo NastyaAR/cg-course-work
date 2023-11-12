@@ -2,12 +2,24 @@
 
 GLWidget::GLWidget(QWidget *parent) : QOpenGLWidget(parent)
 {
+	lights.append(new Light(DIRECTIONAL));
+	lights[0]->Clr = QVector3D(1.0f, 1.0f, 1.0f);
+	lights[0]->Power = 0.9;
+	lights[0]->direction = QVector4D(-1.0f, -1.0f, -1.0f, 0.0f);
+	lights[0]->position = QVector4D(0.0f, 0.0f, 100.0f, 1.0f);
 
+	lights.append(new Light(DIRECTIONAL));
+	lights[1]->Clr = QVector3D(1.0f, 1.0f, 1.0f);
+	lights[1]->Power = 0.9;
+	lights[1]->direction = QVector4D(1.0f, 1.0f, 1.0f, 0.0f);
+	lights[1]->position = QVector4D(0.0f, 0.0f, 100.0f, 1.0f);
 }
 
 GLWidget::~GLWidget()
 {
-
+	for (int i = 0; i < lights.size(); i++) {
+		delete lights[i];
+	}
 }
 
 void GLWidget::initializeGL()
@@ -33,6 +45,30 @@ void GLWidget::paintGL()
 	QMatrix4x4 viewMatrix;
 	viewMatrix.setToIdentity();
 	viewMatrix.translate(QVector3D(0.0f, 0.0f, zoom));
+
+	for (int i = 0; i < 2; i++) {
+		std::ostringstream oss1;
+		std::ostringstream oss2;
+		std::ostringstream oss3;
+		std::ostringstream oss4;
+		std::ostringstream oss5;
+		oss1 << "lights[" << i << "].power";
+		oss2 << "lights[" << i << "].color";
+		oss3 << "lights[" << i << "].pos";
+		oss4 << "lights[" << i << "].direction";
+		oss5 << "lights[" << i << "].type";
+		shaderProgram.setUniformValue(oss1.str().data(), lights[i]->Power);
+		shaderProgram.setUniformValue(oss2.str().data(), lights[i]->Clr);
+		shaderProgram.setUniformValue(oss3.str().data(), lights[i]->position);
+		shaderProgram.setUniformValue(oss4.str().data(), lights[i]->direction);
+		shaderProgram.setUniformValue(oss5.str().data(), lights[i]->lType);
+
+	}
+
+	shaderProgram.setUniformValue("numberLights", 2);
+
+	shaderProgram.setUniformValue("specParam", 10.0f);
+	shaderProgram.setUniformValue("ambParam", 0.1f);
 
 	BaseObject obj = BaseObject("/home/nastya/mys.obj", "/home/nastya/cg-course-work/sphere-mov-viz/green.jpg");
 	obj.draw(&shaderProgram, context()->functions(), projectionMatrix, viewMatrix, rotation);

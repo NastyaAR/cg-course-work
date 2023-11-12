@@ -8,9 +8,11 @@
 #include <QApplication>
 #include <QMouseEvent>
 #include <QWheelEvent>
+#include <sstream>
 
 #include "baseobject.h"
 #include "errmsg.h"
+#include "light.h"
 
 #define NEAR_PLANE 0.1f
 #define FAR_PLANE 100.0f
@@ -38,6 +40,8 @@ private:
 	QOpenGLShaderProgram shaderProgram;
 	QVector2D mousePos;
 	QQuaternion rotation;
+
+	QVector<Light *> lights;
 
 	float zoom = -5.0f;
 };
