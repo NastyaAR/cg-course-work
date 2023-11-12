@@ -18,6 +18,7 @@
 #define FAR_PLANE 100.0f
 
 #define SCALE_FACTOR 0.25f
+#define MAX_LIGHT_SOURCES 5
 
 class GLWidget : public QOpenGLWidget
 {

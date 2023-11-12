@@ -13,6 +13,12 @@ GLWidget::GLWidget(QWidget *parent) : QOpenGLWidget(parent)
 	lights[1]->Power = 0.9;
 	lights[1]->direction = QVector4D(1.0f, 1.0f, 1.0f, 0.0f);
 	lights[1]->position = QVector4D(0.0f, 0.0f, 100.0f, 1.0f);
+
+	lights.append(new Light(POINT));
+	lights[2]->Clr = QVector3D(1.0f, 1.0f, 1.0f);
+	lights[2]->Power = 0.9;
+	lights[2]->direction = QVector4D(0.0f, 0.0f, 0.0f, 0.0f);
+	lights[2]->position = QVector4D(100.0f, 0.0f, 1.0f, 1.0f);
 }
 
 GLWidget::~GLWidget()
@@ -46,7 +52,7 @@ void GLWidget::paintGL()
 	viewMatrix.setToIdentity();
 	viewMatrix.translate(QVector3D(0.0f, 0.0f, zoom));
 
-	for (int i = 0; i < 2; i++) {
+	for (int i = 0; i < 3; i++) {
 		std::ostringstream oss1;
 		std::ostringstream oss2;
 		std::ostringstream oss3;
@@ -65,7 +71,7 @@ void GLWidget::paintGL()
 
 	}
 
-	shaderProgram.setUniformValue("numberLights", 2);
+	shaderProgram.setUniformValue("numberLights", 3);
 
 	shaderProgram.setUniformValue("specParam", 10.0f);
 	shaderProgram.setUniformValue("ambParam", 0.1f);

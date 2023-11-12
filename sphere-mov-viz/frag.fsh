@@ -24,7 +24,7 @@ void main(void)
 {
     for (int i = 0; i < numberLights; i++) {
 	corLights[i].direction = lights[i].direction;
-	corLights[i].pos = qt_viewMatrix * lights[i].pos;
+	corLights[i].pos = lights[i].pos;
 	corLights[i].color = lights[i].color;
 	corLights[i].power = lights[i].power;
 	corLights[i].type = lights[i].type;
@@ -38,7 +38,11 @@ void main(void)
 
     for (int i = 0; i < numberLights; i++) {
 	vec4 lightClr = vec4(0.0f, 0.0f, 0.0f, 0.0f);
-	vec3 light_vec = normalize(corLights[i].direction.xyz);
+	vec3 light_vec;
+	if (corLights[i].type == 0)
+	    light_vec = normalize(corLights[i].direction.xyz);
+	else
+	    light_vec = normalize(qt_Vertex0.xyz - corLights[i].pos.xyz);
 	vec3 reflectlLight = normalize(reflect(light_vec, qt_Normal0));
 	vec4 diffFactor = srcClr * max(0.0, dot(qt_Normal0, -light_vec)) * corLights[i].power;
 	vec4 ambFactor = ambParam * srcClr;
