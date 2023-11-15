@@ -13,5 +13,5 @@ Light::Light(const lightType type) : type(type),
 							lMatrix(this, &Light::getLMatrix, nullptr)
 {
 	lightMatrix.setToIdentity();
-	lightMatrix.lookAt(pos.toVector3D(), (pos + direct).toVector3D(), QVector3D(direct.x(), direct.z(), -direct.y()));
+	lightMatrix.lookAt(pos.normalized().toVector3D(), (pos.normalized() + direct).normalized().toVector3D(), QVector3D(direct.x(), direct.z(), -direct.y()));
 }

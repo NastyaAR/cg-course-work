@@ -30,13 +30,13 @@ BaseObject::~BaseObject()
 void BaseObject::draw(QOpenGLShaderProgram *program, QOpenGLFunctions *functions, QMatrix4x4 projectionMatrix, QMatrix4x4 viewMatrix, QQuaternion rotation)
 {
 //	modelMatrix.translate(QVector3D(0.5f, -1.0f, 0.0f));
-	modelMatrix.rotate(rotation);
+//	modelMatrix.rotate(rotation);
 
-	program->bind();
-	program->setUniformValue("qt_ModelViewLightMatrix", viewMatrix * modelMatrix);
+//	program->bind();
+	program->setUniformValue("modelMatrix", modelMatrix);
+	program->setUniformValue("qt_ModelMatrix", modelMatrix);
 	program->setUniformValue("qt_ProjectionMatrix", projectionMatrix);
 	program->setUniformValue("mvMatrix", viewMatrix * modelMatrix);
-	program->setUniformValue("lightPos", QVector4D(10.0f, 0.0f, 10.0f, 0.0f));
 
 	texture->bind(0);
 	program->setUniformValue("qt_Texture0", 0);

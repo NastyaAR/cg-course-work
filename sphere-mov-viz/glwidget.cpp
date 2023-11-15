@@ -5,8 +5,8 @@ GLWidget::GLWidget(QWidget *parent) : QOpenGLWidget(parent)
 	lights.append(new Light(DIRECTIONAL));
 	lights[0]->Clr = QVector3D(1.0f, 1.0f, 1.0f);
 	lights[0]->Power = 0.9;
-	lights[0]->direction = QVector4D(-1.0f, -1.0f, -1.0f, 0.0f);
-	lights[0]->position = QVector4D(0.0f, 0.0f, 100.0f, 1.0f);
+	lights[0]->position = QVector4D(0.0f, 0.0f, 10.0f, 1.0f);
+	lights[0]->direction = QVector4D(0.0f, 0.0f, -1.0f, 0.0f);
 
 //	lights.append(new Light(DIRECTIONAL));
 //	lights[1]->Clr = QVector3D(1.0f, 1.0f, 1.0f);
@@ -20,19 +20,22 @@ GLWidget::GLWidget(QWidget *parent) : QOpenGLWidget(parent)
 //	lights[2]->direction = QVector4D(0.0f, 0.0f, 0.0f, 0.0f);
 //	lights[2]->position = QVector4D(100.0f, 0.0f, 1.0f, 1.0f);
 
-	shadowBuffer.width = shadowBuffer.height = 1024;
+	shadowBuffer.width = 1024;
+	shadowBuffer.height = 1024;
 	projectionLightMatrix.setToIdentity();
-	projectionLightMatrix.ortho(-40, 40, -40, 40, -40, 40);
+	projectionLightMatrix.ortho(-40.0f, 40.0f, -40.0f, 40.0f, -40.0f, 40.0f);
+
 	shadowMatrix.setToIdentity();
 	shadowMatrix.rotate(30, 1.0, 0.0, 0.0);
 	shadowMatrix.rotate(40, 0.0, 1.0, 0.0);
 
 	lightMatrix.setToIdentity();
-	lightMatrix.rotate(-40, 0.0, 1.0, 0.0);
-	lightMatrix.rotate(-30, 1.0, 0.0, 0.0);
+	auto p = QVector4D(0.0f, 0.0f, 0.0f, 1.0f).normalized();
+	auto d = QVector4D(0.0f, 0.0f, -1.0f, 0.0f).normalized();
+	lightMatrix.lookAt(p.toVector3D(), (p+d).normalized().toVector3D(), QVector3D(d.x(), d.z(), -d.y()));
 
+	rotation = QQuaternion::fromAxisAndAngle(1.0f, 0.0f, 0.0f, 5.0f);
 
-	rotation = QQuaternion::fromAxisAndAngle(1.0f, 0.0f, 0.0f, 25.0f);
 }
 
 GLWidget::~GLWidget()
@@ -46,45 +49,51 @@ GLWidget::~GLWidget()
 
 void GLWidget::initializeGL()
 {
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
+	context()->functions()->glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	context()->functions()->glEnable(GL_DEPTH_TEST);
+	context()->functions()->glEnable(GL_CULL_FACE);
 
 	initShaders();
 	shadowBuffer.shadowBuff = new QOpenGLFramebufferObject(shadowBuffer.width, shadowBuffer.height, QOpenGLFramebufferObject::Depth);
+
+	obj1 = new BaseObject("/home/nastya/mys.obj", "/home/nastya/cg-course-work/sphere-mov-viz/green.jpg");
+	obj2 = new BaseObject("/home/nastya/cube.obj", "/home/nastya/cg-course-work/sphere-mov-viz/green.jpg");
 }
 
 void GLWidget::resizeGL(int w, int h)
 {
 	float param = w / (float) h;
 	projectionMatrix.setToIdentity();
-	projectionMatrix.perspective(45.0f, param, 0.1f, 100.0f);
+	projectionMatrix.perspective(45.0f, param, 0.1f, 1000.0f);
 }
 
 void GLWidget::paintGL()
 {
 	shadowBuffer.shadowBuff->bind();
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glViewport(0, 0, shadowBuffer.width, shadowBuffer.height);
+	context()->functions()->glViewport(0, 0, shadowBuffer.width, shadowBuffer.height);
+	context()->functions()->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	shadowShaderProgram.bind();
 	shadowShaderProgram.setUniformValue("qt_ProjectionLightMatrix", projectionLightMatrix);
-
-	BaseObject obj = BaseObject("/home/nastya/mys.obj", "/home/nastya/cg-course-work/sphere-mov-viz/green.jpg");
-	obj.draw(&shaderProgram, context()->functions(), projectionMatrix, shadowMatrix, rotation);
+	shadowShaderProgram.setUniformValue("qt_ShadowMatrix", lights[0]->lMatrix);
+	obj1->draw(&shadowShaderProgram, context()->functions(), projectionLightMatrix, lights[0]->lMatrix, rotation);
+	obj2->draw(&shadowShaderProgram, context()->functions(), projectionLightMatrix, lights[0]->lMatrix, rotation);
+	shadowShaderProgram.release();
 
 	shadowBuffer.shadowBuff->release();
 
 	GLuint shadowTexture = shadowBuffer.shadowBuff->texture();
-	glActiveTexture(GL_TEXTURE0); // нулевой слот
-	glBindTexture(GL_TEXTURE_2D, shadowTexture);
+	context()->functions()->glActiveTexture(GL_TEXTURE2); // первый слот
+	context()->functions()->glBindTexture(GL_TEXTURE_2D, shadowTexture);
 
-	glViewport(0, 0, this->width(), this->height());
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	context()->functions()->glViewport(0, 0, this->width(), this->height());
+	context()->functions()->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	QMatrix4x4 viewMatrix;
 	viewMatrix.setToIdentity();
-	viewMatrix.translate(QVector3D(0.0f, 0.0f, zoom));
+	viewMatrix.translate(QVector3D(0.0f, 0.0f, -15.0f));
+
+	shaderProgram.bind();
 
 	for (int i = 0; i < 1; i++) {
 		std::ostringstream oss1;
@@ -107,14 +116,21 @@ void GLWidget::paintGL()
 
 	shaderProgram.setUniformValue("numberLights", 1);
 
+	shaderProgram.setUniformValue("qt_ShadowMap0", GL_TEXTURE2 - GL_TEXTURE0);
+	shaderProgram.setUniformValue("qt_ProjectionLightMatrix", projectionLightMatrix);
+	shaderProgram.setUniformValue("shadowMatrix", lights[0]->lMatrix);
+	shaderProgram.setUniformValue("viewMatrix", viewMatrix);
+
 	shaderProgram.setUniformValue("specParam", 10.0f);
 	shaderProgram.setUniformValue("ambParam", 0.1f);
 
 //	BaseObject obj = BaseObject("/home/nastya/mys.obj", "/home/nastya/cg-course-work/sphere-mov-viz/green.jpg");
-	obj.draw(&shaderProgram, context()->functions(), projectionMatrix, viewMatrix, rotation);
+	obj1->draw(&shaderProgram, context()->functions(), projectionMatrix, viewMatrix, rotation);
 
-	BaseObject cube = BaseObject("/home/nastya/cube.obj", "/home/nastya/cg-course-work/sphere-mov-viz/green.jpg");
-	cube.draw(&shaderProgram, context()->functions(), projectionMatrix, viewMatrix, rotation);
+//	BaseObject cube = BaseObject("/home/nastya/cube.obj", "/home/nastya/cg-course-work/sphere-mov-viz/green.jpg");
+	obj2->draw(&shaderProgram, context()->functions(), projectionMatrix, viewMatrix, rotation);
+
+	shaderProgram.release();
 }
 
 void GLWidget::initShaders()
@@ -165,7 +181,7 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
 	mousePos = QVector2D(event->localPos());
 
 	float angle = difference.length() / 2.0;
-	QVector3D axis = QVector3D(difference.x(), difference.y(), 0.0);
+	QVector3D axis = QVector3D(difference.y(), difference.x(), 0.0);
 	rotation *= QQuaternion::fromAxisAndAngle(axis, angle);
 
 	update();

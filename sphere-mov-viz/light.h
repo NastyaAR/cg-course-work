@@ -33,9 +33,9 @@ private:
 
 	void setClr(QVector3D clr) { color = clr; };
 	void setDirect(QVector4D d) { direct = d.normalized(); 	lightMatrix.setToIdentity();
-								  lightMatrix.lookAt(pos.toVector3D(), (pos + direct).toVector3D(), QVector3D(direct.x(), direct.z(), -direct.y())); };
+								  lightMatrix.lookAt(pos.normalized().toVector3D(), (pos.normalized() + direct).normalized().toVector3D(), QVector3D(direct.x(), direct.z(), -direct.y())); };
 	void setPos(QVector4D p) { pos = p; 	lightMatrix.setToIdentity();
-							   lightMatrix.lookAt(pos.toVector3D(), (pos + direct).toVector3D(), QVector3D(direct.x(), direct.z(), -direct.y())); };
+							   lightMatrix.lookAt(pos.normalized().toVector3D(), (pos.normalized() + direct).normalized().toVector3D(), QVector3D(direct.x(), direct.z(), -direct.y())); };
 	void setLightType(lightType t) { type = t; };
 	void setPower(float pwr) { power = pwr; };
 

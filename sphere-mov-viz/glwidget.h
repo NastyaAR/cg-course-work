@@ -44,8 +44,9 @@ private:
 	QQuaternion rotation;
 
 	QVector<Light *> lights;
+	BaseObject *obj1, *obj2;
 
-	float zoom = -15.0f;
+	float zoom = 1.0f;
 
 	shadowBuff_t shadowBuffer;
 	QMatrix4x4 projectionLightMatrix;
