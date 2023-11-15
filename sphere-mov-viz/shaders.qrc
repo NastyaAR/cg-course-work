@@ -2,5 +2,7 @@
     <qresource prefix="/">
         <file>frag.fsh</file>
         <file>vert.vsh</file>
+        <file>shadows.fsh</file>
+        <file>shadows.vsh</file>
     </qresource>
 </RCC>

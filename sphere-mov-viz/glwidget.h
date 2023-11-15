@@ -39,12 +39,18 @@ protected:
 private:
 	QMatrix4x4 projectionMatrix;
 	QOpenGLShaderProgram shaderProgram;
+	QOpenGLShaderProgram shadowShaderProgram;
 	QVector2D mousePos;
 	QQuaternion rotation;
 
 	QVector<Light *> lights;
 
-	float zoom = -5.0f;
+	float zoom = -15.0f;
+
+	shadowBuff_t shadowBuffer;
+	QMatrix4x4 projectionLightMatrix;
+	QMatrix4x4 lightMatrix;
+	QMatrix4x4 shadowMatrix;
 };
 
 #endif // GLWIDGET_H

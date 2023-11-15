@@ -3,6 +3,7 @@
 
 #include <QVector2D>
 #include <QVector3D>
+#include <QOpenGLFramebufferObject>
 
 struct vertex_t
 {
@@ -12,6 +13,13 @@ struct vertex_t
 	QVector3D position;
 	QVector2D textcoord;
 	QVector3D normal;
+};
+
+struct shadowBuff_t
+{
+	QOpenGLFramebufferObject *shadowBuff;
+	quint64 width;
+	quint64 height;
 };
 
 #endif // STRUCTURES_H

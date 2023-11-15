@@ -7,6 +7,7 @@ struct Light {
 };
 
 uniform sampler2D qt_Texture0;
+uniform sampler2D qt_ShadowMap0;
 uniform int numberLights;
 
 uniform Light lights[5];

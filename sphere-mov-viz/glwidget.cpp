@@ -8,17 +8,31 @@ GLWidget::GLWidget(QWidget *parent) : QOpenGLWidget(parent)
 	lights[0]->direction = QVector4D(-1.0f, -1.0f, -1.0f, 0.0f);
 	lights[0]->position = QVector4D(0.0f, 0.0f, 100.0f, 1.0f);
 
-	lights.append(new Light(DIRECTIONAL));
-	lights[1]->Clr = QVector3D(1.0f, 1.0f, 1.0f);
-	lights[1]->Power = 0.9;
-	lights[1]->direction = QVector4D(1.0f, 1.0f, 1.0f, 0.0f);
-	lights[1]->position = QVector4D(0.0f, 0.0f, 100.0f, 1.0f);
+//	lights.append(new Light(DIRECTIONAL));
+//	lights[1]->Clr = QVector3D(1.0f, 1.0f, 1.0f);
+//	lights[1]->Power = 0.9;
+//	lights[1]->direction = QVector4D(1.0f, 1.0f, 1.0f, 0.0f);
+//	lights[1]->position = QVector4D(0.0f, 0.0f, 100.0f, 1.0f);
 
-	lights.append(new Light(POINT));
-	lights[2]->Clr = QVector3D(1.0f, 1.0f, 1.0f);
-	lights[2]->Power = 0.9;
-	lights[2]->direction = QVector4D(0.0f, 0.0f, 0.0f, 0.0f);
-	lights[2]->position = QVector4D(100.0f, 0.0f, 1.0f, 1.0f);
+//	lights.append(new Light(POINT));
+//	lights[2]->Clr = QVector3D(1.0f, 1.0f, 1.0f);
+//	lights[2]->Power = 0.9;
+//	lights[2]->direction = QVector4D(0.0f, 0.0f, 0.0f, 0.0f);
+//	lights[2]->position = QVector4D(100.0f, 0.0f, 1.0f, 1.0f);
+
+	shadowBuffer.width = shadowBuffer.height = 1024;
+	projectionLightMatrix.setToIdentity();
+	projectionLightMatrix.ortho(-40, 40, -40, 40, -40, 40);
+	shadowMatrix.setToIdentity();
+	shadowMatrix.rotate(30, 1.0, 0.0, 0.0);
+	shadowMatrix.rotate(40, 0.0, 1.0, 0.0);
+
+	lightMatrix.setToIdentity();
+	lightMatrix.rotate(-40, 0.0, 1.0, 0.0);
+	lightMatrix.rotate(-30, 1.0, 0.0, 0.0);
+
+
+	rotation = QQuaternion::fromAxisAndAngle(1.0f, 0.0f, 0.0f, 25.0f);
 }
 
 GLWidget::~GLWidget()
@@ -26,6 +40,8 @@ GLWidget::~GLWidget()
 	for (int i = 0; i < lights.size(); i++) {
 		delete lights[i];
 	}
+
+	delete shadowBuffer.shadowBuff;
 }
 
 void GLWidget::initializeGL()
@@ -35,6 +51,7 @@ void GLWidget::initializeGL()
 	glEnable(GL_CULL_FACE);
 
 	initShaders();
+	shadowBuffer.shadowBuff = new QOpenGLFramebufferObject(shadowBuffer.width, shadowBuffer.height, QOpenGLFramebufferObject::Depth);
 }
 
 void GLWidget::resizeGL(int w, int h)
@@ -46,13 +63,30 @@ void GLWidget::resizeGL(int w, int h)
 
 void GLWidget::paintGL()
 {
+	shadowBuffer.shadowBuff->bind();
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glViewport(0, 0, shadowBuffer.width, shadowBuffer.height);
+
+	shadowShaderProgram.bind();
+	shadowShaderProgram.setUniformValue("qt_ProjectionLightMatrix", projectionLightMatrix);
+
+	BaseObject obj = BaseObject("/home/nastya/mys.obj", "/home/nastya/cg-course-work/sphere-mov-viz/green.jpg");
+	obj.draw(&shaderProgram, context()->functions(), projectionMatrix, shadowMatrix, rotation);
+
+	shadowBuffer.shadowBuff->release();
+
+	GLuint shadowTexture = shadowBuffer.shadowBuff->texture();
+	glActiveTexture(GL_TEXTURE0); // нулевой слот
+	glBindTexture(GL_TEXTURE_2D, shadowTexture);
+
+	glViewport(0, 0, this->width(), this->height());
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	QMatrix4x4 viewMatrix;
 	viewMatrix.setToIdentity();
 	viewMatrix.translate(QVector3D(0.0f, 0.0f, zoom));
 
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < 1; i++) {
 		std::ostringstream oss1;
 		std::ostringstream oss2;
 		std::ostringstream oss3;
@@ -71,13 +105,16 @@ void GLWidget::paintGL()
 
 	}
 
-	shaderProgram.setUniformValue("numberLights", 3);
+	shaderProgram.setUniformValue("numberLights", 1);
 
 	shaderProgram.setUniformValue("specParam", 10.0f);
 	shaderProgram.setUniformValue("ambParam", 0.1f);
 
-	BaseObject obj = BaseObject("/home/nastya/mys.obj", "/home/nastya/cg-course-work/sphere-mov-viz/green.jpg");
+//	BaseObject obj = BaseObject("/home/nastya/mys.obj", "/home/nastya/cg-course-work/sphere-mov-viz/green.jpg");
 	obj.draw(&shaderProgram, context()->functions(), projectionMatrix, viewMatrix, rotation);
+
+	BaseObject cube = BaseObject("/home/nastya/cube.obj", "/home/nastya/cg-course-work/sphere-mov-viz/green.jpg");
+	cube.draw(&shaderProgram, context()->functions(), projectionMatrix, viewMatrix, rotation);
 }
 
 void GLWidget::initShaders()
@@ -97,6 +134,21 @@ void GLWidget::initShaders()
 		exit(EXIT_FAILURE);
 	}
 
+	if (!shadowShaderProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/shadows.vsh")) {
+		ErrMsg(ERROR, "Ошибка", "Ошибка при компиляции вершинного шейдера для теней!").getMessage();
+		exit(EXIT_FAILURE);
+	}
+
+	if (!shadowShaderProgram.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shadows.fsh")) {
+		ErrMsg(ERROR, "Ошибка", "Ошибка при компиляции фрагментного шейдера для теней!").getMessage();
+		exit(EXIT_FAILURE);
+	}
+
+	if (!shadowShaderProgram.link()) {
+		ErrMsg(ERROR, "Ошибка", "Ошибка при линковке шейдеров для теней!").getMessage();
+		exit(EXIT_FAILURE);
+	}
+
 }
 
 void GLWidget::mousePressEvent(QMouseEvent *event)
@@ -113,7 +165,7 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
 	mousePos = QVector2D(event->localPos());
 
 	float angle = difference.length() / 2.0;
-	QVector3D axis = QVector3D(difference.y(), difference.x(), 0.0);
+	QVector3D axis = QVector3D(difference.x(), difference.y(), 0.0);
 	rotation *= QQuaternion::fromAxisAndAngle(axis, angle);
 
 	update();
