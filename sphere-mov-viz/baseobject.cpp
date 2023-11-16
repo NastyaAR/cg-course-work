@@ -4,7 +4,8 @@ BaseObject::BaseObject(const QString &filename, const QString &texturePath) :
 	vertexesBuffer(QOpenGLBuffer::VertexBuffer),
 	indexesBuffer(QOpenGLBuffer::IndexBuffer),
 	texturePath(texturePath),
-	texture(nullptr)
+	texture(nullptr),
+	m_Scale(1.0f)
 {
 	loadFromFile(filename);
 	init(vertexes, indexes, texturePath);
@@ -27,16 +28,37 @@ BaseObject::~BaseObject()
 	free();
 }
 
-void BaseObject::draw(QOpenGLShaderProgram *program, QOpenGLFunctions *functions, QMatrix4x4 projectionMatrix, QMatrix4x4 viewMatrix, QQuaternion rotation)
+void BaseObject::rotate(const QQuaternion &r)
 {
-//	modelMatrix.translate(QVector3D(0.5f, -1.0f, 0.0f));
-//	modelMatrix.rotate(rotation);
+	m_Rotate *= r;
+}
 
-//	program->bind();
-	program->setUniformValue("modelMatrix", modelMatrix);
-	program->setUniformValue("qt_ModelMatrix", modelMatrix);
-	program->setUniformValue("qt_ProjectionMatrix", projectionMatrix);
-	program->setUniformValue("mvMatrix", viewMatrix * modelMatrix);
+void BaseObject::translate(const QVector3D &t)
+{
+	m_Translate += t;
+}
+
+void BaseObject::scale(const float &s)
+{
+	m_Scale *= s;
+}
+
+void BaseObject::setGlobalTransform(const QMatrix4x4 &gt)
+{
+	m_GlobalTransform = gt;
+}
+
+void BaseObject::draw(QOpenGLShaderProgram *program, QOpenGLFunctions *functions)
+{
+	QMatrix4x4 _modelMatrix;
+	_modelMatrix.setToIdentity();
+	_modelMatrix.translate(m_Translate);
+	_modelMatrix.rotate(m_Rotate);
+	_modelMatrix.scale(m_Scale);
+	_modelMatrix = m_GlobalTransform * _modelMatrix;
+
+	program->setUniformValue("modelMatrix", _modelMatrix);
+	program->setUniformValue("qt_ModelMatrix", _modelMatrix);
 
 	texture->bind(0);
 	program->setUniformValue("qt_Texture0", 0);
@@ -138,7 +160,8 @@ void BaseObject::init(const QVector<vertex_t> &vertexes, const QVector<GLuint> &
 	texture->setMinMagFilters(QOpenGLTexture::Nearest, QOpenGLTexture::Linear);
 	texture->setWrapMode(QOpenGLTexture::Repeat);
 
-	modelMatrix.setToIdentity();
+//	modelMatrix.setToIdentity();
+//	modelMatrix.rotate(QQuaternion::fromAxisAndAngle(1.0f, 0.0f, 0.0f, 30.0f) * QQuaternion::fromAxisAndAngle(0.0f, 1.0f, 0.0f, 30.0f));
 }
 
 

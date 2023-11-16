@@ -7,7 +7,7 @@ struct Light {
 };
 
 uniform sampler2D qt_Texture0;
-uniform sampler2D qt_ShadowMap0;
+uniform sampler2D qt_ShadowMaps0[2];
 uniform int numberLights;
 
 uniform Light lights[5];
@@ -35,12 +35,20 @@ void main(void)
     tmp = tmp * vec3(0.5) + vec3(0.5);
 
     vec3 clr = vec3(1.0f, 1.0f, 1.0f);
+    bool inLight = false;
+    float shadowParam = 1.0f;
 
-    float shadowParam = ShadowMapping(qt_ShadowMap0, tmp.xy, tmp.z * 255.0f - 0.5f);
+    for (int i = 0; i < 1; i++) {
+	shadowParam = ShadowMapping(qt_ShadowMaps0[i], tmp.xy, tmp.z * 255.0f - 0.5f);
+	if (shadowParam == 1.0f) {
+	    inLight = true;
+	}
+    }
 
-    shadowParam += 0.1f;
-
-    if (shadowParam > 1.0f) shadowParam = 1.0f;
+    if (! inLight)
+	shadowParam = 0.5f;
+    else
+	shadowParam = 1.0f;
 
     for (int i = 0; i < numberLights; i++) {
 	corLights[i].direction = qt_viewMatrix * lights[i].direction;
@@ -71,5 +79,4 @@ void main(void)
     }
 
     gl_FragColor = resClr * shadowParam;
-//    gl_FragColor = resClr;
 }

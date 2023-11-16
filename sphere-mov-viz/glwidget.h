@@ -13,6 +13,7 @@
 #include "baseobject.h"
 #include "errmsg.h"
 #include "light.h"
+#include "camera.h"
 
 #define NEAR_PLANE 0.1f
 #define FAR_PLANE 100.0f
@@ -41,17 +42,19 @@ private:
 	QOpenGLShaderProgram shaderProgram;
 	QOpenGLShaderProgram shadowShaderProgram;
 	QVector2D mousePos;
-	QQuaternion rotation;
+	QVector3D wheelPlus = QVector3D(0.0f, 0.0f, 0.5);
+	QVector3D wheelMinus = QVector3D(0.0f, 0.0f, -0.5);
 
 	QVector<Light *> lights;
 	BaseObject *obj1, *obj2;
 
-	float zoom = 1.0f;
+	float zoom = -15.0f;
 
-	shadowBuff_t shadowBuffer;
+	QVector<ShadowBuffer *> shadowBuffers;
 	QMatrix4x4 projectionLightMatrix;
-	QMatrix4x4 lightMatrix;
-	QMatrix4x4 shadowMatrix;
+
+	Camera *cam;
+
 };
 
 #endif // GLWIDGET_H

@@ -4,6 +4,7 @@
 #include <QVector2D>
 #include <QVector3D>
 #include <QOpenGLFramebufferObject>
+#include "property.h"
 
 struct vertex_t
 {
@@ -15,8 +16,11 @@ struct vertex_t
 	QVector3D normal;
 };
 
-struct shadowBuff_t
+class ShadowBuffer
 {
+public:
+	ShadowBuffer(int w, int h) : width(w), height(h), shadowBuff(nullptr) {};
+	~ShadowBuffer() { delete shadowBuff; }
 	QOpenGLFramebufferObject *shadowBuff;
 	quint64 width;
 	quint64 height;

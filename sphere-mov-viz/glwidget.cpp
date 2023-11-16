@@ -6,13 +6,13 @@ GLWidget::GLWidget(QWidget *parent) : QOpenGLWidget(parent)
 	lights[0]->Clr = QVector3D(1.0f, 1.0f, 1.0f);
 	lights[0]->Power = 0.9;
 	lights[0]->position = QVector4D(0.0f, 0.0f, 10.0f, 1.0f);
-	lights[0]->direction = QVector4D(0.0f, 0.0f, -1.0f, 0.0f);
+	lights[0]->direction = QVector4D(0.0f, -1.0f, -1.0f, 0.0f);
 
-//	lights.append(new Light(DIRECTIONAL));
-//	lights[1]->Clr = QVector3D(1.0f, 1.0f, 1.0f);
-//	lights[1]->Power = 0.9;
-//	lights[1]->direction = QVector4D(1.0f, 1.0f, 1.0f, 0.0f);
-//	lights[1]->position = QVector4D(0.0f, 0.0f, 100.0f, 1.0f);
+	lights.append(new Light(DIRECTIONAL));
+	lights[1]->Clr = QVector3D(1.0f, 1.0f, 1.0f);
+	lights[1]->Power = 0.9;
+	lights[1]->direction = QVector4D(1.0f, 1.0f, 1.0f, 0.0f);
+	lights[1]->position = QVector4D(0.0f, 0.0f, 100.0f, 1.0f);
 
 //	lights.append(new Light(POINT));
 //	lights[2]->Clr = QVector3D(1.0f, 1.0f, 1.0f);
@@ -20,22 +20,14 @@ GLWidget::GLWidget(QWidget *parent) : QOpenGLWidget(parent)
 //	lights[2]->direction = QVector4D(0.0f, 0.0f, 0.0f, 0.0f);
 //	lights[2]->position = QVector4D(100.0f, 0.0f, 1.0f, 1.0f);
 
-	shadowBuffer.width = 1024;
-	shadowBuffer.height = 1024;
+	shadowBuffers.append(new ShadowBuffer(1024, 1024));
+	shadowBuffers.append(new ShadowBuffer(1024, 1024));
 	projectionLightMatrix.setToIdentity();
 	projectionLightMatrix.ortho(-40.0f, 40.0f, -40.0f, 40.0f, -40.0f, 40.0f);
 
-	shadowMatrix.setToIdentity();
-	shadowMatrix.rotate(30, 1.0, 0.0, 0.0);
-	shadowMatrix.rotate(40, 0.0, 1.0, 0.0);
-
-	lightMatrix.setToIdentity();
-	auto p = QVector4D(0.0f, 0.0f, 0.0f, 1.0f).normalized();
-	auto d = QVector4D(0.0f, 0.0f, -1.0f, 0.0f).normalized();
-	lightMatrix.lookAt(p.toVector3D(), (p+d).normalized().toVector3D(), QVector3D(d.x(), d.z(), -d.y()));
-
-	rotation = QQuaternion::fromAxisAndAngle(1.0f, 0.0f, 0.0f, 5.0f);
-
+	cam = new Camera;
+	auto t = QVector3D(0.0f, 0.0f, -10.0f);
+	cam->transpose(t);
 }
 
 GLWidget::~GLWidget()
@@ -44,17 +36,21 @@ GLWidget::~GLWidget()
 		delete lights[i];
 	}
 
-	delete shadowBuffer.shadowBuff;
+	for (int i = 0; i < shadowBuffers.size(); i++) {
+		delete shadowBuffers[i];
+
+	}
 }
 
 void GLWidget::initializeGL()
 {
-	context()->functions()->glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	context()->functions()->glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	context()->functions()->glEnable(GL_DEPTH_TEST);
 	context()->functions()->glEnable(GL_CULL_FACE);
 
 	initShaders();
-	shadowBuffer.shadowBuff = new QOpenGLFramebufferObject(shadowBuffer.width, shadowBuffer.height, QOpenGLFramebufferObject::Depth);
+
+	shadowBuffers[0]->shadowBuff = new QOpenGLFramebufferObject(shadowBuffers[0]->width, shadowBuffers[0]->height, QOpenGLFramebufferObject::Depth);
 
 	obj1 = new BaseObject("/home/nastya/mys.obj", "/home/nastya/cg-course-work/sphere-mov-viz/green.jpg");
 	obj2 = new BaseObject("/home/nastya/cube.obj", "/home/nastya/cg-course-work/sphere-mov-viz/green.jpg");
@@ -69,29 +65,25 @@ void GLWidget::resizeGL(int w, int h)
 
 void GLWidget::paintGL()
 {
-	shadowBuffer.shadowBuff->bind();
-	context()->functions()->glViewport(0, 0, shadowBuffer.width, shadowBuffer.height);
+	shadowBuffers[0]->shadowBuff->bind();
+	context()->functions()->glViewport(0, 0, shadowBuffers[0]->width, shadowBuffers[0]->height);
 	context()->functions()->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	shadowShaderProgram.bind();
 	shadowShaderProgram.setUniformValue("qt_ProjectionLightMatrix", projectionLightMatrix);
 	shadowShaderProgram.setUniformValue("qt_ShadowMatrix", lights[0]->lMatrix);
-	obj1->draw(&shadowShaderProgram, context()->functions(), projectionLightMatrix, lights[0]->lMatrix, rotation);
-	obj2->draw(&shadowShaderProgram, context()->functions(), projectionLightMatrix, lights[0]->lMatrix, rotation);
+	obj1->draw(&shadowShaderProgram, context()->functions());
+	obj2->draw(&shadowShaderProgram, context()->functions());
 	shadowShaderProgram.release();
 
-	shadowBuffer.shadowBuff->release();
+	shadowBuffers[0]->shadowBuff->release();
 
-	GLuint shadowTexture = shadowBuffer.shadowBuff->texture();
+	GLuint shadowTexture = shadowBuffers[0]->shadowBuff->texture();
 	context()->functions()->glActiveTexture(GL_TEXTURE2); // первый слот
 	context()->functions()->glBindTexture(GL_TEXTURE_2D, shadowTexture);
 
 	context()->functions()->glViewport(0, 0, this->width(), this->height());
 	context()->functions()->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	QMatrix4x4 viewMatrix;
-	viewMatrix.setToIdentity();
-	viewMatrix.translate(QVector3D(0.0f, 0.0f, -15.0f));
 
 	shaderProgram.bind();
 
@@ -113,22 +105,20 @@ void GLWidget::paintGL()
 		shaderProgram.setUniformValue(oss5.str().data(), lights[i]->lType);
 
 	}
+	cam->draw(&shaderProgram);
 
 	shaderProgram.setUniformValue("numberLights", 1);
-
-	shaderProgram.setUniformValue("qt_ShadowMap0", GL_TEXTURE2 - GL_TEXTURE0);
+	shaderProgram.setUniformValue("qt_ShadowMaps0[0]", GL_TEXTURE2 - GL_TEXTURE0);
+	shaderProgram.setUniformValue("qt_ShadowMaps0[1]", GL_TEXTURE2 - GL_TEXTURE0);
 	shaderProgram.setUniformValue("qt_ProjectionLightMatrix", projectionLightMatrix);
 	shaderProgram.setUniformValue("shadowMatrix", lights[0]->lMatrix);
-	shaderProgram.setUniformValue("viewMatrix", viewMatrix);
+	shaderProgram.setUniformValue("qt_ProjectionMatrix", projectionMatrix);
 
 	shaderProgram.setUniformValue("specParam", 10.0f);
 	shaderProgram.setUniformValue("ambParam", 0.1f);
 
-//	BaseObject obj = BaseObject("/home/nastya/mys.obj", "/home/nastya/cg-course-work/sphere-mov-viz/green.jpg");
-	obj1->draw(&shaderProgram, context()->functions(), projectionMatrix, viewMatrix, rotation);
-
-//	BaseObject cube = BaseObject("/home/nastya/cube.obj", "/home/nastya/cg-course-work/sphere-mov-viz/green.jpg");
-	obj2->draw(&shaderProgram, context()->functions(), projectionMatrix, viewMatrix, rotation);
+	obj1->draw(&shaderProgram, context()->functions());
+	obj2->draw(&shaderProgram, context()->functions());
 
 	shaderProgram.release();
 }
@@ -176,25 +166,28 @@ void GLWidget::mousePressEvent(QMouseEvent *event)
 
 void GLWidget::mouseMoveEvent(QMouseEvent *event)
 {
-	if (event->buttons() == Qt::LeftButton) return;
-	QVector2D difference = QVector2D(event->localPos()) - mousePos;
-	mousePos = QVector2D(event->localPos());
+	if (event->buttons() == Qt::LeftButton) {
+		QVector2D diffpos = QVector2D(event->localPos()) - mousePos;
+		mousePos = QVector2D(event->localPos());
 
-	float angle = difference.length() / 2.0;
-	QVector3D axis = QVector3D(difference.y(), difference.x(), 0.0);
-	rotation *= QQuaternion::fromAxisAndAngle(axis, angle);
-
-	update();
+		float angleX = diffpos.y() / 2.0f;
+		float angleY = diffpos.x() / 2.0f;
+		auto rtx = QQuaternion::fromAxisAndAngle(1.0f, 0.0f, 0.0f, angleX);
+		auto rty = QQuaternion::fromAxisAndAngle(0.0f, 1.0f, 0.0f, angleY);
+		cam->rotateX(rtx);
+		cam->rotateY(rty);
+		update();
+	}
+	event->accept();
 }
 
 void GLWidget::wheelEvent(QWheelEvent *event)
 {
-	if (event->delta() > 0)
-		zoom += SCALE_FACTOR;
-	else if (event->delta() < 0)
-		zoom -= SCALE_FACTOR;
 
+	if(event->delta() > 0) cam->transpose(wheelPlus);
+	else if(event->delta() < 0) cam->transpose(wheelMinus);
 	update();
+	event->accept();
 }
 
 

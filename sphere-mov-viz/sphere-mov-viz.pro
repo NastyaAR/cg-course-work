@@ -10,6 +10,7 @@ CONFIG += c++17
 
 SOURCES += \
     baseobject.cpp \
+    camera.cpp \
     errmsg.cpp \
     glwidget.cpp \
     light.cpp \
@@ -18,6 +19,7 @@ SOURCES += \
 
 HEADERS += \
     baseobject.h \
+    camera.h \
     errmsg.h \
     glwidget.h \
     light.h \
