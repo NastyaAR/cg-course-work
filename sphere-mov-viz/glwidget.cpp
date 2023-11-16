@@ -4,15 +4,15 @@ GLWidget::GLWidget(QWidget *parent) : QOpenGLWidget(parent)
 {
 	lights.append(new Light(DIRECTIONAL));
 	lights[0]->Clr = QVector3D(1.0f, 1.0f, 1.0f);
-	lights[0]->Power = 0.9;
+	lights[0]->Power = 0.5;
 	lights[0]->position = QVector4D(0.0f, 0.0f, 10.0f, 1.0f);
-	lights[0]->direction = QVector4D(0.0f, -1.0f, -1.0f, 0.0f);
+	lights[0]->direction = QVector4D(0.0f, -1.0f, 0.0f, 0.0f);
 
 	lights.append(new Light(DIRECTIONAL));
 	lights[1]->Clr = QVector3D(1.0f, 1.0f, 1.0f);
-	lights[1]->Power = 0.9;
-	lights[1]->direction = QVector4D(1.0f, 1.0f, 1.0f, 0.0f);
+	lights[1]->Power = 0.5;
 	lights[1]->position = QVector4D(0.0f, 0.0f, 100.0f, 1.0f);
+	lights[1]->direction = QVector4D(0.5, -1.0f, 0.0f, 0.0f);
 
 //	lights.append(new Light(POINT));
 //	lights[2]->Clr = QVector3D(1.0f, 1.0f, 1.0f);
@@ -51,6 +51,7 @@ void GLWidget::initializeGL()
 	initShaders();
 
 	shadowBuffers[0]->shadowBuff = new QOpenGLFramebufferObject(shadowBuffers[0]->width, shadowBuffers[0]->height, QOpenGLFramebufferObject::Depth);
+	shadowBuffers[1]->shadowBuff = new QOpenGLFramebufferObject(shadowBuffers[1]->width, shadowBuffers[1]->height, QOpenGLFramebufferObject::Depth);
 
 	obj1 = new BaseObject("/home/nastya/mys.obj", "/home/nastya/cg-course-work/sphere-mov-viz/green.jpg");
 	obj2 = new BaseObject("/home/nastya/cube.obj", "/home/nastya/cg-course-work/sphere-mov-viz/green.jpg");
@@ -63,31 +64,37 @@ void GLWidget::resizeGL(int w, int h)
 	projectionMatrix.perspective(45.0f, param, 0.1f, 1000.0f);
 }
 
-void GLWidget::paintGL()
+void GLWidget::getShadowMap(int ind, int textInd)
 {
-	shadowBuffers[0]->shadowBuff->bind();
-	context()->functions()->glViewport(0, 0, shadowBuffers[0]->width, shadowBuffers[0]->height);
+	shadowBuffers[ind]->shadowBuff->bind();
+	context()->functions()->glViewport(0, 0, shadowBuffers[ind]->width, shadowBuffers[ind]->height);
 	context()->functions()->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	shadowShaderProgram.bind();
 	shadowShaderProgram.setUniformValue("qt_ProjectionLightMatrix", projectionLightMatrix);
-	shadowShaderProgram.setUniformValue("qt_ShadowMatrix", lights[0]->lMatrix);
+	shadowShaderProgram.setUniformValue("qt_ShadowMatrix", lights[ind]->lMatrix);
 	obj1->draw(&shadowShaderProgram, context()->functions());
 	obj2->draw(&shadowShaderProgram, context()->functions());
 	shadowShaderProgram.release();
 
 	shadowBuffers[0]->shadowBuff->release();
 
-	GLuint shadowTexture = shadowBuffers[0]->shadowBuff->texture();
-	context()->functions()->glActiveTexture(GL_TEXTURE2); // первый слот
+	GLuint shadowTexture = shadowBuffers[ind]->shadowBuff->texture();
+	context()->functions()->glActiveTexture(textInd);
 	context()->functions()->glBindTexture(GL_TEXTURE_2D, shadowTexture);
+}
+
+void GLWidget::paintGL()
+{
+	getShadowMap(0, GL_TEXTURE2);
+	getShadowMap(1, GL_TEXTURE3);
 
 	context()->functions()->glViewport(0, 0, this->width(), this->height());
 	context()->functions()->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	shaderProgram.bind();
 
-	for (int i = 0; i < 1; i++) {
+	for (int i = 0; i < 2; i++) {
 		std::ostringstream oss1;
 		std::ostringstream oss2;
 		std::ostringstream oss3;
@@ -107,11 +114,13 @@ void GLWidget::paintGL()
 	}
 	cam->draw(&shaderProgram);
 
-	shaderProgram.setUniformValue("numberLights", 1);
+	shaderProgram.setUniformValue("numberLights", 2);
+	shaderProgram.setUniformValue("numberShadows", 2);
 	shaderProgram.setUniformValue("qt_ShadowMaps0[0]", GL_TEXTURE2 - GL_TEXTURE0);
-	shaderProgram.setUniformValue("qt_ShadowMaps0[1]", GL_TEXTURE2 - GL_TEXTURE0);
+	shaderProgram.setUniformValue("qt_ShadowMaps0[1]", GL_TEXTURE3 - GL_TEXTURE0);
 	shaderProgram.setUniformValue("qt_ProjectionLightMatrix", projectionLightMatrix);
-	shaderProgram.setUniformValue("shadowMatrix", lights[0]->lMatrix);
+	shaderProgram.setUniformValue("shadowMatrixes[0]", lights[0]->lMatrix);
+	shaderProgram.setUniformValue("shadowMatrixes[1]", lights[1]->lMatrix);
 	shaderProgram.setUniformValue("qt_ProjectionMatrix", projectionMatrix);
 
 	shaderProgram.setUniformValue("specParam", 10.0f);

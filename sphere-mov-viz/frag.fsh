@@ -9,9 +9,12 @@ struct Light {
 uniform sampler2D qt_Texture0;
 uniform sampler2D qt_ShadowMaps0[2];
 uniform int numberLights;
+uniform int numberShadows;
 
 uniform Light lights[5];
 Light corLights[5];
+vec3 tmp[5];
+float resShadowParams[5];
 
 uniform highp float specParam;
 uniform highp float ambParam;
@@ -20,7 +23,7 @@ varying highp vec4 qt_Vertex0;
 varying highp vec2 qt_TexCoord0;
 varying highp vec3 qt_Normal0;
 varying highp mat4 qt_viewMatrix;
-varying highp vec4 qt_VertexLightMatrix;
+varying highp vec4 qt_VertexesLightMatrix[2];
 
 float ShadowMapping(sampler2D map, vec2 coordinates, float cur_depth)
 {
@@ -31,24 +34,21 @@ float ShadowMapping(sampler2D map, vec2 coordinates, float cur_depth)
 
 void main(void)
 {
-    vec3 tmp = qt_VertexLightMatrix.xyz / qt_VertexLightMatrix.w;
-    tmp = tmp * vec3(0.5) + vec3(0.5);
-
-    vec3 clr = vec3(1.0f, 1.0f, 1.0f);
-    bool inLight = false;
-    float shadowParam = 1.0f;
-
-    for (int i = 0; i < 1; i++) {
-	shadowParam = ShadowMapping(qt_ShadowMaps0[i], tmp.xy, tmp.z * 255.0f - 0.5f);
-	if (shadowParam == 1.0f) {
-	    inLight = true;
-	}
+    for (int i = 0; i < numberShadows; i++) {
+	tmp[i] = qt_VertexesLightMatrix[i].xyz / qt_VertexesLightMatrix[i].w;
+	tmp[i] = tmp[i] * vec3(0.5) + vec3(0.5);
     }
 
-    if (! inLight)
-	shadowParam = 0.5f;
-    else
-	shadowParam = 1.0f;
+    vec3 clr = vec3(1.0f, 1.0f, 1.0f);
+    float shadowParam = 1.0f;
+
+    for (int i = 0; i < numberShadows; i++) {
+	shadowParam = ShadowMapping(qt_ShadowMaps0[i], tmp[i].xy, tmp[i].z * 255.0f - 0.5f);
+	shadowParam += 0.05f;
+	if (shadowParam >= 1.0f)
+	    shadowParam = 1.0f;
+	resShadowParams[i] = shadowParam;
+    }
 
     for (int i = 0; i < numberLights; i++) {
 	corLights[i].direction = qt_viewMatrix * lights[i].direction;
@@ -75,8 +75,8 @@ void main(void)
 	vec4 diffFactor = srcClr * max(0.0f, dot(qt_Normal0, -light_vec)) * corLights[i].power;
 	vec4 ambFactor = ambParam * srcClr;
 	vec4 specFactor = vec4(corLights[i].color, 1.0f) * corLights[i].power * pow(max(0.0f, dot(reflectlLight, -eye)), specParam);
-	resClr += (diffFactor * vec4(clr, 1.0f)) + (ambFactor * vec4(clr, 1.0f)) + (specFactor * vec4(clr, 1.0f));
+	resClr += ((diffFactor * vec4(clr, 1.0f)) + (ambFactor * vec4(clr, 1.0f)) + (specFactor * vec4(clr, 1.0f)) * resShadowParams[i]);
     }
 
-    gl_FragColor = resClr * shadowParam;
+    gl_FragColor = resClr;
 }

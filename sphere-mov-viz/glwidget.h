@@ -32,6 +32,8 @@ protected:
 	void resizeGL(int w, int h);
 	void paintGL();
 
+	void getShadowMap(int ind, int textInd);
+
 	void initShaders();
 
 	void mousePressEvent(QMouseEvent *event);
