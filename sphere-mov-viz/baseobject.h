@@ -22,6 +22,7 @@ public:
 	void translate(const QVector3D &t);
 	void scale(const float &s);
 	void setGlobalTransform(const QMatrix4x4 &gt);
+	void resetTransformations();
 
 	void draw(QOpenGLShaderProgram *program, QOpenGLFunctions *functions);
 protected:

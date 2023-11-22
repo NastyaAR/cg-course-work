@@ -4,15 +4,15 @@ GLWidget::GLWidget(QWidget *parent) : QOpenGLWidget(parent)
 {
 	lights.append(new Light(DIRECTIONAL));
 	lights[0]->Clr = QVector3D(1.0f, 1.0f, 1.0f);
-	lights[0]->Power = 0.5;
+	lights[0]->Power = 0.9;
 	lights[0]->position = QVector4D(0.0f, 0.0f, 10.0f, 1.0f);
 	lights[0]->direction = QVector4D(0.0f, -1.0f, 0.0f, 0.0f);
 
-	lights.append(new Light(DIRECTIONAL));
-	lights[1]->Clr = QVector3D(1.0f, 1.0f, 1.0f);
-	lights[1]->Power = 0.5;
-	lights[1]->position = QVector4D(0.0f, 0.0f, 100.0f, 1.0f);
-	lights[1]->direction = QVector4D(0.5, -1.0f, 0.0f, 0.0f);
+//	lights.append(new Light(DIRECTIONAL));
+//	lights[1]->Clr = QVector3D(1.0f, 1.0f, 1.0f);
+//	lights[1]->Power = 0.5;
+//	lights[1]->position = QVector4D(0.0f, 0.0f, 100.0f, 1.0f);
+//	lights[1]->direction = QVector4D(0.5, -1.0f, 0.0f, 0.0f);
 
 //	lights.append(new Light(POINT));
 //	lights[2]->Clr = QVector3D(1.0f, 1.0f, 1.0f);
@@ -38,13 +38,14 @@ GLWidget::~GLWidget()
 
 	for (int i = 0; i < shadowBuffers.size(); i++) {
 		delete shadowBuffers[i];
-
 	}
+
+	delete cam;
 }
 
 void GLWidget::initializeGL()
 {
-	context()->functions()->glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	context()->functions()->glClearColor(1.0f, 0.85f, 0.73f, 1.0f);
 	context()->functions()->glEnable(GL_DEPTH_TEST);
 	context()->functions()->glEnable(GL_CULL_FACE);
 
@@ -53,8 +54,23 @@ void GLWidget::initializeGL()
 	shadowBuffers[0]->shadowBuff = new QOpenGLFramebufferObject(shadowBuffers[0]->width, shadowBuffers[0]->height, QOpenGLFramebufferObject::Depth);
 	shadowBuffers[1]->shadowBuff = new QOpenGLFramebufferObject(shadowBuffers[1]->width, shadowBuffers[1]->height, QOpenGLFramebufferObject::Depth);
 
-	obj1 = new BaseObject("/home/nastya/mys.obj", "/home/nastya/cg-course-work/sphere-mov-viz/green.jpg");
-	obj2 = new BaseObject("/home/nastya/cube.obj", "/home/nastya/cg-course-work/sphere-mov-viz/green.jpg");
+	obj1 = new BaseObject("/home/nastya/cg-course-work/objects/sp.obj", "/home/nastya/cg-course-work/sphere-mov-viz/green.jpg");
+	obj2 = new BaseObject("/home/nastya/cg-course-work/objects/swing1.obj", "/home/nastya/cg-course-work/sphere-mov-viz/pink2.jpg");
+	obj3 = new BaseObject("/home/nastya/cg-course-work/objects/swing2.obj", "/home/nastya/cg-course-work/sphere-mov-viz/pink2.jpg");
+	obj4 = new BaseObject("/home/nastya/cg-course-work/objects/swing3.obj", "/home/nastya/cg-course-work/sphere-mov-viz/pink2.jpg");
+	obj5 = new BaseObject("/home/nastya/cg-course-work/objects/swing4.obj", "/home/nastya/cg-course-work/sphere-mov-viz/pink2.jpg");
+
+	obj1->rotate(QQuaternion::fromAxisAndAngle(1.0f, 0.0f, 0.0f, -90));
+	obj2->rotate(QQuaternion::fromAxisAndAngle(1.0f, 0.0f, 0.0f, -90));
+	obj3->rotate(QQuaternion::fromAxisAndAngle(1.0f, 0.0f, 0.0f, -90));
+	obj4->rotate(QQuaternion::fromAxisAndAngle(1.0f, 0.0f, 0.0f, -90));
+	obj5->rotate(QQuaternion::fromAxisAndAngle(1.0f, 0.0f, 0.0f, -90));
+
+	obj1->rotate(QQuaternion::fromAxisAndAngle(0.0f, 0.0f, 1.0f, 180));
+	obj2->rotate(QQuaternion::fromAxisAndAngle(0.0f, 0.0f, 1.0f, 180));
+	obj3->rotate(QQuaternion::fromAxisAndAngle(0.0f, 0.0f, 1.0f, 180));
+	obj4->rotate(QQuaternion::fromAxisAndAngle(0.0f, 0.0f, 1.0f, 180));
+	obj5->rotate(QQuaternion::fromAxisAndAngle(0.0f, 0.0f, 1.0f, 180));
 }
 
 void GLWidget::resizeGL(int w, int h)
@@ -75,9 +91,12 @@ void GLWidget::getShadowMap(int ind, int textInd)
 	shadowShaderProgram.setUniformValue("qt_ShadowMatrix", lights[ind]->lMatrix);
 	obj1->draw(&shadowShaderProgram, context()->functions());
 	obj2->draw(&shadowShaderProgram, context()->functions());
+	obj3->draw(&shadowShaderProgram, context()->functions());
+	obj4->draw(&shadowShaderProgram, context()->functions());
+	obj5->draw(&shadowShaderProgram, context()->functions());
 	shadowShaderProgram.release();
 
-	shadowBuffers[0]->shadowBuff->release();
+	shadowBuffers[ind]->shadowBuff->release();
 
 	GLuint shadowTexture = shadowBuffers[ind]->shadowBuff->texture();
 	context()->functions()->glActiveTexture(textInd);
@@ -86,15 +105,16 @@ void GLWidget::getShadowMap(int ind, int textInd)
 
 void GLWidget::paintGL()
 {
+//	printf("draw\n");
 	getShadowMap(0, GL_TEXTURE2);
-	getShadowMap(1, GL_TEXTURE3);
+//	getShadowMap(1, GL_TEXTURE3);
 
 	context()->functions()->glViewport(0, 0, this->width(), this->height());
 	context()->functions()->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	shaderProgram.bind();
 
-	for (int i = 0; i < 2; i++) {
+	for (int i = 0; i < 1; i++) {
 		std::ostringstream oss1;
 		std::ostringstream oss2;
 		std::ostringstream oss3;
@@ -114,13 +134,13 @@ void GLWidget::paintGL()
 	}
 	cam->draw(&shaderProgram);
 
-	shaderProgram.setUniformValue("numberLights", 2);
-	shaderProgram.setUniformValue("numberShadows", 2);
+	shaderProgram.setUniformValue("numberLights", 1);
+	shaderProgram.setUniformValue("numberShadows", 1);
 	shaderProgram.setUniformValue("qt_ShadowMaps0[0]", GL_TEXTURE2 - GL_TEXTURE0);
-	shaderProgram.setUniformValue("qt_ShadowMaps0[1]", GL_TEXTURE3 - GL_TEXTURE0);
+	shaderProgram.setUniformValue("qt_ShadowMaps0[1]", GL_TEXTURE2 - GL_TEXTURE0);
 	shaderProgram.setUniformValue("qt_ProjectionLightMatrix", projectionLightMatrix);
 	shaderProgram.setUniformValue("shadowMatrixes[0]", lights[0]->lMatrix);
-	shaderProgram.setUniformValue("shadowMatrixes[1]", lights[1]->lMatrix);
+	shaderProgram.setUniformValue("shadowMatrixes[1]", lights[0]->lMatrix);
 	shaderProgram.setUniformValue("qt_ProjectionMatrix", projectionMatrix);
 
 	shaderProgram.setUniformValue("specParam", 10.0f);
@@ -128,6 +148,9 @@ void GLWidget::paintGL()
 
 	obj1->draw(&shaderProgram, context()->functions());
 	obj2->draw(&shaderProgram, context()->functions());
+	obj3->draw(&shaderProgram, context()->functions());
+	obj4->draw(&shaderProgram, context()->functions());
+	obj5->draw(&shaderProgram, context()->functions());
 
 	shaderProgram.release();
 }

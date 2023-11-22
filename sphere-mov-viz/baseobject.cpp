@@ -48,6 +48,14 @@ void BaseObject::setGlobalTransform(const QMatrix4x4 &gt)
 	m_GlobalTransform = gt;
 }
 
+void BaseObject::resetTransformations()
+{
+	m_Translate = QVector3D(0.0, 0.0, 0.0);
+	m_Scale = 1.0;
+	m_Rotate = QQuaternion();
+	m_GlobalTransform.setToIdentity();
+}
+
 void BaseObject::draw(QOpenGLShaderProgram *program, QOpenGLFunctions *functions)
 {
 	QMatrix4x4 _modelMatrix;

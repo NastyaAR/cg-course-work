@@ -27,6 +27,7 @@ class GLWidget : public QOpenGLWidget
 public:
 	explicit GLWidget(QWidget *parent = 0);
 	~GLWidget();
+	BaseObject *obj1, *obj2, *obj3, *obj4, *obj5;
 protected:
 	void initializeGL();
 	void resizeGL(int w, int h);
@@ -48,7 +49,7 @@ private:
 	QVector3D wheelMinus = QVector3D(0.0f, 0.0f, -0.5);
 
 	QVector<Light *> lights;
-	BaseObject *obj1, *obj2;
+//	BaseObject *obj1, *obj2, *obj3, *obj4, *obj5;
 
 	float zoom = -15.0f;
 

@@ -44,7 +44,7 @@ void main(void)
 
     for (int i = 0; i < numberShadows; i++) {
 	shadowParam = ShadowMapping(qt_ShadowMaps0[i], tmp[i].xy, tmp[i].z * 255.0f - 0.5f);
-	shadowParam += 0.05f;
+	shadowParam += 0.1f;
 	if (shadowParam >= 1.0f)
 	    shadowParam = 1.0f;
 	resShadowParams[i] = shadowParam;
