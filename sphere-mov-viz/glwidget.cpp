@@ -52,10 +52,10 @@ void GLWidget::initializeGL()
 	obj5 = new BaseObject("/home/nastya/cg-course-work/objects/5.obj", "/home/nastya/cg-course-work/sphere-mov-viz/pink2.jpg");
 
 	obj1->translate(QVector3D(0.0, -0.55, 0.0));
-	obj5->scale(0.95);
-	obj4->scale(0.95);
-	obj3->scale(0.95);
-	obj2->scale(0.95);
+//	obj5->scale(1.1);
+//	obj4->scale(1.1);
+//	obj3->scale(1.1);
+//	obj2->scale(1.1);
 
 	objects.push_back(obj1);
 	objects.push_back(obj2);
