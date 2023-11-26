@@ -3,12 +3,10 @@
 
 #include <QOpenGLWidget>
 #include <QMatrix4x4>
-#include <QOpenGLShaderProgram>
 #include <QOpenGLTexture>
 #include <QApplication>
 #include <QMouseEvent>
 #include <QWheelEvent>
-#include <sstream>
 
 #include "baseobject.h"
 #include "errmsg.h"
@@ -16,10 +14,10 @@
 #include "camera.h"
 
 #define NEAR_PLANE 0.1f
-#define FAR_PLANE 100.0f
+#define FAR_PLANE 1000.0f
 
 #define SCALE_FACTOR 0.25f
-#define MAX_LIGHT_SOURCES 5
+#define MAX_LIGHT_SOURCES 10
 
 class GLWidget : public QOpenGLWidget
 {
@@ -27,6 +25,7 @@ class GLWidget : public QOpenGLWidget
 public:
 	explicit GLWidget(QWidget *parent = 0);
 	~GLWidget();
+	QVector<BaseObject *> getObjects();
 	BaseObject *obj1, *obj2, *obj3, *obj4, *obj5;
 protected:
 	void initializeGL();
@@ -34,7 +33,7 @@ protected:
 	void paintGL();
 
 	void getShadowMap(int ind, int textInd);
-
+	void sendLightsIntoShader(QOpenGLShaderProgram *program);
 	void initShaders();
 
 	void mousePressEvent(QMouseEvent *event);
@@ -42,22 +41,21 @@ protected:
 	void wheelEvent(QWheelEvent *event);
 private:
 	QMatrix4x4 projectionMatrix;
+	QMatrix4x4 projectionLightMatrix;
+
 	QOpenGLShaderProgram shaderProgram;
 	QOpenGLShaderProgram shadowShaderProgram;
+
 	QVector2D mousePos;
 	QVector3D wheelPlus = QVector3D(0.0f, 0.0f, 0.5);
 	QVector3D wheelMinus = QVector3D(0.0f, 0.0f, -0.5);
 
 	QVector<Light *> lights;
-//	BaseObject *obj1, *obj2, *obj3, *obj4, *obj5;
+	QVector<BaseObject *> objects;
+	QVector<ShadowBuffer *> shadowBuffers;
 
 	float zoom = -15.0f;
-
-	QVector<ShadowBuffer *> shadowBuffers;
-	QMatrix4x4 projectionLightMatrix;
-
 	Camera *cam;
-
 };
 
 #endif // GLWIDGET_H

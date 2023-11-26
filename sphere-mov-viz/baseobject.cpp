@@ -5,7 +5,7 @@ BaseObject::BaseObject(const QString &filename, const QString &texturePath) :
 	indexesBuffer(QOpenGLBuffer::IndexBuffer),
 	texturePath(texturePath),
 	texture(nullptr),
-	m_Scale(1.0f)
+	scaleFactor(1.0f)
 {
 	loadFromFile(filename);
 	init(vertexes, indexes, texturePath);
@@ -30,43 +30,43 @@ BaseObject::~BaseObject()
 
 void BaseObject::rotate(const QQuaternion &r)
 {
-	m_Rotate *= r;
+	rotation *= r;
 }
 
 void BaseObject::translate(const QVector3D &t)
 {
-	m_Translate += t;
+	transposition += t;
 }
 
 void BaseObject::scale(const float &s)
 {
-	m_Scale *= s;
+	scaleFactor *= s;
 }
 
 void BaseObject::setGlobalTransform(const QMatrix4x4 &gt)
 {
-	m_GlobalTransform = gt;
+	globalTransform = gt;
 }
 
 void BaseObject::resetTransformations()
 {
-	m_Translate = QVector3D(0.0, 0.0, 0.0);
-	m_Scale = 1.0;
-	m_Rotate = QQuaternion();
-	m_GlobalTransform.setToIdentity();
+	transposition = QVector3D(0.0, 0.0, 0.0);
+	scaleFactor = 1.0;
+	rotation = QQuaternion();
+	globalTransform.setToIdentity();
 }
 
 void BaseObject::draw(QOpenGLShaderProgram *program, QOpenGLFunctions *functions)
 {
-	QMatrix4x4 _modelMatrix;
-	_modelMatrix.setToIdentity();
-	_modelMatrix.translate(m_Translate);
-	_modelMatrix.rotate(m_Rotate);
-	_modelMatrix.scale(m_Scale);
-	_modelMatrix = m_GlobalTransform * _modelMatrix;
+	QMatrix4x4 modelMatrix;
+	modelMatrix.setToIdentity();
+	modelMatrix.translate(transposition);
+	modelMatrix.rotate(rotation);
+	modelMatrix.scale(scaleFactor);
+	modelMatrix = globalTransform * modelMatrix;
 
-	program->setUniformValue("modelMatrix", _modelMatrix);
-	program->setUniformValue("qt_ModelMatrix", _modelMatrix);
+	program->setUniformValue("modelMatrix", modelMatrix);
+	program->setUniformValue("qt_ModelMatrix", modelMatrix);
 
 	texture->bind(0);
 	program->setUniformValue("qt_Texture0", 0);
@@ -167,9 +167,6 @@ void BaseObject::init(const QVector<vertex_t> &vertexes, const QVector<GLuint> &
 	texture = new QOpenGLTexture(QImage(texturePath).mirrored());
 	texture->setMinMagFilters(QOpenGLTexture::Nearest, QOpenGLTexture::Linear);
 	texture->setWrapMode(QOpenGLTexture::Repeat);
-
-//	modelMatrix.setToIdentity();
-//	modelMatrix.rotate(QQuaternion::fromAxisAndAngle(1.0f, 0.0f, 0.0f, 30.0f) * QQuaternion::fromAxisAndAngle(0.0f, 1.0f, 0.0f, 30.0f));
 }
 
 

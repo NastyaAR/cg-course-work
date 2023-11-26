@@ -6,44 +6,44 @@ Camera::Camera() : ViewMatrix(this, &Camera::getViewMatr, nullptr),
 	globalTransform.setToIdentity();
 }
 
-void Camera::draw(QOpenGLShaderProgram *program, QOpenGLFunctions *functions)
+void Camera::set(QOpenGLShaderProgram *program, QOpenGLFunctions *functions)
 {
 	if(functions != nullptr) return;
 	update();
 	program->setUniformValue("viewMatrix", viewMatrix);
 }
 
-void Camera::rotate(QQuaternion &rt)
+void Camera::rotate(const QQuaternion &rt)
 {
 	rotation = rt * rotation;
 	update();
 }
 
-void Camera::rotateX(QQuaternion &rtx)
+void Camera::rotateX(const QQuaternion &rtx)
 {
 	rotationX = rtx * rotationX;
 	update();
 }
 
-void Camera::rotateY(QQuaternion &rty)
+void Camera::rotateY(const QQuaternion &rty)
 {
 	rotationY = rty * rotationY;
 	update();
 }
 
-void Camera::transpose(QVector3D &t)
+void Camera::transpose(const QVector3D &t)
 {
 	transposition += t;
 	update();
 }
 
-void Camera::scale(float &s)
+void Camera::scale(const float &s)
 {
 	scaleFactor *= s;
 	update();
 }
 
-void Camera::setGlobalTransform(QMatrix4x4 &gt)
+void Camera::setGlobalTransform(const QMatrix4x4 &gt)
 {
 	globalTransform = gt;
 	update();

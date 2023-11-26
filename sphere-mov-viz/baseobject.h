@@ -35,11 +35,10 @@ private:
 	QString texturePath;
 	QOpenGLTexture *texture;
 
-	QMatrix4x4 modelMatrix;
-	QQuaternion m_Rotate;
-	QVector3D m_Translate;
-	float m_Scale;
-	QMatrix4x4 m_GlobalTransform;
+	QQuaternion rotation;
+	QVector3D transposition;
+	float scaleFactor;
+	QMatrix4x4 globalTransform;
 
 	QVector<GLuint> indexes;
 	QVector<vertex_t> vertexes;

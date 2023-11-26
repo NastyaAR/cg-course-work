@@ -16,13 +16,13 @@ public:
 
 	const Property<QMatrix4x4, Camera> ViewMatrix;
 
-	void draw(QOpenGLShaderProgram* program, QOpenGLFunctions*functions = nullptr);
-	void rotate(QQuaternion &rt);
-	void rotateX(QQuaternion &rtx);
-	void rotateY(QQuaternion &rty);
-	void transpose(QVector3D &t);
-	void scale(float &s);
-	void setGlobalTransform(QMatrix4x4 &gt);
+	void set(QOpenGLShaderProgram* program, QOpenGLFunctions*functions = nullptr);
+	void rotate(const QQuaternion &rt);
+	void rotateX(const QQuaternion &rtx);
+	void rotateY(const QQuaternion &rty);
+	void transpose(const QVector3D &t);
+	void scale(const float &s);
+	void setGlobalTransform(const QMatrix4x4 &gt);
 
 protected:
 	void update();

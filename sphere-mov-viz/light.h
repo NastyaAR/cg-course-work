@@ -4,12 +4,13 @@
 #include <QVector3D>
 #include <QVector4D>
 #include <QMatrix4x4>
+#include <QOpenGLShaderProgram>
+#include <sstream>
 
 #include "property.h"
 
 typedef enum {
 	DIRECTIONAL,
-	POINT,
 } lightType;
 
 class Light
@@ -24,6 +25,8 @@ public:
 
 	Light(const lightType type);
 	Light() = default;
+
+	void sendToShader(QOpenGLShaderProgram *program, int i);
 private:
 	float power;
 	QVector4D pos;

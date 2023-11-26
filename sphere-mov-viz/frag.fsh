@@ -64,10 +64,7 @@ void main(void)
     for (int i = 0; i < numberLights; i++) {
 	vec4 lightClr = vec4(0.0f, 0.0f, 0.0f, 0.0f);
 	vec3 light_vec;
-	if (corLights[i].type == 0)
-	    light_vec = normalize(corLights[i].direction.xyz);
-	else
-	    light_vec = normalize(qt_Vertex0.xyz - corLights[i].pos.xyz);
+	light_vec = normalize(corLights[i].direction.xyz);
 	vec4 srcClr = texture2D(qt_Texture0, qt_TexCoord0);
 	float len = length(qt_Vertex0.xyz - eyePos.xyz);
 	vec3 eye = normalize(qt_Vertex0.xyz - eyePos.xyz);
