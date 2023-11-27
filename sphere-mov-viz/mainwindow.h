@@ -8,6 +8,7 @@
 #include <QShowEvent>
 #include <QColor>
 #include <QFileDialog>
+#include <QColorDialog>
 
 #define RADIUS 5.1
 #define FPS 30
@@ -31,7 +32,10 @@ protected:
 						BaseObject *obj, bool *flag);
 	void sphereMovement(QMatrix4x4 &m, float speed);
 	void showEvent(QShowEvent *event);
-	void initState(void);
+	void initState();
+	void setLabel(QLabel *lbl, QString path);
+	void setLabel(QLabel *lbl, QColor clr);
+	void initTimers();
 
 private slots:
 	void generateSignal();
@@ -45,6 +49,10 @@ private slots:
 
 	void on_pushButton_clicked();
 
+	void on_pushButton_2_clicked();
+
+	void on_pushButton_3_clicked();
+
 signals:
 	void timerSignal();
 	void initSignal();
@@ -52,28 +60,21 @@ signals:
 private:
 	Ui::MainWindow *ui;
 	GLWidget *oglw;
-	QTimer *timer, *timerSleep1, *timerSleep2, *timerSleep3, *timerSleep4;
-	QVector3D init = {0.0, 0.0, 0.0};
-	QMatrix4x4 m, m2, m3, m4, spm;
-	float _p = 0.000001;
-	float p2 = -45.000001;
-	float p3 = -30.000001;
-	float p4 = -15.000001;
-	bool flag1 = true;
-	bool flag2 = false;
-	bool flag3 = false;
-	bool flag4 = false;
+	QTimer *timer;
+	QVector<QTimer *> timers;
+	QVector<QMatrix4x4> matrixes;
+	float drives[OBJ_NUMBER - 1] = {0.000001, -45.000001,
+								   -30.000001, -15.000001};
+	bool flags[OBJ_NUMBER - 1] = {true, false,
+								 false, false};
 
 	float sphereSpeed = 30 / FPS;
-	float sleep = 42 * 1000 / (sphereSpeed * FPS);
-	float swingSpeed1 = -60 / (138 / sphereSpeed);
-	float swingSpeed2 = -60 / (138 / sphereSpeed);
-	float swingSpeed3 = -60 / (138 / sphereSpeed);
-	float swingSpeed4 = -60 / (138 / sphereSpeed);
-	float _swingSpeed1 = -60 / (138 / sphereSpeed);
-	float _swingSpeed2 = -60 / (138 / sphereSpeed);
-	float _swingSpeed3 = -60 / (138 / sphereSpeed);
-	float _swingSpeed4 = -60 / (138 / sphereSpeed);
+	float sleep = 43 * 1000 / (sphereSpeed * FPS);
+	float swingSpeeds[OBJ_NUMBER - 1] = {-60 / (138 / sphereSpeed),
+										-60 / (138 / sphereSpeed),
+										-60 / (138 / sphereSpeed),
+										-60 / (138 / sphereSpeed)};
+	float initSwingSpeed = -60 / (138 / sphereSpeed);
 };
 
 #endif // MAINWINDOW_H

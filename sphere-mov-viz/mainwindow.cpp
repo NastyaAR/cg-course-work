@@ -19,51 +19,28 @@ MainWindow::MainWindow(QWidget *parent)
 	oglw = new GLWidget();
 	ui->gridLayout->addWidget(oglw);
 
+	initTimers();
+
 	timer = new QTimer();
-	timerSleep1 = new QTimer();
-	timerSleep1->setSingleShot(true);
-	connect(timerSleep1, &QTimer::timeout, this, &MainWindow::restore);
-
-	timerSleep2 = new QTimer();
-	timerSleep2->setSingleShot(true);
-	connect(timerSleep2, &QTimer::timeout, this, &MainWindow::restore2);
-
-	timerSleep3 = new QTimer();
-	timerSleep3->setSingleShot(true);
-	connect(timerSleep3, &QTimer::timeout, this, &MainWindow::restore3);
-
-	timerSleep4 = new QTimer();
-	timerSleep4->setSingleShot(true);
-	connect(timerSleep4, &QTimer::timeout, this, &MainWindow::restore4);
-
 	connect(timer, &QTimer::timeout, this, &MainWindow::generateSignal);
 	connect(this, &MainWindow::timerSignal, this, &MainWindow::handleTimerSignal);
 	timer->start(1000 / FPS);
 
-	m.setToIdentity();
-	m2.setToIdentity();
-	m3.setToIdentity();
-	m4.setToIdentity();
-	spm.setToIdentity();
+	for (int i = 0; i < OBJ_NUMBER; i++) {
+		matrixes.push_back(QMatrix4x4());
+		matrixes[i].setToIdentity();
+	}
 
-	QPixmap p1("/home/nastya/cg-course-work/textures/green.jpg");
-	QPixmap p2("/home/nastya/cg-course-work/textures/pink2.jpg");
-	ui->label_7->setPixmap(p1);
-	ui->label_8->setPixmap(p2);
-
-	QPalette pal = ui->label_10->palette();
-	pal.setColor(QPalette::Window, INIT_FONE);
-	ui->label_10->setAutoFillBackground(true);
-	ui->label_10->setPalette(pal);
+	setLabel(ui->label_7, QString("/home/nastya/cg-course-work/textures/green.jpg"));
+	setLabel(ui->label_8, QString("/home/nastya/cg-course-work/textures/pink2.jpg"));
+	setLabel(ui->label_10, INIT_FONE);
 }
 
 MainWindow::~MainWindow()
 {
 	delete timer;
-	delete timerSleep1;
-	delete timerSleep2;
-	delete timerSleep3;
-	delete timerSleep4;
+	for (int i = 0; i < OBJ_NUMBER; i++)
+		delete timers[i];
 	delete ui;
 	delete oglw;
 }
@@ -116,58 +93,58 @@ void MainWindow::generateSignal()
 
 void MainWindow::handleTimerSignal()
 {
-	sphereMovement(spm, sphereSpeed);
-	oglw->getObject(0)->setGlobalTransform(spm);
-	if (flag1) {
-		swingSpeed1 = 0.0;
-		flag1 = false;
-		timerSleep1->start(sleep);
+	sphereMovement(matrixes[0], sphereSpeed);
+	oglw->getObject(0)->setGlobalTransform(matrixes[0]);
+	if (flags[0]) {
+		swingSpeeds[0] = 0.0;
+		flags[0] = false;
+		timers[0]->start(sleep);
 	}
 
-	if (flag2) {
-		swingSpeed2 = 0.0;
-		flag2 = false;
-		timerSleep2->start(sleep);
+	if (flags[1]) {
+		swingSpeeds[1] = 0.0;
+		flags[1] = false;
+		timers[1]->start(sleep);
 	}
 
-	if (flag3) {
-		swingSpeed3 = 0.0;
-		flag3 = false;
-		timerSleep3->start(sleep);
+	if (flags[2]) {
+		swingSpeeds[2] = 0.0;
+		flags[2] = false;
+		timers[2]->start(sleep);
 	}
 
-	if (flag4) {
-		swingSpeed4 = 0.0;
-		flag4 = false;
-		timerSleep4->start(sleep);
+	if (flags[3]) {
+		swingSpeeds[3] = 0.0;
+		flags[3] = false;
+		timers[3]->start(sleep);
 	}
 
-	swingsMovement(m2, 22.5, RADIUS, swingSpeed1, &_p, oglw->getObject(1), &flag1);
-	swingsMovement(m3, 67.5, RADIUS, swingSpeed2, &p2, oglw->getObject(2), &flag2);
-	swingsMovement(m4, 112.5, RADIUS, swingSpeed3, &p3, oglw->getObject(3), &flag3);
-	swingsMovement(m, 157.5, RADIUS, swingSpeed4, &p4, oglw->getObject(4), &flag4);
+	swingsMovement(matrixes[1], 22.5, RADIUS, swingSpeeds[0], &drives[0], oglw->getObject(1), &flags[0]);
+	swingsMovement(matrixes[2], 67.5, RADIUS, swingSpeeds[1], &drives[1], oglw->getObject(2), &flags[1]);
+	swingsMovement(matrixes[3], 112.5, RADIUS, swingSpeeds[2], &drives[2], oglw->getObject(3), &flags[2]);
+	swingsMovement(matrixes[4], 157.5, RADIUS, swingSpeeds[3], &drives[3], oglw->getObject(4), &flags[3]);
 
 	oglw->update();
 }
 
 void MainWindow::restore()
 {
-	swingSpeed1 = _swingSpeed1;
+	swingSpeeds[0] = initSwingSpeed;
 }
 
 void MainWindow::restore2()
 {
-	swingSpeed2 = _swingSpeed2;
+	swingSpeeds[1] = initSwingSpeed;
 }
 
 void MainWindow::restore3()
 {
-	swingSpeed3 = _swingSpeed3;
+	swingSpeeds[2] = initSwingSpeed;
 }
 
 void MainWindow::restore4()
 {
-	swingSpeed4 = _swingSpeed4;
+	swingSpeeds[3] = initSwingSpeed;
 }
 
 void MainWindow::showEvent(QShowEvent *event)
@@ -178,23 +155,20 @@ void MainWindow::showEvent(QShowEvent *event)
 
 void MainWindow::initState()
 {
-	spm.setToIdentity();
-	m.setToIdentity();
-	m2.setToIdentity();
-	m3.setToIdentity();
-	m4.setToIdentity();
+	for (int i = 0; i < OBJ_NUMBER; i++)
+		matrixes[i].setToIdentity();
 
-	swingMovement(m, 157.5, RADIUS, -15.0);
-	oglw->getObject(4)->setGlobalTransform(m);
+	swingMovement(matrixes[4], 157.5, RADIUS, -15.0);
+	oglw->getObject(4)->setGlobalTransform(matrixes[4]);
 
-	swingMovement(m4, 112.5, RADIUS, 0.0);
-	oglw->getObject(3)->setGlobalTransform(m4);
+	swingMovement(matrixes[3], 112.5, RADIUS, 0.0);
+	oglw->getObject(3)->setGlobalTransform(matrixes[3]);
 
-	swingMovement(m3, 67.5, RADIUS, 15.0);
-	oglw->getObject(2)->setGlobalTransform(m3);
+	swingMovement(matrixes[2], 67.5, RADIUS, 15.0);
+	oglw->getObject(2)->setGlobalTransform(matrixes[2]);
 
-	swingMovement(m2, 22.5, RADIUS, 30.0);
-	oglw->getObject(1)->setGlobalTransform(m2);
+	swingMovement(matrixes[1], 22.5, RADIUS, 30.0);
+	oglw->getObject(1)->setGlobalTransform(matrixes[1]);
 
 	oglw->getObject(0)->resetTransformations();
 	oglw->getObject(0)->translate(QVector3D(0.0, SPHERE_Y, 0.0));
@@ -202,28 +176,51 @@ void MainWindow::initState()
 	oglw->update();
 }
 
+void MainWindow::setLabel(QLabel *lbl, QString path)
+{
+	QPixmap pxm(path);
+	lbl->setPixmap(pxm);
+}
+
+void MainWindow::setLabel(QLabel *lbl, QColor clr)
+{
+	QPalette pal = lbl->palette();
+	pal.setColor(QPalette::Window, clr);
+	lbl->setAutoFillBackground(true);
+	lbl->setPalette(pal);
+}
+
+void MainWindow::initTimers()
+{
+	for (int i = 0; i < OBJ_NUMBER; i++) {
+		timers.push_back(new QTimer());
+		timers[i]->setSingleShot(true);
+	}
+
+	connect(timers[0], &QTimer::timeout, this, &MainWindow::restore);
+	connect(timers[1], &QTimer::timeout, this, &MainWindow::restore2);
+	connect(timers[2], &QTimer::timeout, this, &MainWindow::restore3);
+	connect(timers[3], &QTimer::timeout, this, &MainWindow::restore4);
+}
 
 void MainWindow::on_spinBox_valueChanged(int arg1)
 {
 	timer->stop();
 	sphereSpeed = arg1 / FPS;
-	sleep = 42 * 1000 / arg1;
-	_swingSpeed1 = -60 / (138 / sphereSpeed);
-	_swingSpeed2 = -60 / (138 / sphereSpeed);
-	_swingSpeed3 = -60 / (138 / sphereSpeed);
-	_swingSpeed4 = -60 / (138 / sphereSpeed);
-	swingSpeed1 = -60 / (138 / sphereSpeed);
-	swingSpeed2 = -60 / (138 / sphereSpeed);
-	swingSpeed3 = -60 / (138 / sphereSpeed);
-	swingSpeed4 = -60 / (138 / sphereSpeed);
-	_p = 0.000001;
-	p2 = -44.000001;
-	p3 = -29.000001;
-	p4 = -14.000001;
-	flag1 = true;
-	flag2 = false;
-	flag3 = false;
-	flag4 = false;
+	sleep = 43 * 1000 / arg1;
+
+	initSwingSpeed = -60 / (138 / sphereSpeed);
+	for (int i = 0; i < OBJ_NUMBER - 1; i++)
+		swingSpeeds[i] = -60 / (138 / sphereSpeed);
+
+	drives[0] = 0.000001;
+	drives[1] = -44.000001;
+	drives[2] = -29.000001;
+	drives[3] = -14.000001;
+	flags[0] = true;
+	flags[1] = false;
+	flags[2] = false;
+	flags[3] = false;
 	initState();
 	timer->start(1000 / FPS);
 }
@@ -231,6 +228,21 @@ void MainWindow::on_spinBox_valueChanged(int arg1)
 
 void MainWindow::on_pushButton_clicked()
 {
-	QFile sphereTexturePath = QFileDialog::getOpenFileName(nullptr, "Выберите текстуру", "/home/nastya/cg-course-work/textures");
+	QString sphereTexturePath = QFileDialog::getOpenFileName(nullptr, "Выберите текстуру", "/home/nastya/cg-course-work/textures");
+	setLabel(ui->label_7, sphereTexturePath);
+}
+
+
+void MainWindow::on_pushButton_2_clicked()
+{
+	QString swingTexturePath = QFileDialog::getOpenFileName(nullptr, "Выберите текстуру", "/home/nastya/cg-course-work/textures");
+	setLabel(ui->label_8, swingTexturePath);
+}
+
+
+void MainWindow::on_pushButton_3_clicked()
+{
+	QColor clr = QColorDialog::getColor(INIT_FONE, nullptr, "Выберите цвет фона");
+	setLabel(ui->label_10, clr);
 }
 
