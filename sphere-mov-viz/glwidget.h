@@ -38,6 +38,7 @@ protected:
 	void getShadowMap(int ind, int textInd);
 	void sendLightsIntoShader(QOpenGLShaderProgram *program);
 	void sendShadowIntoShader(QOpenGLShaderProgram *program);
+	void sendMaterialIntoShader(QOpenGLShaderProgram *program, int i);
 	void initShaders();
 
 	void mousePressEvent(QMouseEvent *event);

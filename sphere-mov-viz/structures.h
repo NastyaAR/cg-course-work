@@ -26,4 +26,11 @@ public:
 	quint64 height;
 };
 
+struct materialProperties_t
+{
+	float ambParam;
+	float diffParam;
+	float specParam;
+};
+
 #endif // STRUCTURES_H

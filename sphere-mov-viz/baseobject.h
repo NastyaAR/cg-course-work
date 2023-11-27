@@ -14,8 +14,8 @@ class BaseObject
 {
 public:
 	BaseObject() = delete;
-	BaseObject(const QString &filename, const QString &texturePath);
-	BaseObject(const QVector<vertex_t> &vertexes, const QVector<GLuint> &indexes, const QString &texturePath);
+	BaseObject(const QString &filename, const QString &texturePath, materialProperties_t mat);
+	BaseObject(const QVector<vertex_t> &vertexes, const QVector<GLuint> &indexes, const QString &texturePath, materialProperties_t mat);
 	~BaseObject();
 
 	void rotate(const QQuaternion &r);
@@ -25,6 +25,7 @@ public:
 	void resetTransformations();
 
 	void draw(QOpenGLShaderProgram *program, QOpenGLFunctions *functions);
+	materialProperties_t getMaterial();
 protected:
 	void free();
 	void loadFromFile(const QString &filename);
@@ -42,6 +43,8 @@ private:
 
 	QVector<GLuint> indexes;
 	QVector<vertex_t> vertexes;
+
+	materialProperties_t material;
 };
 
 #endif // BASEOBJECT_H

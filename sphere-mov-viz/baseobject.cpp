@@ -1,22 +1,25 @@
 #include "baseobject.h"
 
-BaseObject::BaseObject(const QString &filename, const QString &texturePath) :
+BaseObject::BaseObject(const QString &filename, const QString &texturePath, materialProperties_t mat) :
 	vertexesBuffer(QOpenGLBuffer::VertexBuffer),
 	indexesBuffer(QOpenGLBuffer::IndexBuffer),
 	texturePath(texturePath),
 	texture(nullptr),
-	scaleFactor(1.0f)
+	scaleFactor(1.0f),
+	material(mat)
 {
 	loadFromFile(filename);
 	init(vertexes, indexes, texturePath);
 }
 
 BaseObject::BaseObject(const QVector<vertex_t> &vertexes, const QVector<GLuint> &indexes,
-					   const QString &texturePath) :
+					   const QString &texturePath, materialProperties_t mat) :
 	vertexesBuffer(QOpenGLBuffer::VertexBuffer),
 	indexesBuffer(QOpenGLBuffer::IndexBuffer),
 	texturePath(texturePath),
-	texture(nullptr)
+	texture(nullptr),
+	scaleFactor(1.0f),
+	material(mat)
 {
 	this->vertexes = vertexes;
 	this->indexes = indexes;
@@ -92,6 +95,11 @@ void BaseObject::draw(QOpenGLShaderProgram *program, QOpenGLFunctions *functions
 	indexesBuffer.release();
 	vertexesBuffer.release();
 	texture->release();
+}
+
+materialProperties_t BaseObject::getMaterial()
+{
+	return material;
 }
 
 void BaseObject::free()

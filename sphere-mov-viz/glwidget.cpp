@@ -52,11 +52,14 @@ void GLWidget::initializeGL()
 
 	initShaders();
 
-	shadowBuffers[0]->shadowBuff = new QOpenGLFramebufferObject(shadowBuffers[0]->width, shadowBuffers[0]->height, QOpenGLFramebufferObject::Depth);
-	shadowBuffers[1]->shadowBuff = new QOpenGLFramebufferObject(shadowBuffers[1]->width, shadowBuffers[1]->height, QOpenGLFramebufferObject::Depth);
+	for (int i = 0; i < lights.size(); i++)
+		shadowBuffers[i]->shadowBuff = new QOpenGLFramebufferObject(shadowBuffers[i]->width, shadowBuffers[i]->height,
+																	QOpenGLFramebufferObject::Depth);
+
+	materialProperties_t material = {0.1f, 0.9f, 10.0f};
 
 	for (int i = 0; i < OBJ_NUMBER; i++)
-		objects.push_back(new BaseObject(objPaths[i], texturePaths[i]));
+		objects.push_back(new BaseObject(objPaths[i], texturePaths[i], material));
 
 	objects[0]->translate(QVector3D(0.0, SPHERE_Y, 0.0));
 }
@@ -106,6 +109,13 @@ void GLWidget::sendShadowIntoShader(QOpenGLShaderProgram *program)
 	}
 }
 
+void GLWidget::sendMaterialIntoShader(QOpenGLShaderProgram *program, int i)
+{
+	program->setUniformValue("specParam", objects[i]->getMaterial().specParam);
+	program->setUniformValue("ambParam", objects[i]->getMaterial().ambParam);
+	program->setUniformValue("diffParam", objects[i]->getMaterial().diffParam);
+}
+
 void GLWidget::paintGL()
 {
 	for (int i = 0; i < lights.size(); i++)
@@ -122,13 +132,10 @@ void GLWidget::paintGL()
 	shaderProgram.setUniformValue("qt_ProjectionLightMatrix", projectionLightMatrix);
 	sendShadowIntoShader(&shaderProgram);
 	shaderProgram.setUniformValue("qt_ProjectionMatrix", projectionMatrix);
-	shaderProgram.setUniformValue("specParam", 10.0f);
-	shaderProgram.setUniformValue("ambParam", 0.1f);
-	shaderProgram.setUniformValue("diffParam", 0.9f);
-
+	sendMaterialIntoShader(&shaderProgram, 0);
 	objects[0]->draw(&shaderProgram, context()->functions());
 
-	shaderProgram.setUniformValue("specParam", 180.0f);
+	sendMaterialIntoShader(&shaderProgram, 1);
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->draw(&shaderProgram, context()->functions());
 
