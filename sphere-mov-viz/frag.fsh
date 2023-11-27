@@ -7,9 +7,8 @@ struct Light {
 };
 
 uniform sampler2D qt_Texture0;
-uniform sampler2D qt_ShadowMaps0[2];
+uniform sampler2D qt_ShadowMaps0[10];
 uniform int numberLights;
-uniform int numberShadows;
 
 uniform Light lights[5];
 Light corLights[5];
@@ -18,12 +17,13 @@ float resShadowParams[5];
 
 uniform highp float specParam;
 uniform highp float ambParam;
+uniform highp float diffParam;
 
 varying highp vec4 qt_Vertex0;
 varying highp vec2 qt_TexCoord0;
 varying highp vec3 qt_Normal0;
 varying highp mat4 qt_viewMatrix;
-varying highp vec4 qt_VertexesLightMatrix[2];
+varying highp vec4 qt_VertexesLightMatrix[10];
 
 float ShadowMapping(sampler2D map, vec2 coordinates, float cur_depth)
 {
@@ -34,7 +34,7 @@ float ShadowMapping(sampler2D map, vec2 coordinates, float cur_depth)
 
 void main(void)
 {
-    for (int i = 0; i < numberShadows; i++) {
+    for (int i = 0; i < numberLights; i++) {
 	tmp[i] = qt_VertexesLightMatrix[i].xyz / qt_VertexesLightMatrix[i].w;
 	tmp[i] = tmp[i] * vec3(0.5) + vec3(0.5);
     }
@@ -42,7 +42,7 @@ void main(void)
     vec3 clr = vec3(1.0f, 1.0f, 1.0f);
     float shadowParam = 1.0f;
 
-    for (int i = 0; i < numberShadows; i++) {
+    for (int i = 0; i < numberLights; i++) {
 	shadowParam = ShadowMapping(qt_ShadowMaps0[i], tmp[i].xy, tmp[i].z * 255.0f - 0.5f);
 	shadowParam += 0.1f;
 	if (shadowParam >= 1.0f)
@@ -69,7 +69,7 @@ void main(void)
 	float len = length(qt_Vertex0.xyz - eyePos.xyz);
 	vec3 eye = normalize(qt_Vertex0.xyz - eyePos.xyz);
 	vec3 reflectlLight = normalize(reflect(light_vec, qt_Normal0));
-	vec4 diffFactor = srcClr * max(0.0f, dot(qt_Normal0, -light_vec)) * corLights[i].power;
+	vec4 diffFactor = diffParam * srcClr * max(0.0f, dot(qt_Normal0, -light_vec)) * corLights[i].power;
 	vec4 ambFactor = ambParam * srcClr;
 	vec4 specFactor = vec4(corLights[i].color, 1.0f) * corLights[i].power * pow(max(0.0f, dot(reflectlLight, -eye)), specParam);
 	resClr += ((diffFactor * vec4(clr, 1.0f)) + (ambFactor * vec4(clr, 1.0f)) + (specFactor * vec4(clr, 1.0f)) * resShadowParams[i]);

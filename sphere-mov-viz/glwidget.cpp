@@ -34,6 +34,16 @@ GLWidget::~GLWidget()
 	}
 }
 
+QVector<BaseObject *> GLWidget::getObjects()
+{
+	return objects;
+}
+
+BaseObject *GLWidget::getObject(int ind)
+{
+	return objects[ind];
+}
+
 void GLWidget::initializeGL()
 {
 	context()->functions()->glClearColor(1.0f, 0.85f, 0.73f, 1.0f);
@@ -45,23 +55,10 @@ void GLWidget::initializeGL()
 	shadowBuffers[0]->shadowBuff = new QOpenGLFramebufferObject(shadowBuffers[0]->width, shadowBuffers[0]->height, QOpenGLFramebufferObject::Depth);
 	shadowBuffers[1]->shadowBuff = new QOpenGLFramebufferObject(shadowBuffers[1]->width, shadowBuffers[1]->height, QOpenGLFramebufferObject::Depth);
 
-	obj1 = new BaseObject("/home/nastya/cg-course-work/objects/1.obj", "/home/nastya/cg-course-work/sphere-mov-viz/green.jpg");
-	obj2 = new BaseObject("/home/nastya/cg-course-work/objects/2.obj", "/home/nastya/cg-course-work/sphere-mov-viz/pink2.jpg");
-	obj3 = new BaseObject("/home/nastya/cg-course-work/objects/3.obj", "/home/nastya/cg-course-work/sphere-mov-viz/pink2.jpg");
-	obj4 = new BaseObject("/home/nastya/cg-course-work/objects/4.obj", "/home/nastya/cg-course-work/sphere-mov-viz/pink2.jpg");
-	obj5 = new BaseObject("/home/nastya/cg-course-work/objects/5.obj", "/home/nastya/cg-course-work/sphere-mov-viz/pink2.jpg");
+	for (int i = 0; i < OBJ_NUMBER; i++)
+		objects.push_back(new BaseObject(objPaths[i], texturePaths[i]));
 
-	obj1->translate(QVector3D(0.0, -0.55, 0.0));
-//	obj5->scale(1.1);
-//	obj4->scale(1.1);
-//	obj3->scale(1.1);
-//	obj2->scale(1.1);
-
-	objects.push_back(obj1);
-	objects.push_back(obj2);
-	objects.push_back(obj3);
-	objects.push_back(obj4);
-	objects.push_back(obj5);
+	objects[0]->translate(QVector3D(0.0, SPHERE_Y, 0.0));
 }
 
 void GLWidget::resizeGL(int w, int h)
@@ -97,10 +94,22 @@ void GLWidget::sendLightsIntoShader(QOpenGLShaderProgram *program)
 		lights[i]->sendToShader(program, i);
 }
 
+void GLWidget::sendShadowIntoShader(QOpenGLShaderProgram *program)
+{
+	for (int i = 0; i < lights.size(); i++) {
+		std::ostringstream oss1;
+		std::ostringstream oss2;
+		oss1 << "qt_ShadowMaps0[" << i << "]";
+		oss2 << "shadowMatrixes[" << i << "]";
+		program->setUniformValue(oss1.str().data(), shadowTextures[i] - GL_TEXTURE0);
+		program->setUniformValue(oss2.str().data(), lights[i]->lMatrix);
+	}
+}
+
 void GLWidget::paintGL()
 {
-	getShadowMap(0, GL_TEXTURE2);
-//	getShadowMap(1, GL_TEXTURE3);
+	for (int i = 0; i < lights.size(); i++)
+		getShadowMap(i, shadowTextures[i]);
 
 	context()->functions()->glViewport(0, 0, this->width(), this->height());
 	context()->functions()->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -108,21 +117,20 @@ void GLWidget::paintGL()
 	shaderProgram.bind();
 	sendLightsIntoShader(&shaderProgram);
 	cam->set(&shaderProgram);
-
-	shaderProgram.setUniformValue("numberLights", 1);
-	shaderProgram.setUniformValue("numberShadows", 1);
-	shaderProgram.setUniformValue("qt_ShadowMaps0[0]", GL_TEXTURE2 - GL_TEXTURE0);
-	shaderProgram.setUniformValue("qt_ShadowMaps0[1]", GL_TEXTURE2 - GL_TEXTURE0);
+	shaderProgram.setUniformValue("numberLights", lights.size());
+	shaderProgram.setUniformValue("numberShadows", lights.size());
 	shaderProgram.setUniformValue("qt_ProjectionLightMatrix", projectionLightMatrix);
-	shaderProgram.setUniformValue("shadowMatrixes[0]", lights[0]->lMatrix);
-	shaderProgram.setUniformValue("shadowMatrixes[1]", lights[0]->lMatrix);
+	sendShadowIntoShader(&shaderProgram);
 	shaderProgram.setUniformValue("qt_ProjectionMatrix", projectionMatrix);
-
 	shaderProgram.setUniformValue("specParam", 10.0f);
 	shaderProgram.setUniformValue("ambParam", 0.1f);
+	shaderProgram.setUniformValue("diffParam", 0.9f);
 
-	for (auto obj : objects)
-		obj->draw(&shaderProgram, context()->functions());
+	objects[0]->draw(&shaderProgram, context()->functions());
+
+	shaderProgram.setUniformValue("specParam", 180.0f);
+	for (int i = 0; i < objects.size(); i++)
+		objects[i]->draw(&shaderProgram, context()->functions());
 
 	shaderProgram.release();
 }

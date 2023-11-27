@@ -22,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent)
 	timer = new QTimer();
 	timerSleep1 = new QTimer();
 	timerSleep1->setSingleShot(true);
-	connect(timerSleep1, &QTimer::timeout, this, &MainWindow::restore);  // Подключаем timeout таймера к слоту восстановления переменной
+	connect(timerSleep1, &QTimer::timeout, this, &MainWindow::restore);
 
 	timerSleep2 = new QTimer();
 	timerSleep2->setSingleShot(true);
@@ -45,6 +45,16 @@ MainWindow::MainWindow(QWidget *parent)
 	m3.setToIdentity();
 	m4.setToIdentity();
 	spm.setToIdentity();
+
+	QPixmap p1("/home/nastya/cg-course-work/textures/green.jpg");
+	QPixmap p2("/home/nastya/cg-course-work/textures/pink2.jpg");
+	ui->label_7->setPixmap(p1);
+	ui->label_8->setPixmap(p2);
+
+	QPalette pal = ui->label_10->palette();
+	pal.setColor(QPalette::Window, INIT_FONE);
+	ui->label_10->setAutoFillBackground(true);
+	ui->label_10->setPalette(pal);
 }
 
 MainWindow::~MainWindow()
@@ -107,7 +117,7 @@ void MainWindow::generateSignal()
 void MainWindow::handleTimerSignal()
 {
 	sphereMovement(spm, sphereSpeed);
-	oglw->obj1->setGlobalTransform(spm);
+	oglw->getObject(0)->setGlobalTransform(spm);
 	if (flag1) {
 		swingSpeed1 = 0.0;
 		flag1 = false;
@@ -132,10 +142,10 @@ void MainWindow::handleTimerSignal()
 		timerSleep4->start(sleep);
 	}
 
-	swingsMovement(m2, 22.5, RADIUS, swingSpeed1, &_p, oglw->obj2, &flag1);
-	swingsMovement(m3, 67.5, RADIUS, swingSpeed2, &p2, oglw->obj3, &flag2);
-	swingsMovement(m4, 112.5, RADIUS, swingSpeed3, &p3, oglw->obj4, &flag3);
-	swingsMovement(m, 157.5, RADIUS, swingSpeed4, &p4, oglw->obj5, &flag4);
+	swingsMovement(m2, 22.5, RADIUS, swingSpeed1, &_p, oglw->getObject(1), &flag1);
+	swingsMovement(m3, 67.5, RADIUS, swingSpeed2, &p2, oglw->getObject(2), &flag2);
+	swingsMovement(m4, 112.5, RADIUS, swingSpeed3, &p3, oglw->getObject(3), &flag3);
+	swingsMovement(m, 157.5, RADIUS, swingSpeed4, &p4, oglw->getObject(4), &flag4);
 
 	oglw->update();
 }
@@ -175,19 +185,19 @@ void MainWindow::initState()
 	m4.setToIdentity();
 
 	swingMovement(m, 157.5, RADIUS, -15.0);
-	oglw->obj5->setGlobalTransform(m);
+	oglw->getObject(4)->setGlobalTransform(m);
 
 	swingMovement(m4, 112.5, RADIUS, 0.0);
-	oglw->obj4->setGlobalTransform(m4);
+	oglw->getObject(3)->setGlobalTransform(m4);
 
 	swingMovement(m3, 67.5, RADIUS, 15.0);
-	oglw->obj3->setGlobalTransform(m3);
+	oglw->getObject(2)->setGlobalTransform(m3);
 
 	swingMovement(m2, 22.5, RADIUS, 30.0);
-	oglw->obj2->setGlobalTransform(m2);
+	oglw->getObject(1)->setGlobalTransform(m2);
 
-	oglw->obj1->resetTransformations();
-	oglw->obj1->translate(QVector3D(0.0, -0.55, 0.0));
+	oglw->getObject(0)->resetTransformations();
+	oglw->getObject(0)->translate(QVector3D(0.0, SPHERE_Y, 0.0));
 
 	oglw->update();
 }
@@ -216,5 +226,11 @@ void MainWindow::on_spinBox_valueChanged(int arg1)
 	flag4 = false;
 	initState();
 	timer->start(1000 / FPS);
+}
+
+
+void MainWindow::on_pushButton_clicked()
+{
+	QFile sphereTexturePath = QFileDialog::getOpenFileName(nullptr, "Выберите текстуру", "/home/nastya/cg-course-work/textures");
 }
 

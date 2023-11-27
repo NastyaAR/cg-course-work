@@ -6,9 +6,12 @@
 #include "glwidget.h"
 #include <iostream>
 #include <QShowEvent>
+#include <QColor>
+#include <QFileDialog>
 
 #define RADIUS 5.1
 #define FPS 30
+#define INIT_FONE QColor(255, 216.75, 186.15)
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -40,6 +43,8 @@ private slots:
 
 	void on_spinBox_valueChanged(int arg1);
 
+	void on_pushButton_clicked();
+
 signals:
 	void timerSignal();
 	void initSignal();
@@ -51,9 +56,9 @@ private:
 	QVector3D init = {0.0, 0.0, 0.0};
 	QMatrix4x4 m, m2, m3, m4, spm;
 	float _p = 0.000001;
-	float p2 = -44.000001;
-	float p3 = -29.000001;
-	float p4 = -14.000001;
+	float p2 = -45.000001;
+	float p3 = -30.000001;
+	float p4 = -15.000001;
 	bool flag1 = true;
 	bool flag2 = false;
 	bool flag3 = false;

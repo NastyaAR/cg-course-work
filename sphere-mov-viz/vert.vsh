@@ -6,9 +6,10 @@ uniform highp mat4 viewMatrix;
 uniform highp mat4 modelMatrix;
 
 uniform highp mat4 qt_ProjectionLightMatrix;
-uniform highp mat4 shadowMatrixes[2];
+uniform highp mat4 shadowMatrixes[10];
+uniform int numberShadows;
 
-varying highp vec4 qt_VertexesLightMatrix[2];
+varying highp vec4 qt_VertexesLightMatrix[10];
 
 varying highp vec4 qt_Vertex0;
 varying highp vec2 qt_TexCoord0;
@@ -24,6 +25,6 @@ void main(void)
     qt_Vertex0 = mvMatrix * qt_Vertex;
     qt_viewMatrix = viewMatrix;
 
-    qt_VertexesLightMatrix[0] = qt_ProjectionLightMatrix * shadowMatrixes[0] * modelMatrix * qt_Vertex;
-    qt_VertexesLightMatrix[1] = qt_ProjectionLightMatrix * shadowMatrixes[1] * modelMatrix * qt_Vertex;
+    for (int i = 0; i < numberShadows; i++)
+	qt_VertexesLightMatrix[i] = qt_ProjectionLightMatrix * shadowMatrixes[i] * modelMatrix * qt_Vertex;
 }

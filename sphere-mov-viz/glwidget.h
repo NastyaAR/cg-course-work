@@ -18,6 +18,8 @@
 
 #define SCALE_FACTOR 0.25f
 #define MAX_LIGHT_SOURCES 10
+#define SPHERE_Y -0.65
+#define OBJ_NUMBER 5
 
 class GLWidget : public QOpenGLWidget
 {
@@ -26,7 +28,8 @@ public:
 	explicit GLWidget(QWidget *parent = 0);
 	~GLWidget();
 	QVector<BaseObject *> getObjects();
-	BaseObject *obj1, *obj2, *obj3, *obj4, *obj5;
+	BaseObject *getObject(int ind);
+	//BaseObject *obj1, *obj2, *obj3, *obj4, *obj5;
 protected:
 	void initializeGL();
 	void resizeGL(int w, int h);
@@ -34,6 +37,7 @@ protected:
 
 	void getShadowMap(int ind, int textInd);
 	void sendLightsIntoShader(QOpenGLShaderProgram *program);
+	void sendShadowIntoShader(QOpenGLShaderProgram *program);
 	void initShaders();
 
 	void mousePressEvent(QMouseEvent *event);
@@ -56,6 +60,26 @@ private:
 
 	float zoom = -15.0f;
 	Camera *cam;
+
+	int shadowTextures[10] = {GL_TEXTURE2, GL_TEXTURE3,
+							 GL_TEXTURE4, GL_TEXTURE5,
+							 GL_TEXTURE6, GL_TEXTURE7,
+							 GL_TEXTURE8, GL_TEXTURE9,
+							 GL_TEXTURE10, GL_TEXTURE11};
+	QString texturePaths[5] = {
+		"/home/nastya/cg-course-work/textures/green.jpg",
+		"/home/nastya/cg-course-work/textures/pink2.jpg",
+		"/home/nastya/cg-course-work/textures/pink2.jpg",
+		"/home/nastya/cg-course-work/textures/pink2.jpg",
+		"/home/nastya/cg-course-work/textures/pink2.jpg",
+	};
+	QString objPaths[5] = {
+		"/home/nastya/cg-course-work/objects/1.obj",
+		"/home/nastya/cg-course-work/objects/2.obj",
+		"/home/nastya/cg-course-work/objects/3.obj",
+		"/home/nastya/cg-course-work/objects/4.obj",
+		"/home/nastya/cg-course-work/objects/5.obj",
+	};
 };
 
 #endif // GLWIDGET_H
