@@ -10,10 +10,10 @@ uniform sampler2D qt_Texture0;
 uniform sampler2D qt_ShadowMaps0[10];
 uniform int numberLights;
 
-uniform Light lights[5];
-Light corLights[5];
-vec3 tmp[5];
-float resShadowParams[5];
+uniform Light lights[10];
+Light corLights[10];
+vec3 tmp[10];
+float resShadowParams[10];
 
 uniform highp float specParam;
 uniform highp float ambParam;
@@ -28,7 +28,7 @@ varying highp vec4 qt_VertexesLightMatrix[10];
 float ShadowMapping(sampler2D map, vec2 coordinates, float cur_depth)
 {
     vec4 cur = texture2D(map, coordinates);
-    float val = cur.x * 255.0f + (cur.y * 255.0f + (cur.z * 255.0f + cur.w) / 255.0f) / 255.0f;
+    float val = cur.x * 255.0 + 0.5f;
     return step(cur_depth, val);
 }
 
@@ -62,7 +62,6 @@ void main(void)
     vec4 eyePos = vec4(0.0f, 0.0f, 0.0f, 1.0f);
 
     for (int i = 0; i < numberLights; i++) {
-	vec4 lightClr = vec4(0.0f, 0.0f, 0.0f, 0.0f);
 	vec3 light_vec;
 	light_vec = normalize(corLights[i].direction.xyz);
 	vec4 srcClr = texture2D(qt_Texture0, qt_TexCoord0);

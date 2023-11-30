@@ -51,10 +51,10 @@ void GLWidget::initializeGL()
 	context()->functions()->glEnable(GL_CULL_FACE);
 
 	initShaders();
-
 	for (int i = 0; i < lights.size(); i++)
-		shadowBuffers[i]->shadowBuff = new QOpenGLFramebufferObject(shadowBuffers[i]->width, shadowBuffers[i]->height,
-																	QOpenGLFramebufferObject::Depth);
+		shadowBuffers[i]->shadowBuff = new QOpenGLFramebufferObject(shadowBuffers[i]->width,
+													shadowBuffers[i]->height,
+													QOpenGLFramebufferObject::Depth);
 
 	materialProperties_t material = {0.1f, 0.9f, 10.0f};
 
@@ -120,10 +120,8 @@ void GLWidget::paintGL()
 {
 	for (int i = 0; i < lights.size(); i++)
 		getShadowMap(i, shadowTextures[i]);
-
 	context()->functions()->glViewport(0, 0, this->width(), this->height());
 	context()->functions()->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 	shaderProgram.bind();
 	sendLightsIntoShader(&shaderProgram);
 	cam->set(&shaderProgram);
@@ -134,11 +132,9 @@ void GLWidget::paintGL()
 	shaderProgram.setUniformValue("qt_ProjectionMatrix", projectionMatrix);
 	sendMaterialIntoShader(&shaderProgram, 0);
 	objects[0]->draw(&shaderProgram, context()->functions());
-
 	sendMaterialIntoShader(&shaderProgram, 1);
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->draw(&shaderProgram, context()->functions());
-
 	shaderProgram.release();
 }
 
@@ -173,6 +169,7 @@ void GLWidget::initShaders()
 		ErrMsg(ERROR, "Ошибка", "Ошибка при линковке шейдеров для теней!").getMessage();
 		exit(EXIT_FAILURE);
 	}
+
 
 }
 

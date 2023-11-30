@@ -246,3 +246,10 @@ void MainWindow::on_pushButton_3_clicked()
 	setLabel(ui->label_10, clr);
 }
 
+
+void MainWindow::on_pushButton_4_clicked()
+{
+	MyDialog dlg;
+	dlg.exec();
+}
+

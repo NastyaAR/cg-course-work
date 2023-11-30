@@ -10,6 +10,8 @@
 #include <QFileDialog>
 #include <QColorDialog>
 
+#include "mydialog.h"
+
 #define RADIUS 5.1
 #define FPS 30
 #define INIT_FONE QColor(255, 216.75, 186.15)
@@ -52,6 +54,8 @@ private slots:
 	void on_pushButton_2_clicked();
 
 	void on_pushButton_3_clicked();
+
+	void on_pushButton_4_clicked();
 
 signals:
 	void timerSignal();

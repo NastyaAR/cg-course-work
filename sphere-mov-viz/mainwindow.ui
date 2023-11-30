@@ -14,7 +14,7 @@
    <string>Визуализация движения шарика на качелях</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -25,7 +25,7 @@
     </property>
     <layout class="QGridLayout" name="gridLayout"/>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>730</x>
@@ -260,6 +260,13 @@
            <string>0.9</string>
           </property>
          </item>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_4">
+         <property name="text">
+          <string>Добавить источник</string>
+         </property>
         </widget>
        </item>
       </layout>
