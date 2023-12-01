@@ -173,6 +173,15 @@ void MainWindow::initState()
 	oglw->getObject(0)->resetTransformations();
 	oglw->getObject(0)->translate(QVector3D(0.0, SPHERE_Y, 0.0));
 
+	drives[0] = 0.000001;
+	drives[1] = -44.000001;
+	drives[2] = -29.000001;
+	drives[3] = -14.000001;
+	flags[0] = true;
+	flags[1] = false;
+	flags[2] = false;
+	flags[3] = false;
+
 	oglw->update();
 }
 
@@ -212,15 +221,6 @@ void MainWindow::on_spinBox_valueChanged(int arg1)
 	initSwingSpeed = -60 / (138 / sphereSpeed);
 	for (int i = 0; i < OBJ_NUMBER - 1; i++)
 		swingSpeeds[i] = -60 / (138 / sphereSpeed);
-
-	drives[0] = 0.000001;
-	drives[1] = -44.000001;
-	drives[2] = -29.000001;
-	drives[3] = -14.000001;
-	flags[0] = true;
-	flags[1] = false;
-	flags[2] = false;
-	flags[3] = false;
 	initState();
 	timer->start(1000 / FPS);
 }
@@ -246,10 +246,50 @@ void MainWindow::on_pushButton_3_clicked()
 	setLabel(ui->label_10, clr);
 }
 
+void MainWindow::insertIntoTable(QVector3D direction, float power)
+{
+	std::ostringstream oss1;
+	std::ostringstream oss2;
+	oss1 << "(" << direction.x() << ", " << direction.y() << ", " << direction.z() << ")";
+	oss2 << power;
+
+	ui->tableWidget->insertRow(ui->tableWidget->rowCount());
+	ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 0, new QTableWidgetItem(oss1.str().data()));
+	ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 1, new QTableWidgetItem(oss2.str().data()));
+}
 
 void MainWindow::on_pushButton_4_clicked()
 {
 	MyDialog dlg;
-	dlg.exec();
+	float values[4];
+	bool ok;
+
+	timer->stop();
+	initState();
+	if (dlg.exec() == QDialog::Accepted) {
+		for (int i = 0; i < 4; i++) {
+			std::tie(values[i], ok) = dlg.getValue(i);
+			if (!ok)
+				return;
+		}
+		QVector3D direction(values[0], values[1], values[2]);
+		insertIntoTable(direction, values[3]);
+		oglw->update();
+//		oglw->addLight(direction, values[3]);
+		oglw->addLight();
+//		oglw->update();
+		timer->start(1000 / FPS);
+	}
+	return;
+}
+
+
+void MainWindow::on_pushButton_5_clicked()
+{
+	int delRow = ui->tableWidget->currentRow();
+	if (ui->tableWidget->rowCount() == 1) {
+		return;
+	}
+	ui->tableWidget->removeRow(delRow);
 }
 

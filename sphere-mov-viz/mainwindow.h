@@ -38,6 +38,7 @@ protected:
 	void setLabel(QLabel *lbl, QString path);
 	void setLabel(QLabel *lbl, QColor clr);
 	void initTimers();
+	void insertIntoTable(QVector3D direction, float power);
 
 private slots:
 	void generateSignal();
@@ -56,6 +57,7 @@ private slots:
 	void on_pushButton_3_clicked();
 
 	void on_pushButton_4_clicked();
+	void on_pushButton_5_clicked();
 
 signals:
 	void timerSignal();

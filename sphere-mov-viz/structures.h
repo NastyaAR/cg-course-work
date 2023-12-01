@@ -24,6 +24,7 @@ public:
 	QOpenGLFramebufferObject *shadowBuff;
 	quint64 width;
 	quint64 height;
+	bool isUsed;
 };
 
 struct materialProperties_t

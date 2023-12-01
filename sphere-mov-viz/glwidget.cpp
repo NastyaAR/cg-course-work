@@ -2,14 +2,21 @@
 
 GLWidget::GLWidget(QWidget *parent) : QOpenGLWidget(parent)
 {
-	lights.append(new Light(DIRECTIONAL));
-	lights[0]->Clr = QVector3D(1.0f, 1.0f, 1.0f);
-	lights[0]->Power = 0.9;
-	lights[0]->position = QVector4D(0.0f, 0.0f, 10.0f, 1.0f);
-	lights[0]->direction = QVector4D(0.0f, -1.0f, 0.0f, 0.0f);
+	for (int i = 0; i < 10; i++) {
+		lights.append(new Light(DIRECTIONAL));
+		lights[i]->Clr = QVector3D(1.0f, 1.0f, 1.0f);
+		lights[i]->Power = 0.9;
+		lights[i]->position = QVector4D(0.0f, 0.0f, 10.0f, 1.0f);
+		lights[i]->direction = QVector4D(0.0f, -1.0f, 0.0f, 0.0f);
+		lights[i]->used = false;
+	}
 
-	shadowBuffers.append(new ShadowBuffer(1024, 1024));
-	shadowBuffers.append(new ShadowBuffer(1024, 1024));
+	lights[0]->used = true;
+	lights[1]->direction = QVector4D(0.0f, 1.0f, 0.0f, 0.0f);
+
+	for (int i = 0; i < 10; i++) {
+		shadowBuffers.append(new ShadowBuffer(1024, 1024));
+	}
 	projectionLightMatrix.setToIdentity();
 	projectionLightMatrix.ortho(-40.0f, 40.0f, -40.0f, 40.0f, -40.0f, 40.0f);
 
@@ -42,6 +49,11 @@ QVector<BaseObject *> GLWidget::getObjects()
 BaseObject *GLWidget::getObject(int ind)
 {
 	return objects[ind];
+}
+
+void GLWidget::addLight()
+{
+	lights[1]->used = true;
 }
 
 void GLWidget::initializeGL()
@@ -93,19 +105,27 @@ void GLWidget::getShadowMap(int ind, int textInd)
 
 void GLWidget::sendLightsIntoShader(QOpenGLShaderProgram *program)
 {
+	int j = 0;
 	for (int i = 0; i < lights.size(); i++)
-		lights[i]->sendToShader(program, i);
+		if (lights[i]->used == true) {
+			lights[i]->sendToShader(program, j);
+			j++;
+		}
 }
 
 void GLWidget::sendShadowIntoShader(QOpenGLShaderProgram *program)
 {
+	int j = 0;
 	for (int i = 0; i < lights.size(); i++) {
-		std::ostringstream oss1;
-		std::ostringstream oss2;
-		oss1 << "qt_ShadowMaps0[" << i << "]";
-		oss2 << "shadowMatrixes[" << i << "]";
-		program->setUniformValue(oss1.str().data(), shadowTextures[i] - GL_TEXTURE0);
-		program->setUniformValue(oss2.str().data(), lights[i]->lMatrix);
+		if (lights[i]->used == true) {
+			std::ostringstream oss1;
+			std::ostringstream oss2;
+			oss1 << "qt_ShadowMaps0[" << j << "]";
+			oss2 << "shadowMatrixes[" << j << "]";
+			program->setUniformValue(oss1.str().data(), shadowTextures[i] - GL_TEXTURE0);
+			program->setUniformValue(oss2.str().data(), lights[i]->lMatrix);
+			j++;
+		}
 	}
 }
 
@@ -119,14 +139,15 @@ void GLWidget::sendMaterialIntoShader(QOpenGLShaderProgram *program, int i)
 void GLWidget::paintGL()
 {
 	for (int i = 0; i < lights.size(); i++)
-		getShadowMap(i, shadowTextures[i]);
+		if (lights[i]->used == true)
+			getShadowMap(i, shadowTextures[i]);
 	context()->functions()->glViewport(0, 0, this->width(), this->height());
 	context()->functions()->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	shaderProgram.bind();
 	sendLightsIntoShader(&shaderProgram);
 	cam->set(&shaderProgram);
-	shaderProgram.setUniformValue("numberLights", lights.size());
-	shaderProgram.setUniformValue("numberShadows", lights.size());
+	shaderProgram.setUniformValue("numberLights", cur_lights);
+	shaderProgram.setUniformValue("numberShadows", cur_lights);
 	shaderProgram.setUniformValue("qt_ProjectionLightMatrix", projectionLightMatrix);
 	sendShadowIntoShader(&shaderProgram);
 	shaderProgram.setUniformValue("qt_ProjectionMatrix", projectionMatrix);

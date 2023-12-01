@@ -10,7 +10,8 @@ Light::Light(const lightType type) : type(type),
 							power(1.0),
 							pos(0.0f, 0.0f, 0.0f, 1.0f),
 							direct(0.0f, 0.0f, -1.0f, 0.0f),
-							lMatrix(this, &Light::getLMatrix, nullptr)
+							lMatrix(this, &Light::getLMatrix, nullptr),
+							used(this, &Light::getUsed, &Light::setUsed)
 {
 	lightMatrix.setToIdentity();
 	lightMatrix.lookAt(pos.normalized().toVector3D(), (pos.normalized() + direct).normalized().toVector3D(), QVector3D(direct.x(), direct.z(), -direct.y()));

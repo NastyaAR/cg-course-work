@@ -22,6 +22,7 @@ public:
 	const Property<QVector4D, Light> direction;
 	const Property<lightType, Light> lType;
 	const Property<QMatrix4x4, Light> lMatrix;
+	const Property<bool, Light> used;
 
 	Light(const lightType type);
 	Light() = default;
@@ -33,6 +34,7 @@ private:
 	QVector3D color;
 	QVector4D direct;
 	lightType type;
+	bool isUsed;
 
 	void setClr(QVector3D clr) { color = clr; };
 	void setDirect(QVector4D d) { direct = d.normalized(); 	lightMatrix.setToIdentity();
@@ -41,6 +43,7 @@ private:
 							   lightMatrix.lookAt(pos.normalized().toVector3D(), (pos.normalized() + direct).normalized().toVector3D(), QVector3D(direct.x(), direct.z(), -direct.y())); };
 	void setLightType(lightType t) { type = t; };
 	void setPower(float pwr) { power = pwr; };
+	void setUsed(bool val) { isUsed = val; };
 
 	QVector3D getClr() { return color; };
 	QVector4D getDirect() { return direct; };
@@ -48,6 +51,7 @@ private:
 	lightType getLightType() { return type; };
 	QMatrix4x4 getLMatrix() { return lightMatrix; };
 	float getPower() { return power; };
+	bool getUsed() { return isUsed; };
 
 	QMatrix4x4 lightMatrix;
 };
