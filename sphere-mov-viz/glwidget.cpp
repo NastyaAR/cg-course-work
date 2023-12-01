@@ -12,7 +12,7 @@ GLWidget::GLWidget(QWidget *parent) : QOpenGLWidget(parent)
 	}
 
 	lights[0]->used = true;
-	lights[1]->direction = QVector4D(0.0f, 1.0f, 0.0f, 0.0f);
+	lights[2]->direction = QVector4D(0.0f, 1.0f, 0.0f, 0.0f);
 
 	for (int i = 0; i < 10; i++) {
 		shadowBuffers.append(new ShadowBuffer(1024, 1024));
@@ -51,9 +51,45 @@ BaseObject *GLWidget::getObject(int ind)
 	return objects[ind];
 }
 
-void GLWidget::addLight()
+void GLWidget::addLight(QVector3D direction, float power)
 {
-	lights[1]->used = true;
+	int ind = -1;
+	for (int i = 0; i < lights.size(); i++)
+		if (lights[i]->used == false) {
+			ind = i;
+			break;
+		}
+	if (ind == -1)
+		return;
+	lights[ind]->used = true;
+	lights[ind]->direction = QVector4D(direction, 0.0);
+	lights[ind]->Power = power;
+	cur_lights++;
+}
+
+static bool areVectorsEqual(const QVector4D vec1, const QVector4D vec2)
+{
+	if (!qFuzzyCompare(vec1.x(), vec2.x()))
+		return false;
+	if (!qFuzzyCompare(vec1.y(), vec2.y()))
+		return false;
+	if (!qFuzzyCompare(vec1.z(), vec2.z()))
+		return false;
+	if (!qFuzzyCompare(vec1.w(), vec2.w()))
+		return false;
+
+	return true;
+}
+
+void GLWidget::delLight(QVector4D direction, float power)
+{
+	for (int i = 0; i < lights.size(); i++)
+		if (lights[i]->used == true && areVectorsEqual(lights[i]->direction, direction)
+				&& qFuzzyCompare(lights[i]->Power, power)) {
+			lights[i]->used = false;
+			cur_lights--;
+			break;
+		}
 }
 
 void GLWidget::initializeGL()

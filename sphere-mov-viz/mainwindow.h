@@ -39,6 +39,7 @@ protected:
 	void setLabel(QLabel *lbl, QColor clr);
 	void initTimers();
 	void insertIntoTable(QVector3D direction, float power);
+	std::tuple<QVector4D, float> formSearchLight(int i);
 
 private slots:
 	void generateSignal();

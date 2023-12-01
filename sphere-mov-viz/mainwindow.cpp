@@ -74,8 +74,6 @@ void MainWindow::swingsMovement(QMatrix4x4 &m, float degree, float tansposition,
 		(*p) -= -speed;
 	}
 
-	std::cout << (*p) <<std::endl;
-
 	if ((*p) > 60) {
 		(*p) = -0.0001;
 		(*flag) = true;
@@ -258,6 +256,21 @@ void MainWindow::insertIntoTable(QVector3D direction, float power)
 	ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 1, new QTableWidgetItem(oss2.str().data()));
 }
 
+std::tuple<QVector4D, float> MainWindow::formSearchLight(int i)
+{
+	std::cout << i << std::endl;
+	QTableWidgetItem *dir = ui->tableWidget->item(i, 0);
+	QTableWidgetItem *pow = ui->tableWidget->item(i, 1);
+	QString dirStr = dir->text();
+	dirStr = dirStr.mid(1);
+	dirStr.chop(1);
+	QStringList strs = dirStr.split(",");
+	QVector3D direction(strs[0].toFloat(), strs[1].toFloat(), strs[2].toFloat());
+	float power = pow->text().toFloat();
+
+	return std::tuple(QVector4D(direction, 0.0).normalized(), power);
+}
+
 void MainWindow::on_pushButton_4_clicked()
 {
 	MyDialog dlg;
@@ -274,13 +287,9 @@ void MainWindow::on_pushButton_4_clicked()
 		}
 		QVector3D direction(values[0], values[1], values[2]);
 		insertIntoTable(direction, values[3]);
-		oglw->update();
-//		oglw->addLight(direction, values[3]);
-		oglw->addLight();
-//		oglw->update();
+		oglw->addLight(direction, values[3]);
 		timer->start(1000 / FPS);
 	}
-	return;
 }
 
 
@@ -290,6 +299,13 @@ void MainWindow::on_pushButton_5_clicked()
 	if (ui->tableWidget->rowCount() == 1) {
 		return;
 	}
+	timer->stop();
+	initState();
+	QVector4D direction;
+	float power;
+	std::tie(direction, power) = formSearchLight(delRow);
+	oglw->delLight(direction, power);
 	ui->tableWidget->removeRow(delRow);
+	timer->start(1000 / FPS);
 }
 

@@ -29,7 +29,8 @@ public:
 	~GLWidget();
 	QVector<BaseObject *> getObjects();
 	BaseObject *getObject(int ind);
-	void addLight();
+	void addLight(QVector3D direction, float power);
+	void delLight(QVector4D direction, float power);
 protected:
 	void initializeGL();
 	void resizeGL(int w, int h);
@@ -82,7 +83,7 @@ private:
 		"/home/nastya/cg-course-work/objects/5.obj",
 	};
 
-	int cur_lights = 2;
+	int cur_lights = 1;
 };
 
 #endif // GLWIDGET_H
