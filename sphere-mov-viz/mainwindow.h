@@ -16,7 +16,7 @@
 #define RADIUS 5.1
 #define FPS 30
 #define INIT_FONE QColor(255, 216.75, 186.15)
-#define N_REPS 10000
+#define N_REPS 100000
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -44,6 +44,7 @@ protected:
 	std::tuple<QVector4D, float> formSearchLight(int i);
 	double measureTime();
 	void writeTime(QVector<double> seconds);
+	QVector<double> research();
 
 private slots:
 	void generateSignal();

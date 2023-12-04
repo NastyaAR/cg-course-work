@@ -299,7 +299,6 @@ std::tuple<QVector4D, float> MainWindow::formSearchLight(int i)
 
 double MainWindow::measureTime()
 {
-	auto start = std::chrono::steady_clock::now();
 	double sum = 0;
 	for (int i = 0; i < N_REPS; i++) {
 		auto start = std::chrono::steady_clock::now();
@@ -396,27 +395,11 @@ void MainWindow::on_doubleSpinBox_4_valueChanged(double arg1)
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {
 	if (event->key() == Qt::Key_Home) {
-		QVector<double> seconds;
 		timer->stop();
 		initState();
 		auto l = oglw->getLights();
 		auto c = oglw->getCurLights();
-		QVector<Light *> newLights;
-		int cur_lights = 0;
-		for (int i = 0; i < MAX_LIGHT_SOURCES; i++) {
-			newLights.append(new Light(DIRECTIONAL));
-			newLights[i]->Clr = QVector3D(1.0f, 1.0f, 1.0f);
-			newLights[i]->Power = 0.9;
-			newLights[i]->position = QVector4D(0.0f, 0.0f, 10.0f, 1.0f);
-			newLights[i]->direction = QVector4D(0.0f, -1.0f, 0.0f, 0.0f);
-			newLights[i]->used = false;
-		}
-		for (int i = 0; i < MAX_LIGHT_SOURCES; i++) {
-			newLights[i]->used = true;
-			cur_lights++;
-			oglw->setLights(newLights, cur_lights);
-			seconds.push_front(measureTime());
-		}
+		auto seconds = research();
 		writeTime(seconds);
 		oglw->setLights(l, c);
 		timer->start(1000 / FPS);
@@ -435,6 +418,31 @@ void MainWindow::writeTime(QVector<double> seconds)
 		outputFile << result;
 		outputFile.close();
 	}
+}
+
+QVector<double> MainWindow::research()
+{
+	QVector<double> seconds;
+	QVector<Light *> newLights;
+	int cur_lights = 0;
+	for (int i = 0; i < MAX_LIGHT_SOURCES; i++) {
+		newLights.append(new Light(DIRECTIONAL));
+		newLights[i]->Clr = QVector3D(1.0f, 1.0f, 1.0f);
+		newLights[i]->Power = 0.9;
+		newLights[i]->position = QVector4D(0.0f, 0.0f, 10.0f, 1.0f);
+		newLights[i]->direction = QVector4D(0.0f, -1.0f, 0.0f, 0.0f);
+		newLights[i]->used = false;
+	}
+	for (int i = 0; i < MAX_LIGHT_SOURCES; i++) {
+		newLights[i]->used = true;
+		cur_lights++;
+		oglw->setLights(newLights, cur_lights);
+		seconds.push_front(measureTime());
+	}
+	for (int i = 0; i < MAX_LIGHT_SOURCES; i++)
+		delete newLights[i];
+
+	return seconds;
 }
 
 
