@@ -427,14 +427,14 @@ QVector<double> MainWindow::research()
 	int cur_lights = 0;
 	for (int i = 0; i < MAX_LIGHT_SOURCES; i++) {
 		newLights.append(new Light(DIRECTIONAL));
-		newLights[i]->Clr = QVector3D(1.0f, 1.0f, 1.0f);
-		newLights[i]->Power = 0.9;
-		newLights[i]->position = QVector4D(0.0f, 0.0f, 10.0f, 1.0f);
-		newLights[i]->direction = QVector4D(0.0f, -1.0f, 0.0f, 0.0f);
-		newLights[i]->used = false;
+		newLights[i]->setClr(QVector3D(1.0f, 1.0f, 1.0f));
+		newLights[i]->setPower(0.9);
+		newLights[i]->setPos(QVector4D(0.0f, 0.0f, 10.0f, 1.0f));
+		newLights[i]->setDirect(QVector4D(0.0f, -1.0f, 0.0f, 0.0f));
+		newLights[i]->setUsed(false);
 	}
 	for (int i = 0; i < MAX_LIGHT_SOURCES; i++) {
-		newLights[i]->used = true;
+		newLights[i]->setUsed(true);
 		cur_lights++;
 		oglw->setLights(newLights, cur_lights);
 		seconds.push_front(measureTime());

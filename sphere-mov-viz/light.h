@@ -7,8 +7,6 @@
 #include <QOpenGLShaderProgram>
 #include <sstream>
 
-#include "property.h"
-
 typedef enum {
 	DIRECTIONAL,
 } lightType;
@@ -16,13 +14,20 @@ typedef enum {
 class Light
 {
 public:
-	const Property<float, Light> Power;
-	const Property<QVector3D, Light> Clr;
-	const Property<QVector4D, Light> position;
-	const Property<QVector4D, Light> direction;
-	const Property<lightType, Light> lType;
-	const Property<QMatrix4x4, Light> lMatrix;
-	const Property<bool, Light> used;
+	void setClr(QVector3D clr) { color = clr; };
+	void setDirect(QVector4D d);
+	void setPos(QVector4D p);
+	void setLightType(lightType t) { type = t; };
+	void setPower(float pwr) { power = pwr; };
+	void setUsed(bool val) { isUsed = val; };
+
+	QVector3D getClr() { return color; };
+	QVector4D getDirect() { return direct; };
+	QVector4D getPos() { return pos; };
+	lightType getLightType() { return type; };
+	QMatrix4x4 getLMatrix() { return lightMatrix; };
+	float getPower() { return power; };
+	bool getUsed() { return isUsed; };
 
 	Light(const lightType type);
 	Light() = default;
@@ -35,23 +40,6 @@ private:
 	QVector4D direct;
 	lightType type;
 	bool isUsed;
-
-	void setClr(QVector3D clr) { color = clr; };
-	void setDirect(QVector4D d) { direct = d.normalized(); 	lightMatrix.setToIdentity();
-								  lightMatrix.lookAt(pos.normalized().toVector3D(), (pos.normalized() + direct).normalized().toVector3D(), QVector3D(direct.x(), direct.z(), -direct.y())); };
-	void setPos(QVector4D p) { pos = p; 	lightMatrix.setToIdentity();
-							   lightMatrix.lookAt(pos.normalized().toVector3D(), (pos.normalized() + direct).normalized().toVector3D(), QVector3D(direct.x(), direct.z(), -direct.y())); };
-	void setLightType(lightType t) { type = t; };
-	void setPower(float pwr) { power = pwr; };
-	void setUsed(bool val) { isUsed = val; };
-
-	QVector3D getClr() { return color; };
-	QVector4D getDirect() { return direct; };
-	QVector4D getPos() { return pos; };
-	lightType getLightType() { return type; };
-	QMatrix4x4 getLMatrix() { return lightMatrix; };
-	float getPower() { return power; };
-	bool getUsed() { return isUsed; };
 
 	QMatrix4x4 lightMatrix;
 };

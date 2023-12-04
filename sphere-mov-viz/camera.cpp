@@ -1,7 +1,6 @@
 #include "camera.h"
 
-Camera::Camera() : ViewMatrix(this, &Camera::getViewMatr, nullptr),
-				scaleFactor(1.0f)
+Camera::Camera() : scaleFactor(1.0f)
 {
 	globalTransform.setToIdentity();
 }

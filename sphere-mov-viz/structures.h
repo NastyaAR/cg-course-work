@@ -4,7 +4,6 @@
 #include <QVector2D>
 #include <QVector3D>
 #include <QOpenGLFramebufferObject>
-#include "property.h"
 
 struct vertex_t
 {

@@ -7,15 +7,10 @@
 #include <QVector3D>
 #include <QMatrix4x4>
 
-#include "property.h"
-
 class Camera
 {
 public:
 	Camera();
-
-	const Property<QMatrix4x4, Camera> ViewMatrix;
-
 	void set(QOpenGLShaderProgram* program, QOpenGLFunctions*functions = nullptr);
 	void rotate(const QQuaternion &rt);
 	void rotateX(const QQuaternion &rtx);
@@ -35,8 +30,6 @@ private:
 	float scaleFactor;
 	QMatrix4x4 globalTransform;
 	QMatrix4x4 viewMatrix;
-
-	QMatrix4x4 getViewMatr() { return viewMatrix; }
 };
 
 #endif // CAMERA_H

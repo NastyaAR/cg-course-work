@@ -25,7 +25,6 @@ HEADERS += \
     light.h \
     mainwindow.h \
     mydialog.h \
-    property.h \
     structures.h
 
 FORMS += \
