@@ -43,7 +43,7 @@ void main(void)
     float shadowParam = 1.0f;
 
     for (int i = 0; i < numberLights; i++) {
-	shadowParam = ShadowMapping(qt_ShadowMaps0[i], tmp[i].xy, tmp[i].z * 255.0f - 0.5f);
+	shadowParam = ShadowMapping(qt_ShadowMaps0[i], tmp[i].xy, tmp[i].z * 255.0f - 0.6f);
 	shadowParam += 0.1f;
 	if (shadowParam >= 1.0f)
 	    shadowParam = 1.0f;

@@ -9,12 +9,14 @@
 #include <QColor>
 #include <QFileDialog>
 #include <QColorDialog>
+#include <fstream>
 
 #include "mydialog.h"
 
 #define RADIUS 5.1
 #define FPS 30
 #define INIT_FONE QColor(255, 216.75, 186.15)
+#define N_REPS 10000
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -40,6 +42,8 @@ protected:
 	void initTimers();
 	void insertIntoTable(QVector3D direction, float power);
 	std::tuple<QVector4D, float> formSearchLight(int i);
+	double measureTime();
+	void writeTime(QVector<double> seconds);
 
 private slots:
 	void generateSignal();
@@ -59,6 +63,19 @@ private slots:
 
 	void on_pushButton_4_clicked();
 	void on_pushButton_5_clicked();
+	void keyPressEvent(QKeyEvent *event);
+
+	void on_doubleSpinBox_valueChanged(double arg1);
+
+	void on_doubleSpinBox_2_valueChanged(double arg1);
+
+	void on_doubleSpinBox_3_valueChanged(double arg1);
+
+	void on_doubleSpinBox_5_valueChanged(double arg1);
+
+	void on_doubleSpinBox_6_valueChanged(double arg1);
+
+	void on_doubleSpinBox_4_valueChanged(double arg1);
 
 signals:
 	void timerSignal();

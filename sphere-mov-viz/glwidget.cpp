@@ -12,7 +12,6 @@ GLWidget::GLWidget(QWidget *parent) : QOpenGLWidget(parent)
 	}
 
 	lights[0]->used = true;
-	lights[2]->direction = QVector4D(0.0f, 1.0f, 0.0f, 0.0f);
 
 	for (int i = 0; i < 10; i++) {
 		shadowBuffers.append(new ShadowBuffer(1024, 1024));
@@ -92,9 +91,13 @@ void GLWidget::delLight(QVector4D direction, float power)
 		}
 }
 
+void GLWidget::setFone(QColor clr)
+{
+	foneClr = QVector4D(clr.red()/255.0f, clr.green()/255.0f, clr.blue()/255.0f, 1.0f);
+}
+
 void GLWidget::initializeGL()
 {
-	context()->functions()->glClearColor(1.0f, 0.85f, 0.73f, 1.0f);
 	context()->functions()->glEnable(GL_DEPTH_TEST);
 	context()->functions()->glEnable(GL_CULL_FACE);
 
@@ -105,7 +108,6 @@ void GLWidget::initializeGL()
 													QOpenGLFramebufferObject::Depth);
 
 	materialProperties_t material = {0.1f, 0.9f, 10.0f};
-
 	for (int i = 0; i < OBJ_NUMBER; i++)
 		objects.push_back(new BaseObject(objPaths[i], texturePaths[i], material));
 
@@ -174,6 +176,7 @@ void GLWidget::sendMaterialIntoShader(QOpenGLShaderProgram *program, int i)
 
 void GLWidget::paintGL()
 {
+	context()->functions()->glClearColor(foneClr.x(), foneClr.y(), foneClr.z(), 1.0f);
 	for (int i = 0; i < lights.size(); i++)
 		if (lights[i]->used == true)
 			getShadowMap(i, shadowTextures[i]);
@@ -190,7 +193,7 @@ void GLWidget::paintGL()
 	sendMaterialIntoShader(&shaderProgram, 0);
 	objects[0]->draw(&shaderProgram, context()->functions());
 	sendMaterialIntoShader(&shaderProgram, 1);
-	for (int i = 0; i < objects.size(); i++)
+	for (int i = 0; i < objects.size() && draw; i++)
 		objects[i]->draw(&shaderProgram, context()->functions());
 	shaderProgram.release();
 }
@@ -263,5 +266,23 @@ void GLWidget::wheelEvent(QWheelEvent *event)
 	event->accept();
 }
 
+QVector<Light *> GLWidget::getLights()
+{
+	return lights;
+}
 
+void GLWidget::setDraw(bool d)
+{
+	draw = d;
+}
 
+void GLWidget::setLights(QVector<Light *> l, int cur_l)
+{
+	lights = l;
+	cur_lights = cur_l;
+}
+
+int GLWidget::getCurLights()
+{
+	return cur_lights;
+}

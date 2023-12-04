@@ -31,6 +31,11 @@ public:
 	BaseObject *getObject(int ind);
 	void addLight(QVector3D direction, float power);
 	void delLight(QVector4D direction, float power);
+	void setFone(QColor clr);
+	QVector<Light *> getLights();
+	void setDraw(bool d);
+	void setLights(QVector<Light *> l, int cur_l);
+	int getCurLights();
 protected:
 	void initializeGL();
 	void resizeGL(int w, int h);
@@ -84,6 +89,8 @@ private:
 	};
 
 	int cur_lights = 1;
+	QVector4D foneClr = QVector4D(1.0f, 0.85f, 0.73f, 1.0f);
+	bool draw = true;
 };
 
 #endif // GLWIDGET_H

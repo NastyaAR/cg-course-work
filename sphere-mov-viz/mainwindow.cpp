@@ -5,6 +5,7 @@
 #include <QLayout>
 #include <QtMath>
 #include <cmath>
+#include <chrono>
 
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
@@ -34,6 +35,8 @@ MainWindow::MainWindow(QWidget *parent)
 	setLabel(ui->label_7, QString("/home/nastya/cg-course-work/textures/green.jpg"));
 	setLabel(ui->label_8, QString("/home/nastya/cg-course-work/textures/pink2.jpg"));
 	setLabel(ui->label_10, INIT_FONE);
+
+	this->setFocus();
 }
 
 MainWindow::~MainWindow()
@@ -156,6 +159,17 @@ void MainWindow::initState()
 	for (int i = 0; i < OBJ_NUMBER; i++)
 		matrixes[i].setToIdentity();
 
+	for (int i = 0; i < timers.size(); i++)
+		timers[i]->stop();
+
+	float arg1 = ui->spinBox->value();
+	sphereSpeed = arg1 / FPS;
+	sleep = 43 * 1000 / arg1;
+
+	initSwingSpeed = -60 / (138 / sphereSpeed);
+	for (int i = 0; i < OBJ_NUMBER - 1; i++)
+		swingSpeeds[i] = -60 / (138 / sphereSpeed);
+
 	swingMovement(matrixes[4], 157.5, RADIUS, -15.0);
 	oglw->getObject(4)->setGlobalTransform(matrixes[4]);
 
@@ -172,9 +186,9 @@ void MainWindow::initState()
 	oglw->getObject(0)->translate(QVector3D(0.0, SPHERE_Y, 0.0));
 
 	drives[0] = 0.000001;
-	drives[1] = -44.000001;
-	drives[2] = -29.000001;
-	drives[3] = -14.000001;
+	drives[1] = -45.000001;
+	drives[2] = -30.000001;
+	drives[3] = -15.000001;
 	flags[0] = true;
 	flags[1] = false;
 	flags[2] = false;
@@ -228,6 +242,10 @@ void MainWindow::on_pushButton_clicked()
 {
 	QString sphereTexturePath = QFileDialog::getOpenFileName(nullptr, "Выберите текстуру", "/home/nastya/cg-course-work/textures");
 	setLabel(ui->label_7, sphereTexturePath);
+	timer->stop();
+	oglw->getObject(0)->changeTexture(sphereTexturePath);
+	initState();
+	timer->start(1000 / FPS);
 }
 
 
@@ -235,6 +253,11 @@ void MainWindow::on_pushButton_2_clicked()
 {
 	QString swingTexturePath = QFileDialog::getOpenFileName(nullptr, "Выберите текстуру", "/home/nastya/cg-course-work/textures");
 	setLabel(ui->label_8, swingTexturePath);
+	timer->stop();
+	for (int i = 1; i < OBJ_NUMBER; i++)
+		oglw->getObject(i)->changeTexture(swingTexturePath);
+	initState();
+	timer->start(1000 / FPS);
 }
 
 
@@ -242,6 +265,10 @@ void MainWindow::on_pushButton_3_clicked()
 {
 	QColor clr = QColorDialog::getColor(INIT_FONE, nullptr, "Выберите цвет фона");
 	setLabel(ui->label_10, clr);
+	timer->stop();
+	oglw->setFone(clr);
+	initState();
+	timer->start(1000 / FPS);
 }
 
 void MainWindow::insertIntoTable(QVector3D direction, float power)
@@ -258,7 +285,6 @@ void MainWindow::insertIntoTable(QVector3D direction, float power)
 
 std::tuple<QVector4D, float> MainWindow::formSearchLight(int i)
 {
-	std::cout << i << std::endl;
 	QTableWidgetItem *dir = ui->tableWidget->item(i, 0);
 	QTableWidgetItem *pow = ui->tableWidget->item(i, 1);
 	QString dirStr = dir->text();
@@ -271,6 +297,21 @@ std::tuple<QVector4D, float> MainWindow::formSearchLight(int i)
 	return std::tuple(QVector4D(direction, 0.0).normalized(), power);
 }
 
+double MainWindow::measureTime()
+{
+	auto start = std::chrono::steady_clock::now();
+	double sum = 0;
+	for (int i = 0; i < N_REPS; i++) {
+		auto start = std::chrono::steady_clock::now();
+		oglw->update();
+		auto end = std::chrono::steady_clock::now();
+		std::chrono::duration<double> duration = end - start;
+		sum += duration.count();
+	}
+
+	return sum/N_REPS;
+}
+
 void MainWindow::on_pushButton_4_clicked()
 {
 	MyDialog dlg;
@@ -279,7 +320,8 @@ void MainWindow::on_pushButton_4_clicked()
 
 	timer->stop();
 	initState();
-	if (dlg.exec() == QDialog::Accepted) {
+	auto dlgAns = dlg.exec();
+	if (dlgAns == QDialog::Accepted) {
 		for (int i = 0; i < 4; i++) {
 			std::tie(values[i], ok) = dlg.getValue(i);
 			if (!ok)
@@ -288,6 +330,9 @@ void MainWindow::on_pushButton_4_clicked()
 		QVector3D direction(values[0], values[1], values[2]);
 		insertIntoTable(direction, values[3]);
 		oglw->addLight(direction, values[3]);
+		timer->start(1000 / FPS);
+	}
+	if (dlgAns == QDialog::Rejected) {
 		timer->start(1000 / FPS);
 	}
 }
@@ -308,4 +353,88 @@ void MainWindow::on_pushButton_5_clicked()
 	ui->tableWidget->removeRow(delRow);
 	timer->start(1000 / FPS);
 }
+
+
+void MainWindow::on_doubleSpinBox_valueChanged(double arg1)
+{
+	oglw->getObject(0)->changeMaterial(1, arg1);
+}
+
+
+void MainWindow::on_doubleSpinBox_2_valueChanged(double arg1)
+{
+	oglw->getObject(0)->changeMaterial(0, arg1);
+}
+
+
+void MainWindow::on_doubleSpinBox_3_valueChanged(double arg1)
+{
+	oglw->getObject(0)->changeMaterial(2, arg1);
+}
+
+
+void MainWindow::on_doubleSpinBox_5_valueChanged(double arg1)
+{
+	for (int i = 1; i < OBJ_NUMBER; i++)
+		oglw->getObject(i)->changeMaterial(1, arg1);
+}
+
+
+void MainWindow::on_doubleSpinBox_6_valueChanged(double arg1)
+{
+	for (int i = 1; i < OBJ_NUMBER; i++)
+		oglw->getObject(i)->changeMaterial(0, arg1);
+}
+
+
+void MainWindow::on_doubleSpinBox_4_valueChanged(double arg1)
+{
+	for (int i = 1; i < OBJ_NUMBER; i++)
+		oglw->getObject(i)->changeMaterial(2, arg1);
+}
+
+
+void MainWindow::keyPressEvent(QKeyEvent *event) {
+	if (event->key() == Qt::Key_Home) {
+		QVector<double> seconds;
+		timer->stop();
+		initState();
+		auto l = oglw->getLights();
+		auto c = oglw->getCurLights();
+		QVector<Light *> newLights;
+		int cur_lights = 0;
+		for (int i = 0; i < MAX_LIGHT_SOURCES; i++) {
+			newLights.append(new Light(DIRECTIONAL));
+			newLights[i]->Clr = QVector3D(1.0f, 1.0f, 1.0f);
+			newLights[i]->Power = 0.9;
+			newLights[i]->position = QVector4D(0.0f, 0.0f, 10.0f, 1.0f);
+			newLights[i]->direction = QVector4D(0.0f, -1.0f, 0.0f, 0.0f);
+			newLights[i]->used = false;
+		}
+		for (int i = 0; i < MAX_LIGHT_SOURCES; i++) {
+			newLights[i]->used = true;
+			cur_lights++;
+			oglw->setLights(newLights, cur_lights);
+			seconds.push_front(measureTime());
+		}
+		writeTime(seconds);
+		oglw->setLights(l, c);
+		timer->start(1000 / FPS);
+	}
+}
+
+void MainWindow::writeTime(QVector<double> seconds)
+{
+	std::ofstream outputFile;
+	outputFile.open("/home/nastya/cg-course-work/time.txt", std::ios::out | std::ios::app);
+
+	if (outputFile.is_open()) {
+		std::ostringstream oss;
+		std::copy(seconds.begin(), seconds.end() - 1, std::ostream_iterator<double>(oss, ", "));
+		std::string result = oss.str();
+		outputFile << result;
+		outputFile.close();
+	}
+}
+
 

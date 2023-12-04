@@ -26,6 +26,8 @@ public:
 
 	void draw(QOpenGLShaderProgram *program, QOpenGLFunctions *functions);
 	materialProperties_t getMaterial();
+	void changeTexture(const QString &texturePath);
+	void changeMaterial(int n, float val);
 protected:
 	void free();
 	void loadFromFile(const QString &filename);

@@ -102,6 +102,24 @@ materialProperties_t BaseObject::getMaterial()
 	return material;
 }
 
+void BaseObject::changeTexture(const QString &texturePath)
+{
+	delete texture;
+	texture = new QOpenGLTexture(QImage(texturePath).mirrored());
+	texture->setMinMagFilters(QOpenGLTexture::Nearest, QOpenGLTexture::Linear);
+	texture->setWrapMode(QOpenGLTexture::Repeat);
+}
+
+void BaseObject::changeMaterial(int n, float val)
+{
+	if (n == 0)
+		material.ambParam = val;
+	else if (n == 1)
+		material.diffParam = val;
+	else if (n == 2)
+		material.specParam = val;
+}
+
 void BaseObject::free()
 {
 	if (vertexesBuffer.isCreated()) {
