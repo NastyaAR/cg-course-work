@@ -1,0 +1,139 @@
+\chapter{Технологическая часть}
+
+В данном разделе представлены средства реализации и интерфейс разработанного программного обеспечения, а также приводятся листинги кода.
+
+\section{Средства реализации}
+
+В качестве языка программирования для реализации курсовой работы был выбран язык C++ с использованием OpenGL Framework, так как язык C++ предоставляет необходимые средства для реализации программы. OpenGL Framework обеспечивает удовлетворительную скорость генерации изображения, так как вычисления выполняются на графическом процессоре. Скорость генерации кадра особенно важна вследствие требования на частоту генерации кадра, которая составляет 30 кадров в секунду.
+
+В качестве среды разработки выбрана Qt Creator, так как она поддерживает язык C++ и имеет удобные средства для создания пользовательского интерфейса.
+
+\section{Листинг кода}
+
+В листинге \ref{lst:init} приведена инициализация окна OpenGL. В функции initializeGL с помощью вызова функции glEnable с параметром GL\_DEPTH\_TEST включается тест на глубину, то есть сравнение глубины текущей точки полигона и значения в буфере глубины. Также присутствует вызов функции glEnable с параметром GL\_CULL\_FACE для удаления невидимых задних граней.
+
+\pagebreak
+
+\begin{lstinputlisting}[
+	caption={Инициализация opengl-окна},
+	label={lst:init},
+	style={cpp},
+	linerange={99-115},
+	]{/home/nastya/cg-course-work/sphere-mov-viz/glwidget.cpp}
+\end{lstinputlisting}
+
+В листинге \ref{lst:paint} приведена реализация метода отрисовки кадра OpenGL.
+
+\begin{lstinputlisting}[
+	caption={Отрисовка кадра},
+	label={lst:paint},
+	style={cpp},
+	linerange={177-199},
+	]{/home/nastya/cg-course-work/sphere-mov-viz/glwidget.cpp}
+\end{lstinputlisting}
+
+В строках 3-4 происходит расчёт карт теней.
+
+В листингах \ref{lst:vert1}--\ref{lst:frag2} приведены основные вершинный и фрагментный шейдеры, участвующие в отрисовке изображения. Фрагментный шейдер обеспечивает закраску пикселей в соответствии с выбранными алгоритмами.
+
+\begin{lstinputlisting}[
+	caption={Вершинный шейдер},
+	label={lst:vert1},
+	style={cpp},
+	linerange={1-30},
+	]{/home/nastya/cg-course-work/sphere-mov-viz/vert.vsh}
+\end{lstinputlisting}
+
+\pagebreak
+
+\begin{lstinputlisting}[
+	caption={Фрагментный шейдер},
+	label={lst:frag1},
+	style={cpp},
+	linerange={1-47},
+	]{/home/nastya/cg-course-work/sphere-mov-viz/frag.fsh}
+\end{lstinputlisting}
+
+\begin{lstinputlisting}[
+	caption={Продолжение листинга \ref{lst:frag2}},
+	label={lst:frag2},
+	style={cpp},
+	linerange={48-78},
+	]{/home/nastya/cg-course-work/sphere-mov-viz/frag.fsh}
+\end{lstinputlisting}
+
+В листингах \ref{lst:shadow}--\ref{lst:shadow3} представлены листинги шейдеров, создающих карты теней.
+
+\begin{lstinputlisting}[
+	caption={Вершинный шейдер для создания карты теней},
+	label={lst:shadow},
+	style={cpp},
+	linerange={1-7},
+	]{/home/nastya/cg-course-work/sphere-mov-viz/shadows.vsh}
+\end{lstinputlisting}
+
+\begin{lstinputlisting}[
+	caption={Продолжение листинга \ref{lst:shadow}},
+	label={lst:shadow2},
+	style={cpp},
+	linerange={8-11},
+	]{/home/nastya/cg-course-work/sphere-mov-viz/shadows.vsh}
+\end{lstinputlisting}
+
+\begin{lstinputlisting}[
+	caption={Фрагментный шейдер для создания карты теней},
+	label={lst:shadow3},
+	style={cpp},
+	]{/home/nastya/cg-course-work/sphere-mov-viz/shadows.fsh}
+\end{lstinputlisting}
+
+В листинге \ref{lst:shadcreate} приведена функция, создающая текстуры, содержащие карты теней.
+
+\begin{lstinputlisting}[
+	caption={Создание текстур карт теней},
+	label={lst:shadcreate},
+	style={cpp},
+	linerange={74-92},
+	]{/home/nastya/cg-course-work/sphere-mov-viz/glwidget.cpp}
+\end{lstinputlisting}
+
+\section{Описание интерфейса программы}
+
+Демонстрация интерфейса программы приведена на рисунке \ref{img:int}.
+
+\img{100mm}{int}{Демонстрация интерфейса программы}
+
+Приложение можно запустить двумя способами: через среду Qt Creator или через терминал, выполнив команды \code{qmake}, \code{make} и \code{./sphere-mov-viz}.
+
+При запуске приложения визуализация запускается со значениями параметров по умолчанию.
+
+Оптические свойства объектов можно варьировать с помощью полей ввода со спиннером, скорость шарика также регулируется с помощью данных полей ввода.
+
+Чтобы изменить текстуры шарика и качелей, необходимо нажать на кнопки, представленные на рисунке \ref{img:but1}.
+
+\img{40mm}{but1}{Кнопки выбора текстур}
+\pagebreak
+
+Нажатие первых двух кнопок, представленных на рисунке \ref{img:but1}, приводит к появлению окна выбора текстуры --- рисунок \ref{img:choice1}.
+
+\img{100mm}{choice1}{Окно выбора текстуры}
+\pagebreak
+
+Нажатие на кнопку выбора цвета фона приводит к появлению соответствующего окна --- рисунок \ref{img:choice2}.
+
+\img{100mm}{choice2}{Окно выбора цвета фона}
+
+Добавление и удаление источника света происходит с помощью кнопок, представленных на рисунке \ref{img:but2}.
+
+\img{20mm}{but2}{Кнопки добавления и удаления источника света}
+\pagebreak
+
+Нажатие кнопки, отвечающей за добавление источника, приводит к появлению окна для ввода значений --- рисунок \ref{img:w3}.
+
+\img{70mm}{w3}{Окно ввода значений}
+
+Удаление источника света производится нажатием на соответствующую строку таблицы и нажатием кнопки «Удалить источник».
+
+\section*{Вывод}
+
+В данном разделе были выбраны средства реализации, приведены листинги кода и был описан интерфейс программы.

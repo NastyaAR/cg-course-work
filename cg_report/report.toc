@@ -1,0 +1,28 @@
+\babel@toc {russian}{}\relax 
+\contentsline {chapter}{ВВЕДЕНИЕ}{3}{chapter*.2}%
+\contentsline {chapter}{\numberline {1}Аналитический раздел}{4}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Формализация объектов синтезируемой сцены}{4}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Анализ способов задания трёхмерных объектов}{4}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Анализ алгоритмов удаления невидимых ребер и поверхностей}{6}{section.1.3}%
+\contentsline {subsection}{\numberline {1.3.1}Алгоритм плавающего горизонта}{7}{subsection.1.3.1}%
+\contentsline {subsection}{\numberline {1.3.2}Алгоритм, использующий Z-буфер}{8}{subsection.1.3.2}%
+\contentsline {subsection}{\numberline {1.3.3}Алгоритм трассировки лучей}{10}{subsection.1.3.3}%
+\contentsline {subsection}{\numberline {1.3.4}Алгоритм Робертса}{14}{subsection.1.3.4}%
+\contentsline {subsection}{\numberline {1.3.5}Алгоритм Варнока}{15}{subsection.1.3.5}%
+\contentsline {subsection}{\numberline {1.3.6}Алгоритм Вейлера-Азертона}{18}{subsection.1.3.6}%
+\contentsline {section}{\numberline {1.4}Анализ алгоритмов закрашивания}{19}{section.1.4}%
+\contentsline {subsection}{\numberline {1.4.1}Простая закраска}{20}{subsection.1.4.1}%
+\contentsline {subsection}{\numberline {1.4.2}Закраска методом Гуро}{22}{subsection.1.4.2}%
+\contentsline {subsection}{\numberline {1.4.3}Закраска методом Фонга}{23}{subsection.1.4.3}%
+\contentsline {subsection}{\numberline {1.4.4}Функциональная модель программы}{25}{subsection.1.4.4}%
+\contentsline {chapter}{\numberline {2}Конструкторская часть}{27}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Требования к программному обеспечению}{27}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Функциональная модель программы первого уровня в нотации idef0}{28}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Структуры данных}{29}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Схема алгоритма, использующего \newline Z-буфер}{29}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Схема алгоритма построения карты теней}{30}{section.2.5}%
+\contentsline {section}{\numberline {2.6}Схема алгоритма закраски Гуро с моделью освещения Фонга}{31}{section.2.6}%
+\contentsline {chapter}{\numberline {3}Технологическая часть}{33}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Средства реализации}{33}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Листинг кода}{33}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Описание интерфейса программы}{40}{section.3.3}%
