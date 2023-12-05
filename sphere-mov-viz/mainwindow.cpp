@@ -398,10 +398,9 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
 		timer->stop();
 		initState();
 		auto l = oglw->getLights();
-		auto c = oglw->getCurLights();
 		auto seconds = research();
 		writeTime(seconds);
-		oglw->setLights(l, c);
+		oglw->setLights(l);
 		timer->start(1000 / FPS);
 	}
 }
@@ -424,7 +423,6 @@ QVector<double> MainWindow::research()
 {
 	QVector<double> seconds;
 	QVector<Light *> newLights;
-	int cur_lights = 0;
 	for (int i = 0; i < MAX_LIGHT_SOURCES; i++) {
 		newLights.append(new Light(DIRECTIONAL));
 		newLights[i]->setClr(QVector3D(1.0f, 1.0f, 1.0f));
@@ -435,8 +433,7 @@ QVector<double> MainWindow::research()
 	}
 	for (int i = 0; i < MAX_LIGHT_SOURCES; i++) {
 		newLights[i]->setUsed(true);
-		cur_lights++;
-		oglw->setLights(newLights, cur_lights);
+		oglw->setLights(newLights);
 		seconds.push_front(measureTime());
 	}
 	for (int i = 0; i < MAX_LIGHT_SOURCES; i++)

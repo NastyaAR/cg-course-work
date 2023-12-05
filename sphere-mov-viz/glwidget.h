@@ -34,7 +34,7 @@ public:
 	void setFone(QColor clr);
 	QVector<Light *> getLights();
 	void setDraw(bool d);
-	void setLights(QVector<Light *> l, int cur_l);
+	void setLights(QVector<Light *> l);
 	int getCurLights();
 protected:
 	void initializeGL();
@@ -88,7 +88,7 @@ private:
 		"/home/nastya/cg-course-work/objects/5.obj",
 	};
 
-	int cur_lights = 1;
+//	int cur_lights = 1;
 	QVector4D foneClr = QVector4D(1.0f, 0.85f, 0.73f, 1.0f);
 	bool draw = true;
 };

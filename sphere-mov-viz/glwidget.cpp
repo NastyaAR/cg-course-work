@@ -63,7 +63,6 @@ void GLWidget::addLight(QVector3D direction, float power)
 	lights[ind]->setUsed(true);
 	lights[ind]->setDirect(QVector4D(direction, 0.0));
 	lights[ind]->setPower(power);
-	cur_lights++;
 }
 
 static bool areVectorsEqual(const QVector4D vec1, const QVector4D vec2)
@@ -86,7 +85,6 @@ void GLWidget::delLight(QVector4D direction, float power)
 		if (lights[i]->getUsed() == true && areVectorsEqual(lights[i]->getDirect(), direction)
 				&& qFuzzyCompare(lights[i]->getPower(), power)) {
 			lights[i]->setUsed(false);
-			cur_lights--;
 			break;
 		}
 }
@@ -185,8 +183,8 @@ void GLWidget::paintGL()
 	shaderProgram.bind();
 	sendLightsIntoShader(&shaderProgram);
 	cam->set(&shaderProgram);
-	shaderProgram.setUniformValue("numberLights", cur_lights);
-	shaderProgram.setUniformValue("numberShadows", cur_lights);
+	shaderProgram.setUniformValue("numberLights", getCurLights());
+	shaderProgram.setUniformValue("numberShadows", getCurLights());
 	shaderProgram.setUniformValue("qt_ProjectionLightMatrix", projectionLightMatrix);
 	sendShadowIntoShader(&shaderProgram);
 	shaderProgram.setUniformValue("qt_ProjectionMatrix", projectionMatrix);
@@ -276,13 +274,17 @@ void GLWidget::setDraw(bool d)
 	draw = d;
 }
 
-void GLWidget::setLights(QVector<Light *> l, int cur_l)
+void GLWidget::setLights(QVector<Light *> l)
 {
 	lights = l;
-	cur_lights = cur_l;
 }
 
 int GLWidget::getCurLights()
 {
-	return cur_lights;
+	int cnt = 0;
+	for (int i = 0; i < lights.size(); i++) {
+		if (lights[i]->getUsed() == true)
+			cnt++;
+	}
+	return cnt;
 }
