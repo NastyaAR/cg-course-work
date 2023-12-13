@@ -36,6 +36,7 @@ public:
 	void setDraw(bool d);
 	void setLights(QVector<Light *> l);
 	int getCurLights();
+	void drawing();
 protected:
 	void initializeGL();
 	void resizeGL(int w, int h);
@@ -88,7 +89,6 @@ private:
 		"/home/nastya/cg-course-work/objects/5.obj",
 	};
 
-//	int cur_lights = 1;
 	QVector4D foneClr = QVector4D(1.0f, 0.85f, 0.73f, 1.0f);
 	bool draw = true;
 };

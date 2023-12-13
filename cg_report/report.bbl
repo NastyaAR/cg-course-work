@@ -1,4 +1,4 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 \def\selectlanguageifdefined#1{
 \expandafter\ifx\csname date#1\endcsname\relax
 \else\language\csname l@#1\endcsname\fi}
@@ -7,11 +7,75 @@
 \ifx\undefined\BibAnnote\long\def\BibAnnote#1{(#1)}\else\fi
 \ifx\undefined\BibEmph\def\BibEmph#1{\emph{#1}}\else\fi
 
-\bibitem{golang}
+\bibitem{rodjers}
 \selectlanguageifdefined{russian}
-The Go Programming Language [Электронный ресурс].
-\newblock Режим доступа: \url{https://golang.org/} (дата
-  обращения: 15.09.2023).
+Rogers~David~F. Алгоритмические основы машинной
+  графики.
+\newblock --- М.: Мир, 1989.
+\newblock {с.}~512.
+
+\bibitem{geom}
+\selectlanguageifdefined{russian}
+А~Никулин~Е. Компьютерная геометрия и
+  алгоритмы машинной графики.
+\newblock --- СПб.: БХВ-Петербург, 2003.
+\newblock {с.}~560.
+
+\bibitem{cg}
+\selectlanguageifdefined{russian}
+В~Боресков~А. Программирование
+  компьютерной графики.
+\newblock --- М.: ДМК-Пресс, 2019.
+\newblock {с.}~372.
+
+\bibitem{rt}
+\selectlanguageifdefined{russian}
+Обратная трассировка лучей --- Обзор при
+  поддержке Лаборатории компьтерной
+  графики и мультимедия ф-та ВМК МГУ
+  [Электронный ресурс].
+\newblock Режим доступа:
+  \url{http://ray-tracing.ru/articles164.html} (дата обращения:
+  11.12.2023).
+
+\bibitem{light}
+\selectlanguageifdefined{russian}
+Г~Задорожный~А. Модели освещения и
+  алгоритмы затенения в компьютерной
+  графике.
+\newblock --- Новосибирск: Изд-во НГТУ, 2020.
+\newblock {с.}~80.
+
+\bibitem{varnok}
+\selectlanguageifdefined{russian}
+Абрамова О.~Ф.~Никонова Н.~С. Сравнительный
+  анализ алгоритмов удаления невидимых
+  линий и поверхностей, работающих в
+  пространстве изображения~// NOVAINFO :
+  электрон. науч. журн. 2015. URL:  \url{http://novainfo.ru}
+  (дата обращения: 11.12.2023).
+
+\bibitem{shadow}
+\selectlanguageifdefined{russian}
+Романюк А.~Н.~Куринный М.~В. Алгоритмы
+  построения теней~// КОМПЬЮТЕРЫ+ПРОГРАММЫ :
+  науч. журн. 2000.
+
+\bibitem{shadow2}
+\selectlanguageifdefined{russian}
+В.~Гиль~С. Использование карты глубины для
+  построения областей видимости.
+\newblock --- Кафедра информатики БГУИР, 2014.
+\newblock {с.}~3.
+
+\bibitem{fps}
+\selectlanguageifdefined{russian}
+Мустафин М.~Б.~Тypap O.~Н.~Ахмед-Заки Д.~Ж.
+  Тестирование визуализации Vulkan для
+  геомоделей на системах с графическими
+  процессорами для трассировки лучей. URL:
+  \url{https://journal.neark.kz/wp-content/uploads/pdf/2020-3/6-%D0%A2%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5%20%D0%B2%D0%B8%D0%B7%D1%83%D0%B0%D0%BB%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8%20VULKAN.pdf}
+  (дата обращения: 12.12.2023).
 
 \bibitem{ubuntu}
 \selectlanguageifdefined{russian}
@@ -25,11 +89,5 @@ Linux --- Официальная документация
 AMD Processors [Электронный ресурс].
 \newblock Режим доступа: \url{https://www.amd.com/en.html}
   (дата обращения: 15.09.2023).
-
-\bibitem{syscall}
-\selectlanguageifdefined{russian}
-Пакeт syscall [Электронный ресурс].
-\newblock Режим доступа: \url{https://pkg.go.dev/syscall} (дата
-  обращения: 15.09.2023).
 
 \end{thebibliography}

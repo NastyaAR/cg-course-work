@@ -1,4 +1,4 @@
-QT       += core gui opengl
+QT       += core gui opengl testlib
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -15,7 +15,9 @@ SOURCES += \
     glwidget.cpp \
     light.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    testcamera.cpp \
+    testlight.cpp
 
 HEADERS += \
     baseobject.h \
@@ -25,7 +27,10 @@ HEADERS += \
     light.h \
     mainwindow.h \
     mydialog.h \
-    structures.h
+    structures.h \
+    testcamera.h \
+    testlight.h
+
 
 FORMS += \
     mainwindow.ui
@@ -34,8 +39,6 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
-
-DISTFILES +=
 
 RESOURCES += \
     shaders.qrc

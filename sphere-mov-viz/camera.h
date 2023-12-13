@@ -19,6 +19,11 @@ public:
 	void scale(const float &s);
 	void setGlobalTransform(const QMatrix4x4 &gt);
 
+	float getScale();
+	QQuaternion getRotation();
+	QVector3D getTransposition();
+	QMatrix4x4 getGLTransform();
+
 protected:
 	void update();
 

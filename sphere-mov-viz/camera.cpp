@@ -48,6 +48,21 @@ void Camera::setGlobalTransform(const QMatrix4x4 &gt)
 	update();
 }
 
+float Camera::getScale()
+{
+	return scaleFactor;
+}
+
+QQuaternion Camera::getRotation()
+{
+	return rotation;
+}
+
+QVector3D Camera::getTransposition()
+{
+	return transposition;
+}
+
 void Camera::update()
 {
 	rotation = rotationX * rotationY;

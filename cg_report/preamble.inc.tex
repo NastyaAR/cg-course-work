@@ -8,10 +8,15 @@
 
 \usepackage{libertinus}
 \usepackage{newtxmath}
+\usepackage[bottom]{footmisc}
+
+\usepackage{floatrow}
 
 \usepackage{caption}
 \captionsetup{labelsep=endash}
 \captionsetup[figure]{name={Рисунок}}
+\DeclareCaptionFormat{leftalign}{\raggedright#1#2#3\par}
+\captionsetup[lstlisting]{format=leftalign, singlelinecheck=false}
 
 \usepackage{amsmath}
 \usepackage{booktabs}
@@ -186,10 +191,15 @@
 	\end{figure}
 }
 
-\newcommand{\tableimg}[3] {
-	\begin{table}[h!]
+\usepackage{float}
+
+\newcommand{\tableimg}[3]{%
+	\begin{table}[H]
+		\captionsetup{singlelinecheck=false, justification=raggedright, position=top}
 		\caption{#3}
-		\centering{\includegraphics[height=#1]{inc/img/#2}}
+		\begin{tabular}{@{}l@{}}
+			\includegraphics[height=#1]{inc/img/#2}
+		\end{tabular}
 		\label{tbl:#2}
 	\end{table}
 }
@@ -202,6 +212,7 @@
 	\end{figure}
 }
 
+
 \usepackage[justification=centering]{caption} % Настройка подписей float объектов
 
 \usepackage[unicode,pdftex]{hyperref} % Ссылки в pdf
@@ -211,6 +222,4 @@
 
 \newcommand{\code}[1]{\texttt{#1}}
 
-\DeclareCaptionFormat{leftalign}{\raggedright#1#2#3\par}
-\captionsetup[lstlisting]{format=leftalign, singlelinecheck=false}
 

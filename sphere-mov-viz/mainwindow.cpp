@@ -302,9 +302,9 @@ double MainWindow::measureTime()
 	double sum = 0;
 	for (int i = 0; i < N_REPS; i++) {
 		auto start = std::chrono::steady_clock::now();
-		oglw->update();
+		oglw->drawing();
 		auto end = std::chrono::steady_clock::now();
-		std::chrono::duration<double> duration = end - start;
+		std::chrono::duration<double, std::nano> duration = end - start;
 		sum += duration.count();
 	}
 
@@ -405,23 +405,25 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
 	}
 }
 
-void MainWindow::writeTime(QVector<double> seconds)
+void MainWindow::writeTime(std::vector<double> seconds)
 {
 	std::ofstream outputFile;
 	outputFile.open("/home/nastya/cg-course-work/time.txt", std::ios::out | std::ios::app);
 
 	if (outputFile.is_open()) {
 		std::ostringstream oss;
-		std::copy(seconds.begin(), seconds.end() - 1, std::ostream_iterator<double>(oss, ", "));
+		std::copy(seconds.begin(), seconds.end(), std::ostream_iterator<double>(oss, ", "));
 		std::string result = oss.str();
 		outputFile << result;
 		outputFile.close();
 	}
 }
 
-QVector<double> MainWindow::research()
+std::vector<double> MainWindow::research()
 {
-	QVector<double> seconds;
+	std::vector<double> seconds;
+	for (int i = 0; i < MAX_LIGHT_SOURCES; i++)
+		seconds.push_back(0);
 	QVector<Light *> newLights;
 	for (int i = 0; i < MAX_LIGHT_SOURCES; i++) {
 		newLights.append(new Light(DIRECTIONAL));
@@ -434,7 +436,7 @@ QVector<double> MainWindow::research()
 	for (int i = 0; i < MAX_LIGHT_SOURCES; i++) {
 		newLights[i]->setUsed(true);
 		oglw->setLights(newLights);
-		seconds.push_front(measureTime());
+		seconds[i] = measureTime();
 	}
 	for (int i = 0; i < MAX_LIGHT_SOURCES; i++)
 		delete newLights[i];

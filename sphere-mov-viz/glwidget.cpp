@@ -172,12 +172,21 @@ void GLWidget::sendMaterialIntoShader(QOpenGLShaderProgram *program, int i)
 	program->setUniformValue("diffParam", objects[i]->getMaterial().diffParam);
 }
 
+#include <iostream>
+
+void GLWidget::drawing()
+{
+	this->paintGL();
+}
+
 void GLWidget::paintGL()
 {
 	context()->functions()->glClearColor(foneClr.x(), foneClr.y(), foneClr.z(), 1.0f);
 	for (int i = 0; i < lights.size(); i++)
-		if (lights[i]->getUsed() == true)
+		if (lights[i]->getUsed() == true) {
+			std::cout << i << std::endl;
 			getShadowMap(i, shadowTextures[i]);
+		}
 	context()->functions()->glViewport(0, 0, this->width(), this->height());
 	context()->functions()->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	shaderProgram.bind();
@@ -277,6 +286,7 @@ void GLWidget::setDraw(bool d)
 void GLWidget::setLights(QVector<Light *> l)
 {
 	lights = l;
+	std::cout << "set\n";
 }
 
 int GLWidget::getCurLights()
