@@ -100,6 +100,8 @@ private:
 										-60 / (138 / sphereSpeed),
 										-60 / (138 / sphereSpeed)};
 	float initSwingSpeed = -60 / (138 / sphereSpeed);
+
+	int numbImg = 1;
 };
 
 #endif // MAINWINDOW_H

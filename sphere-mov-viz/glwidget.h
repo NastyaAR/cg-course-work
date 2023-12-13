@@ -21,6 +21,7 @@
 #define SPHERE_Y -0.65
 #define OBJ_NUMBER 5
 
+
 class GLWidget : public QOpenGLWidget
 {
 	Q_OBJECT
@@ -37,6 +38,7 @@ public:
 	void setLights(QVector<Light *> l);
 	int getCurLights();
 	void drawing();
+	void saveOpenGLImage(const char* filename);
 protected:
 	void initializeGL();
 	void resizeGL(int w, int h);
@@ -91,6 +93,8 @@ private:
 
 	QVector4D foneClr = QVector4D(1.0f, 0.85f, 0.73f, 1.0f);
 	bool draw = true;
+
+	BaseObject *staticCil;
 };
 
 #endif // GLWIDGET_H

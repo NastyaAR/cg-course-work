@@ -403,6 +403,11 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
 		oglw->setLights(l);
 		timer->start(1000 / FPS);
 	}
+	else if (event->key() == Qt::Key_T) {
+		std::ostringstream oss1;
+		oss1 << "../images/img" << numbImg++ << ".jpg";
+		oglw->saveOpenGLImage(oss1.str().data());
+	}
 }
 
 void MainWindow::writeTime(std::vector<double> seconds)

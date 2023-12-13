@@ -39,7 +39,6 @@ public:
 		QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
 		layout->addWidget(buttonBox, 2, 0, 1, 6);
 
-		// Соединяем сигналы кнопок с соответствующими слотами
 		connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
 		connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 

@@ -21,6 +21,8 @@ GLWidget::GLWidget(QWidget *parent) : QOpenGLWidget(parent)
 
 	cam = new Camera;
 	cam->transpose(QVector3D(0.0f, 0.0f, -10.0f));
+
+
 }
 
 GLWidget::~GLWidget()
@@ -38,6 +40,8 @@ GLWidget::~GLWidget()
 	for (int i = 0; i < objects.size(); i++) {
 		delete objects[i];
 	}
+
+	delete staticCil;
 }
 
 QVector<BaseObject *> GLWidget::getObjects()
@@ -110,6 +114,9 @@ void GLWidget::initializeGL()
 		objects.push_back(new BaseObject(objPaths[i], texturePaths[i], material));
 
 	objects[0]->translate(QVector3D(0.0, SPHERE_Y, 0.0));
+	staticCil = new BaseObject("/home/nastya/cg-course-work/objects/cil.obj",
+						   "/home/nastya/cg-course-work/textures/lpink.jpg",
+						   material);
 }
 
 void GLWidget::resizeGL(int w, int h)
@@ -202,6 +209,7 @@ void GLWidget::paintGL()
 	sendMaterialIntoShader(&shaderProgram, 1);
 	for (int i = 0; i < objects.size() && draw; i++)
 		objects[i]->draw(&shaderProgram, context()->functions());
+	staticCil->draw(&shaderProgram, context()->functions());
 	shaderProgram.release();
 }
 
@@ -286,7 +294,6 @@ void GLWidget::setDraw(bool d)
 void GLWidget::setLights(QVector<Light *> l)
 {
 	lights = l;
-	std::cout << "set\n";
 }
 
 int GLWidget::getCurLights()
@@ -297,4 +304,10 @@ int GLWidget::getCurLights()
 			cnt++;
 	}
 	return cnt;
+}
+
+void GLWidget::saveOpenGLImage(const char* filename)
+{
+	QImage screenshot = grab().toImage();
+	screenshot.save(filename);
 }
