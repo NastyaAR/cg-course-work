@@ -402,7 +402,7 @@
          </column>
          <item row="0" column="0">
           <property name="text">
-           <string>(0, -1, 0)</string>
+           <string>(0, -1, 1)</string>
           </property>
          </item>
          <item row="0" column="1">

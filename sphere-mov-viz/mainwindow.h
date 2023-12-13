@@ -90,6 +90,7 @@ private:
 	QVector<QMatrix4x4> matrixes;
 	float drives[OBJ_NUMBER - 1] = {0.000001, -45.000001,
 								   -30.000001, -15.000001};
+	float degrees[OBJ_NUMBER - 1] = {22.5, 67.5, 112.5, 157.5};
 	bool flags[OBJ_NUMBER - 1] = {true, false,
 								 false, false};
 

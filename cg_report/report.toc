@@ -9,30 +9,32 @@
 \contentsline {subsection}{\numberline {1.4.2}Алгоритм, использующий Z-буфер}{9}{subsection.1.4.2}%
 \contentsline {subsection}{\numberline {1.4.3}Алгоритм трассировки лучей}{10}{subsection.1.4.3}%
 \contentsline {subsection}{\numberline {1.4.4}Алгоритм Робертса}{12}{subsection.1.4.4}%
-\contentsline {subsection}{\numberline {1.4.5}Алгоритм Варнока}{14}{subsection.1.4.5}%
-\contentsline {subsection}{\numberline {1.4.6}Алгоритм Вейлера-Азертона}{16}{subsection.1.4.6}%
-\contentsline {section}{\numberline {1.5}Алгоритм построения теней}{17}{section.1.5}%
+\contentsline {subsection}{\numberline {1.4.5}Алгоритм Варнока}{13}{subsection.1.4.5}%
+\contentsline {subsection}{\numberline {1.4.6}Алгоритм Вейлера-Азертона}{15}{subsection.1.4.6}%
+\contentsline {section}{\numberline {1.5}Анализ алгоритмов построения теней}{17}{section.1.5}%
 \contentsline {subsection}{\numberline {1.5.1}Алгоритм построения карты теней}{18}{subsection.1.5.1}%
-\contentsline {section}{\numberline {1.6}Анализ алгоритмов закрашивания}{19}{section.1.6}%
+\contentsline {section}{\numberline {1.6}Анализ алгоритмов закрашивания}{18}{section.1.6}%
 \contentsline {subsection}{\numberline {1.6.1}Простая закраска}{19}{subsection.1.6.1}%
-\contentsline {subsection}{\numberline {1.6.2}Закраска методом Гуро}{21}{subsection.1.6.2}%
-\contentsline {subsection}{\numberline {1.6.3}Закраска методом Фонга}{22}{subsection.1.6.3}%
-\contentsline {chapter}{\numberline {2}Конструкторская часть}{25}{chapter.2}%
-\contentsline {section}{\numberline {2.1}Требования к программному \newline обеспечению}{25}{section.2.1}%
-\contentsline {section}{\numberline {2.2}Функциональная модель программы \newline первого уровня в нотации idef0}{26}{section.2.2}%
-\contentsline {section}{\numberline {2.3}Структуры данных}{27}{section.2.3}%
-\contentsline {section}{\numberline {2.4}Схема алгоритма, использующего \newline Z-буфер}{27}{section.2.4}%
-\contentsline {section}{\numberline {2.5}Схема алгоритма построения карты \newline теней}{28}{section.2.5}%
-\contentsline {section}{\numberline {2.6}Схема алгоритма закраски Гуро с \newline моделью освещения Фонга}{29}{section.2.6}%
-\contentsline {chapter}{\numberline {3}Технологическая часть}{31}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Средства реализации}{31}{section.3.1}%
-\contentsline {section}{\numberline {3.2}Реализация алгоритмов}{31}{section.3.2}%
-\contentsline {section}{\numberline {3.3}Тестирование}{37}{section.3.3}%
-\contentsline {section}{\numberline {3.4}Описание интерфейса программы}{38}{section.3.4}%
-\contentsline {chapter}{\numberline {4}Исследовательская часть}{42}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Технические характеристики}{42}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Объект исследования}{42}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Условия исследования}{42}{section.4.3}%
-\contentsline {section}{\numberline {4.4}Измерение времени отрисовки кадра}{43}{section.4.4}%
-\contentsline {chapter}{ЗАКЛЮЧЕНИЕ}{45}{chapter*.24}%
-\contentsline {chapter}{CПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ}{46}{chapter*.24}%
+\contentsline {subsection}{\numberline {1.6.2}Закраска методом Гуро}{20}{subsection.1.6.2}%
+\contentsline {subsection}{\numberline {1.6.3}Закраска методом Фонга}{21}{subsection.1.6.3}%
+\contentsline {chapter}{\numberline {2}Конструкторская часть}{24}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Требования к программному \newline обеспечению}{24}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Функциональная модель программы \newline первого уровня в нотации idef0}{25}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Структуры данных}{26}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Схема алгоритма, использующего \newline Z-буфер}{26}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Схема алгоритма построения карты \newline теней}{27}{section.2.5}%
+\contentsline {section}{\numberline {2.6}Схема алгоритма закраски Гуро с \newline моделью освещения Фонга}{28}{section.2.6}%
+\contentsline {chapter}{\numberline {3}Технологическая часть}{30}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Средства реализации}{30}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Примеры реализации программного\newline обеспечения}{30}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Примеры описания структур данных}{30}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Примеры реализации функций}{33}{subsection.3.2.2}%
+\contentsline {section}{\numberline {3.3}Тестирование}{38}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Описание интерфейса программы}{39}{section.3.4}%
+\contentsline {chapter}{\numberline {4}Исследовательская часть}{43}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Технические характеристики}{43}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Объект исследования}{43}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Условия исследования}{43}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Измерение времени отрисовки кадра}{44}{section.4.4}%
+\contentsline {chapter}{ЗАКЛЮЧЕНИЕ}{46}{chapter*.24}%
+\contentsline {chapter}{CПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ}{47}{chapter*.24}%

@@ -11,7 +11,8 @@ class Camera
 {
 public:
 	Camera();
-	void set(QOpenGLShaderProgram* program, QOpenGLFunctions*functions = nullptr);
+	void set(QOpenGLShaderProgram* program,
+			 QOpenGLFunctions*functions = nullptr);
 	void rotate(const QQuaternion &rt);
 	void rotateX(const QQuaternion &rtx);
 	void rotateY(const QQuaternion &rty);

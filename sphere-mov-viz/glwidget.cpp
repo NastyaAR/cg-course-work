@@ -7,7 +7,7 @@ GLWidget::GLWidget(QWidget *parent) : QOpenGLWidget(parent)
 		lights[i]->setClr(QVector3D(1.0f, 1.0f, 1.0f));
 		lights[i]->setPower(0.9);
 		lights[i]->setPos(QVector4D(0.0f, 0.0f, 10.0f, 1.0f));
-		lights[i]->setDirect(QVector4D(0.0f, -1.0f, 0.0f, 0.0f));
+		lights[i]->setDirect(QVector4D(0.0f, -1.0f, 1.0f, 0.0f));
 		lights[i]->setUsed(false);
 	}
 
@@ -138,7 +138,6 @@ void GLWidget::getShadowMap(int ind, int textInd)
 	for (auto obj : objects)
 		obj->draw(&shadowShaderProgram, context()->functions());
 	shadowShaderProgram.release();
-
 	shadowBuffers[ind]->shadowBuff->release();
 
 	GLuint shadowTexture = shadowBuffers[ind]->shadowBuff->texture();
@@ -179,8 +178,6 @@ void GLWidget::sendMaterialIntoShader(QOpenGLShaderProgram *program, int i)
 	program->setUniformValue("diffParam", objects[i]->getMaterial().diffParam);
 }
 
-#include <iostream>
-
 void GLWidget::drawing()
 {
 	this->paintGL();
@@ -191,7 +188,6 @@ void GLWidget::paintGL()
 	context()->functions()->glClearColor(foneClr.x(), foneClr.y(), foneClr.z(), 1.0f);
 	for (int i = 0; i < lights.size(); i++)
 		if (lights[i]->getUsed() == true) {
-			std::cout << i << std::endl;
 			getShadowMap(i, shadowTextures[i]);
 		}
 	context()->functions()->glViewport(0, 0, this->width(), this->height());

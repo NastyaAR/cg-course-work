@@ -10,33 +10,82 @@
 
 Для тестирования компонент программного обеспечения был выбран модуль Qt Test, так как он интегрирован в Qt Framework и не требует установки дополнительного программного обеспечения.
 
-\section{Реализация алгоритмов}
+\section{Примеры реализации программного\newline обеспечения}
 
-В листинге \ref{lst:init} приведена инициализация окна OpenGL. В функции initializeGL с помощью вызова функции glEnable с параметром GL\_DEPTH\_TEST включается тест на глубину, то есть сравнение глубины текущей точки полигона и значения в буфере глубины. Также присутствует вызов функции glEnable с параметром GL\_CULL\_FACE для удаления невидимых задних граней.
+\subsection{Примеры описания структур данных}
 
+В листинге \ref{lst:vertex} приведено описание структуры данных \code{vertex\_t}, которая описывает вершину объекта сцены.\pagebreak
+
+\begin{lstinputlisting}[
+	caption={Структура, описывающая вершину объекта},
+	label={lst:vertex},
+	style={cpp},
+	linerange={8-16},
+	]{/home/nastya/cg-course-work/sphere-mov-viz/structures.h}
+\end{lstinputlisting}
+
+В листинге \ref{lst:sh} приведено описание класса \code{ShadowBuffer} для реализации карт теней.
+
+\begin{lstinputlisting}[
+	caption={Класс для реализации карты теней},
+	label={lst:sh},
+	style={cpp},
+	linerange={18-27},
+	]{/home/nastya/cg-course-work/sphere-mov-viz/structures.h}
+\end{lstinputlisting}
+
+В листинге \ref{lst:mat} приведено описание структуры \code{materialProperties\_t}, хранящей оптические свойства материала объекта.
+
+\begin{lstinputlisting}[
+	caption={Структура, описывающая оптические свойства материала объекта},
+	label={lst:mat},
+	style={cpp},
+	linerange={29-34},
+	]{/home/nastya/cg-course-work/sphere-mov-viz/structures.h}
+\end{lstinputlisting}
+
+В листинге \ref{lst:obj} приведено описание класса \code{BaseObject}, представляющего изображаемый на сцене объект.\pagebreak
+
+\begin{lstinputlisting}[
+	caption={Класс, представляющий объект сцены},
+	label={lst:obj},
+	style={cpp},
+	linerange={13-58},
+	]{/home/nastya/cg-course-work/sphere-mov-viz/baseobject.h}
+\end{lstinputlisting}
+
+\subsection{Примеры реализации функций}
+
+В листинге \ref{lst:timer} приведена реализация функции-обработчика сигнала таймера, при помощи которой происходит генерация очередного кадра.
+
+\begin{lstinputlisting}[
+	caption={Обработчик сигнала таймера},
+	label={lst:timer},
+	style={cpp},
+	linerange={95-114},
+	]{/home/nastya/cg-course-work/sphere-mov-viz/mainwindow.cpp}
+\end{lstinputlisting}
+
+В листингах \ref{lst:shadgen} --- \ref{lst:shadgen2} приведена реализация функции для создания текстур карты теней.
+
+\begin{lstinputlisting}[
+	caption={Функция для создания текстур карты теней},
+	label={lst:shadgen},
+	style={cpp},
+	linerange={129-140},
+	]{/home/nastya/cg-course-work/sphere-mov-viz/glwidget.cpp}
+\end{lstinputlisting}
 \pagebreak
 
 \begin{lstinputlisting}[
-	caption={Инициализация opengl-окна},
-	label={lst:init},
+	caption={Продолжение листинга \ref{lst:shadgen}},
+	label={lst:shadgen2},
 	style={cpp},
-	linerange={99-115},
+	linerange={143-145},
 	]{/home/nastya/cg-course-work/sphere-mov-viz/glwidget.cpp}
 \end{lstinputlisting}
 
-В листинге \ref{lst:paint} приведена реализация метода отрисовки кадра OpenGL.
-
-\begin{lstinputlisting}[
-	caption={Отрисовка кадра},
-	label={lst:paint},
-	style={cpp},
-	linerange={177-199},
-	]{/home/nastya/cg-course-work/sphere-mov-viz/glwidget.cpp}
-\end{lstinputlisting}
-
-В строках 3-4 происходит расчёт карт теней.
-
-В листингах \ref{lst:vert1}--\ref{lst:frag2} приведены основные вершинный и фрагментный шейдеры, участвующие в отрисовке изображения. Фрагментный шейдер обеспечивает закраску пикселей в соответствии с выбранными алгоритмами.
+В листингах \ref{lst:vert1}--\ref{lst:frag2} приведены основные части функции создания карты теней.
 
 \begin{lstinputlisting}[
 	caption={Вершинный шейдер},
@@ -112,7 +161,7 @@
 	label={lst:camtest1},
 	style={cpp},
 	linerange={5-17},
-	]{/home/nastya/cg-course-work/sphere-mov-viz/testing/UnitTesting/tst_cameratest.cpp}
+	]{/home/nastya/cg-course-work/sphere-mov-viz/testcamera.cpp}
 \end{lstinputlisting}
 
 \begin{lstinputlisting}[
@@ -120,7 +169,7 @@
 	label={lst:camtest2},
 	style={cpp},
 	linerange={38-45},
-	]{/home/nastya/cg-course-work/sphere-mov-viz/testing/UnitTesting/tst_cameratest.cpp}
+	]{/home/nastya/cg-course-work/sphere-mov-viz/testcamera.cpp}
 \end{lstinputlisting}
 
 Результат прохождения тестов представлен в листинге \ref{lst:res}:

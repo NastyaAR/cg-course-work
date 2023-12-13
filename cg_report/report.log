@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.7.16)  12 DEC 2023 15:07
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.7.16)  13 DEC 2023 18:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1541,7 +1541,7 @@ LaTeX Info: Redefining \nameref on input line 5.
 
 pdfTeX warning: /usr/bin/pdflatex (file ./inc/rpz.pdf): PDF inclusion: found PD
 F version <1.6>, but at most version <1.5> allowed
-<inc/rpz.pdf, id=155, 597.53635pt x 845.04686pt>
+<inc/rpz.pdf, id=163, 597.53635pt x 845.04686pt>
 File: inc/rpz.pdf Graphic file (type pdf)
 <use inc/rpz.pdf>
 Package pdftex.def Info: inc/rpz.pdf  used on input line 7.
@@ -1562,7 +1562,7 @@ F version <1.6>, but at most version <1.5> allowed
 
 pdfTeX warning: /usr/bin/pdflatex (file ./inc/rpz.pdf): PDF inclusion: found PD
 F version <1.6>, but at most version <1.5> allowed
-<inc/rpz.pdf, id=158, page=1, 597.53635pt x 845.04686pt>
+<inc/rpz.pdf, id=166, page=1, 597.53635pt x 845.04686pt>
 File: inc/rpz.pdf Graphic file (type pdf)
 <use inc/rpz.pdf, page 1>
 Package pdftex.def Info: inc/rpz.pdf , page1 used on input line 7.
@@ -1655,9 +1655,9 @@ Overfull \hbox (8.06651pt too wide) in paragraph at lines 8--9
  []
 
 
-Overfull \hbox (8.87173pt too wide) in paragraph at lines 14--15
-[]\T2A/LibertinusSerif-TLF/m/n/16 описать и про-ана-ли-зи-ро-вать ал-го-рит-мы 
-по-стро-е-ния те-ней, уда-
+Overfull \hbox (7.65437pt too wide) in paragraph at lines 14--15
+[]\T2A/LibertinusSerif-TLF/m/n/16 описать и про-ана-ли-зи-ро-вать спо-со-бы за-
+да-ния трјх-мер-ных объ-
  []
 
 ) [4
@@ -1677,16 +1677,16 @@ Overfull \hbox (10.2156pt too wide) in paragraph at lines 4--5
  []
 
 
-Overfull \hbox (10.2747pt too wide) in paragraph at lines 4--5
-\T2A/LibertinusSerif-TLF/m/n/16 диаграммы, дан об-зор ал-го-рит-мов по-стро-е-н
-ия те-ней, уда-ле-ния неви-
+Overfull \hbox (0.45067pt too wide) in paragraph at lines 4--5
+\T2A/LibertinusSerif-TLF/m/n/16 диаграммы, ана-лиз спо-со-бов за-да-ния трјх-ме
+р-ных объ-ек-тов, дан об-
  []
 
 LaTeX Font Info:    Font shape `T2A/LibertinusSerif-TLF/m/n' will be
 (Font)              scaled to size 20.74pt on input line 6.
 LaTeX Font Info:    Font shape `T2A/LibertinusSerif-TLF/b/n' will be
 (Font)              scaled to size 20.74pt on input line 6.
-<inc/img/idef02.pdf, id=249, 538.91719pt x 284.95172pt>
+<inc/img/idef02.pdf, id=260, 538.91719pt x 284.95172pt>
 File: inc/img/idef02.pdf Graphic file (type pdf)
 <use inc/img/idef02.pdf>
 Package pdftex.def Info: inc/img/idef02.pdf  used on input line 10.
@@ -1748,7 +1748,7 @@ LaTeX Font Info:    Font shape `OT1/LibertinusSerif-TLF/m/n' will be
 
 pdfTeX warning: /usr/bin/pdflatex (file ./inc/img/1.pdf): PDF inclusion: found 
 PDF version <1.7>, but at most version <1.5> allowed
-<inc/img/1.pdf, id=274, 430.67801pt x 128.26318pt>
+<inc/img/1.pdf, id=285, 430.67801pt x 128.26318pt>
 File: inc/img/1.pdf Graphic file (type pdf)
 <use inc/img/1.pdf>
 Package pdftex.def Info: inc/img/1.pdf  used on input line 56.
@@ -1782,7 +1782,7 @@ Overfull \hbox (7.99518pt too wide) in paragraph at lines 100--101
  []
 
 [9]
-<inc/img/trassing.pdf, id=330, 652.4375pt x 415.5525pt>
+<inc/img/trassing.pdf, id=341, 652.4375pt x 415.5525pt>
 File: inc/img/trassing.pdf Graphic file (type pdf)
 <use inc/img/trassing.pdf>
 Package pdftex.def Info: inc/img/trassing.pdf  used on input line 118.
@@ -1830,36 +1830,26 @@ Overfull \hbox (9.42569pt too wide) in paragraph at lines 163--164
 в сле-ду-ю-щем: объ-ек-ты про-
  []
 
-[12]
-Overfull \hbox (5.11517pt too wide) in paragraph at lines 183--184
-[]\T2A/LibertinusSerif-TLF/m/n/16 использовать ко-ге-рент-ность в про-стран-ств
-е (ис-поль-зо-вать про-
- []
-
-[13]
-<inc/img/varn.pdf, id=375, 1154.3125pt x 375.4025pt>
+[12] [13]
+<inc/img/varn.pdf, id=388, 1154.3125pt x 375.4025pt>
 File: inc/img/varn.pdf Graphic file (type pdf)
 <use inc/img/varn.pdf>
-Package pdftex.def Info: inc/img/varn.pdf  used on input line 208.
+Package pdftex.def Info: inc/img/varn.pdf  used on input line 202.
 (pdftex.def)             Requested size: 437.4456pt x 142.26378pt.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[14]
-Overfull \hbox (0.90031pt too wide) in paragraph at lines 214--215
+ [14 <./inc/img/varn.pdf>]
+Overfull \hbox (0.90031pt too wide) in paragraph at lines 208--209
 \T2A/LibertinusSerif-TLF/m/n/16 сив-но-стью или цве-том, а пло-щадь внут-ри мно
 -го-уголь-ни-ка, ко-
  []
 
-[15 <./inc/img/varn.pdf>]
-Overfull \hbox (3.37852pt too wide) in paragraph at lines 223--224
+
+Overfull \hbox (3.37852pt too wide) in paragraph at lines 217--218
 []\T2A/LibertinusSerif-TLF/m/n/16 Алгоритм Вейлера-Азертона по су-ти яв-ля-ет-с
 я мо-ди-фи-ка-ци-ей ал-
  []
 
-
-Overfull \hbox (9.61244pt too wide) in paragraph at lines 235--236
+[15]
+Overfull \hbox (9.61244pt too wide) in paragraph at lines 229--230
 []\T2A/LibertinusSerif-TLF/m/n/16 В таб-ли-це []1.2[] пред-став-ле-но срав-не-н
 ие ал-го-рит-мов уда-ле-ния неви-
  []
@@ -1868,64 +1858,71 @@ Overfull \hbox (9.61244pt too wide) in paragraph at lines 235--236
 
 pdfTeX warning: /usr/bin/pdflatex (file ./inc/img/t13.pdf): PDF inclusion: foun
 d PDF version <1.7>, but at most version <1.5> allowed
-<inc/img/t13.pdf, id=397, 785.05405pt x 502.36383pt>
+<inc/img/t13.pdf, id=408, 785.05405pt x 502.36383pt>
 File: inc/img/t13.pdf Graphic file (type pdf)
 <use inc/img/t13.pdf>
-Package pdftex.def Info: inc/img/t13.pdf  used on input line 237.
+Package pdftex.def Info: inc/img/t13.pdf  used on input line 231.
 (pdftex.def)             Requested size: 466.87936pt x 298.75394pt.
-[16]
-Overfull \hbox (4.43115pt too wide) in paragraph at lines 239--240
+
+Overfull \hbox (4.43115pt too wide) in paragraph at lines 233--234
 []\T2A/LibertinusSerif-TLF/m/n/16 Для вы-пол-не-ния кур-со-вой ра-бо-ты был вы-
 бран ал-го-ритм, ис-поль-
  []
 
-
-Overfull \hbox (2.32161pt too wide) in paragraph at lines 247--250
+[16 <./inc/img/t13.pdf>]
+Overfull \hbox (2.32161pt too wide) in paragraph at lines 241--244
 []\T2A/LibertinusSerif-TLF/m/n/16 К \T2A/LibertinusSerif-TLF/b/n/16 пер-во-му к
 лас-су \T2A/LibertinusSerif-TLF/m/n/16 от-но-сят-ся ал-го-рит-мы, ос-но-ван-ные
  на прин-
  []
 
 
-Overfull \hbox (3.7935pt too wide) in paragraph at lines 250--251
+Overfull \hbox (3.7935pt too wide) in paragraph at lines 244--245
 []\T2A/LibertinusSerif-TLF/m/n/16 Разделение по-верх-но-стей объ-ек-та на те-не
 -вые и нете-не-вые пло-
  []
 
-[17 <./inc/img/t13.pdf>] [18] [19]
-<inc/img/ex1.pdf, id=462, 202.088pt x 194.058pt>
+[17]
+Overfull \hbox (5.98314pt too wide) in paragraph at lines 266--267
+[]\T2A/LibertinusSerif-TLF/m/n/16 Для по-стро-е-ния те-ней был вы-бран ал-го-ри
+тм, ис-поль-зу-ю-щий кар-
+ []
+
+[18]
+<inc/img/ex1.pdf, id=466, 202.088pt x 194.058pt>
 File: inc/img/ex1.pdf Graphic file (type pdf)
 <use inc/img/ex1.pdf>
-Package pdftex.def Info: inc/img/ex1.pdf  used on input line 301.
+Package pdftex.def Info: inc/img/ex1.pdf  used on input line 298.
 (pdftex.def)             Requested size: 177.78864pt x 170.71652pt.
- [20 <./inc/img/ex1.pdf>]
-<inc/img/mguro.pdf, id=476, 488.82625pt x 442.65375pt>
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[19]
+<inc/img/mguro.pdf, id=477, 488.82625pt x 442.65375pt>
 File: inc/img/mguro.pdf Graphic file (type pdf)
 <use inc/img/mguro.pdf>
-Package pdftex.def Info: inc/img/mguro.pdf  used on input line 310.
-(pdftex.def)             Requested size: 314.22015pt x 284.52756pt.
- [21 <./inc/img/mguro.pdf>]
-Overfull \hbox (3.68248pt too wide) in paragraph at lines 350--351
+Package pdftex.def Info: inc/img/mguro.pdf  used on input line 307.
+(pdftex.def)             Requested size: 267.08005pt x 241.84842pt.
+ [20 <./inc/img/ex1.pdf> <./inc/img/mguro.pdf>]
+Overfull \hbox (3.68248pt too wide) in paragraph at lines 347--348
 []\T2A/LibertinusSerif-TLF/m/n/16 Для цвет-ных объ-ек-тов ин-тер-по-ли-ру-ет-ся
  каж-дая ком-по-нен-та цве-
  []
 
-[22]
-
-pdfTeX warning: /usr/bin/pdflatex (file ./inc/img/t23.pdf): PDF inclusion: foun
-d PDF version <1.7>, but at most version <1.5> allowed
-<inc/img/t23.pdf, id=499, 430.67801pt x 150.63478pt>
+[21]
+<inc/img/t23.pdf, id=509, 435.26564pt x 105.63464pt>
 File: inc/img/t23.pdf Graphic file (type pdf)
 <use inc/img/t23.pdf>
-Package pdftex.def Info: inc/img/t23.pdf  used on input line 405.
-(pdftex.def)             Requested size: 431.17638pt x 150.79968pt.
-
-Overfull \hbox (2.25374pt too wide) in paragraph at lines 411--412
+Package pdftex.def Info: inc/img/t23.pdf  used on input line 401.
+(pdftex.def)             Requested size: 468.95744pt x 113.81102pt.
+ [22]
+Overfull \hbox (2.25374pt too wide) in paragraph at lines 407--408
 []\T2A/LibertinusSerif-TLF/m/n/16 В дан-ном раз-де-ле бы-ла фор-ма-ли-зо-ва-на 
 по-став-лен-ная за-да-ча, бы-
  []
 
-[23 <./inc/img/t23.pdf>]) [24]
+) [23 <./inc/img/t23.pdf>]
 \openout2 = `20-design.aux'.
 
  (./20-design.tex
@@ -1956,21 +1953,21 @@ LaTeX Font Info:    Font shape `T2A/LibertinusSerif-TLF/m/n' will be
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `\newline' on input line 21.
 
-<inc/img/idef1.pdf, id=532, 601.4972pt x 402.00188pt>
+<inc/img/idef1.pdf, id=547, 601.4972pt x 402.00188pt>
 File: inc/img/idef1.pdf Graphic file (type pdf)
 <use inc/img/idef1.pdf>
 Package pdftex.def Info: inc/img/idef1.pdf  used on input line 25.
 (pdftex.def)             Requested size: 468.294pt x 312.9803pt.
-[25
+[24
 
 
 
 
-] [26 <./inc/img/idef1.pdf>]
+] [25 <./inc/img/idef1.pdf>]
 
 pdfTeX warning: /usr/bin/pdflatex (file ./inc/img/table1.pdf): PDF inclusion: f
 ound PDF version <1.7>, but at most version <1.5> allowed
-<inc/img/table1.pdf, id=548, 436.6433pt x 301.27054pt>
+<inc/img/table1.pdf, id=564, 436.6433pt x 301.27054pt>
 File: inc/img/table1.pdf Graphic file (type pdf)
 <use inc/img/table1.pdf>
 Package pdftex.def Info: inc/img/table1.pdf  used on input line 32.
@@ -1979,7 +1976,7 @@ Package pdftex.def Info: inc/img/table1.pdf  used on input line 32.
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `\newline' on input line 34.
 
-<inc/img/zbuff.pdf, id=550, 737.75626pt x 1064.97874pt>
+<inc/img/zbuff.pdf, id=566, 737.75626pt x 1064.97874pt>
 File: inc/img/zbuff.pdf Graphic file (type pdf)
 <use inc/img/zbuff.pdf>
 Package pdftex.def Info: inc/img/zbuff.pdf  used on input line 38.
@@ -1987,12 +1984,12 @@ Package pdftex.def Info: inc/img/zbuff.pdf  used on input line 38.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[27 <./inc/img/table1.pdf>]
+[26 <./inc/img/table1.pdf>]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `\newline' on input line 42.
 
-<inc/img/shadows.pdf, id=572, 676.5275pt x 931.48pt>
+<inc/img/shadows.pdf, id=587, 676.5275pt x 931.48pt>
 File: inc/img/shadows.pdf Graphic file (type pdf)
 <use inc/img/shadows.pdf>
 Package pdftex.def Info: inc/img/shadows.pdf  used on input line 46.
@@ -2000,12 +1997,12 @@ Package pdftex.def Info: inc/img/shadows.pdf  used on input line 46.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[28 <./inc/img/zbuff.pdf>]
+[27 <./inc/img/zbuff.pdf>]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `\newline' on input line 50.
 
-<inc/img/intensity.pdf, id=580, 1371.1225pt x 1016.79875pt>
+<inc/img/intensity.pdf, id=595, 1371.1225pt x 1016.79875pt>
 File: inc/img/intensity.pdf Graphic file (type pdf)
 <use inc/img/intensity.pdf>
 Package pdftex.def Info: inc/img/intensity.pdf  used on input line 54.
@@ -2013,7 +2010,7 @@ Package pdftex.def Info: inc/img/intensity.pdf  used on input line 54.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[29 <./inc/img/shadows.pdf>]) [30 <./inc/img/intensity.pdf>]
+[28 <./inc/img/shadows.pdf>]) [29 <./inc/img/intensity.pdf>]
 \openout2 = `30-impl.aux'.
 
  (./30-impl.tex
@@ -2024,7 +2021,22 @@ Overfull \hbox (2.57721pt too wide) in paragraph at lines 3--4
 а-ние вы-бран-ных средств
  []
 
-[31
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\newline' on input line 13.
+
+LaTeX Font Info:    Trying to load font information for T2A+LibertinusMono-TLF 
+on input line 17.
+LaTeX Font Info:    No file T2ALibertinusMono-TLF.fd. on input line 17.
+
+LaTeX Font Warning: Font shape `T2A/LibertinusMono-TLF/m/n' undefined
+(Font)              using `T2A/cmr/m/n' instead on input line 17.
+
+
+LaTeX Font Warning: Font shape `T2A/cmr/m/n' in size <16> not available
+(Font)              size <17.28> substituted on input line 17.
+
+[30
 
 
 
@@ -2038,103 +2050,114 @@ File: lstlang1.sty 2020/03/24 1.8d listings language file
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2020/03/24 1.8d (Carsten Heinz)
 )
-LaTeX Font Info:    Trying to load font information for T2A+LibertinusMono-TLF 
-on input line 24.
-LaTeX Font Info:    No file T2ALibertinusMono-TLF.fd. on input line 24.
-
-
-LaTeX Font Warning: Font shape `T2A/LibertinusMono-TLF/m/n' undefined
-(Font)              using `T2A/cmr/m/n' instead on input line 24.
-
-(/home/nastya/cg-course-work/sphere-mov-viz/glwidget.cpp
+(/home/nastya/cg-course-work/sphere-mov-viz/structures.h
 consecutive:
 LaTeX Font Info:    Font shape `T2A/LibertinusSerif-TLF/m/n' will be
-(Font)              scaled to size 6.0pt on input line 99.
-) (/home/nastya/cg-course-work/sphere-mov-viz/glwidget.cpp
-consecutive:
-) [32] (/home/nastya/cg-course-work/sphere-mov-viz/vert.vsh) [33]
-(/home/nastya/cg-course-work/sphere-mov-viz/frag.fsh) [34]
-(/home/nastya/cg-course-work/sphere-mov-viz/frag.fsh
-consecutive:
-) (/home/nastya/cg-course-work/sphere-mov-viz/shadows.vsh) [35]
-(/home/nastya/cg-course-work/sphere-mov-viz/shadows.vsh
-consecutive:
-) (/home/nastya/cg-course-work/sphere-mov-viz/shadows.fsh)
-(/home/nastya/cg-course-work/sphere-mov-viz/glwidget.cpp
-consecutive:
-) [36]
+(Font)              scaled to size 6.0pt on input line 8.
+)
 
 LaTeX Font Warning: Font shape `T2A/LibertinusMono-TLF/m/n' in size <16> not av
 ailable
-(Font)              size <17.28> substituted on input line 106.
+(Font)              size <17.28> substituted on input line 27.
 
-
-(/home/nastya/cg-course-work/sphere-mov-viz/testing/UnitTesting/tst_cameratest.
-cpp
+(/home/nastya/cg-course-work/sphere-mov-viz/structures.h
 consecutive:
 )
-(/home/nastya/cg-course-work/sphere-mov-viz/testing/UnitTesting/tst_cameratest.
-cpp
+Overfull \hbox (29.56633pt too wide) in paragraph at lines 37--38
+[]\T2A/LibertinusSerif-TLF/m/n/16 В ли-стин-ге []3.3[] при-ве-де-но опи-са-ние 
+струк-ту-ры \T2A/LibertinusMono-TLF/m/n/17.28 materialProperties_t\T2A/Libertin
+usSerif-TLF/m/n/16 ,
+ []
+
+(/home/nastya/cg-course-work/sphere-mov-viz/structures.h
 consecutive:
-) [37] (/home/nastya/cg-course-work/cg_report/inc/lst/lst2.txt)
-Overfull \hbox (3.73056pt too wide) in paragraph at lines 137--138
+) [31] (/home/nastya/cg-course-work/sphere-mov-viz/baseobject.h
+consecutive:
+)
+Overfull \hbox (1.00925pt too wide) in paragraph at lines 59--60
+[]\T2A/LibertinusSerif-TLF/m/n/16 В ли-стин-ге []3.5[] при-ве-де-на ре-а-ли-за-
+ция функции-обработчика сиг-
+ []
+
+[32] (/home/nastya/cg-course-work/sphere-mov-viz/mainwindow.cpp
+consecutive:
+) (/home/nastya/cg-course-work/sphere-mov-viz/glwidget.cpp
+consecutive:
+) [33] (/home/nastya/cg-course-work/sphere-mov-viz/glwidget.cpp
+consecutive:
+) (/home/nastya/cg-course-work/sphere-mov-viz/vert.vsh) [34]
+(/home/nastya/cg-course-work/sphere-mov-viz/frag.fsh) [35]
+(/home/nastya/cg-course-work/sphere-mov-viz/frag.fsh
+consecutive:
+) (/home/nastya/cg-course-work/sphere-mov-viz/shadows.vsh)
+(/home/nastya/cg-course-work/sphere-mov-viz/shadows.vsh
+consecutive:
+[36]) (/home/nastya/cg-course-work/sphere-mov-viz/shadows.fsh)
+(/home/nastya/cg-course-work/sphere-mov-viz/glwidget.cpp
+consecutive:
+) [37] (/home/nastya/cg-course-work/sphere-mov-viz/testcamera.cpp
+consecutive:
+) (/home/nastya/cg-course-work/sphere-mov-viz/testcamera.cpp
+consecutive:
+) [38] (/home/nastya/cg-course-work/cg_report/inc/lst/lst2.txt)
+Overfull \hbox (3.73056pt too wide) in paragraph at lines 186--187
 []\T2A/LibertinusSerif-TLF/m/n/16 Демонстрация ин-тер-фей-са про-грам-мы при-ве
 -де-на на ри-сун-ке []3.1[]. 
  []
 
-<inc/img/int.pdf, id=858, 1442.38875pt x 890.32631pt>
+<inc/img/int.pdf, id=964, 1442.38875pt x 890.32631pt>
 File: inc/img/int.pdf Graphic file (type pdf)
 <use inc/img/int.pdf>
-Package pdftex.def Info: inc/img/int.pdf  used on input line 139.
+Package pdftex.def Info: inc/img/int.pdf  used on input line 188.
 (pdftex.def)             Requested size: 460.95758pt x 284.52756pt.
-[38 <./inc/img/int.pdf>]
-<inc/img/but1.pdf, id=879, 393.47pt x 128.48pt>
+[39 <./inc/img/int.pdf>]
+<inc/img/but1.pdf, id=985, 393.47pt x 128.48pt>
 File: inc/img/but1.pdf Graphic file (type pdf)
 <use inc/img/but1.pdf>
-Package pdftex.def Info: inc/img/but1.pdf  used on input line 149.
+Package pdftex.def Info: inc/img/but1.pdf  used on input line 198.
 (pdftex.def)             Requested size: 348.55414pt x 113.81102pt.
-<inc/img/choice1.pdf, id=882, 1114.1625pt x 761.84625pt>
+<inc/img/choice1.pdf, id=988, 1114.1625pt x 761.84625pt>
 File: inc/img/choice1.pdf Graphic file (type pdf)
 <use inc/img/choice1.pdf>
-Package pdftex.def Info: inc/img/choice1.pdf  used on input line 153.
+Package pdftex.def Info: inc/img/choice1.pdf  used on input line 202.
 (pdftex.def)             Requested size: 416.09283pt x 284.52756pt.
-<inc/img/but2.pdf, id=884, 565.11125pt x 87.32625pt>
+<inc/img/but2.pdf, id=990, 565.11125pt x 87.32625pt>
 File: inc/img/but2.pdf Graphic file (type pdf)
 <use inc/img/but2.pdf>
-Package pdftex.def Info: inc/img/but2.pdf  used on input line 157.
+Package pdftex.def Info: inc/img/but2.pdf  used on input line 206.
 (pdftex.def)             Requested size: 368.25784pt x 56.9055pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[39 <./inc/img/but1.pdf> <./inc/img/choice1.pdf
+[40 <./inc/img/but1.pdf> <./inc/img/choice1.pdf
 
 pdfTeX warning: /usr/bin/pdflatex (file ./inc/img/choice1.pdf): PDF inclusion: 
 multiple pdfs with page group included in a single page
 >]
-<inc/img/choice2.pdf, id=900, 734.745pt x 611.28375pt>
+<inc/img/choice2.pdf, id=1006, 734.745pt x 611.28375pt>
 File: inc/img/choice2.pdf Graphic file (type pdf)
 <use inc/img/choice2.pdf>
-Package pdftex.def Info: inc/img/choice2.pdf  used on input line 162.
+Package pdftex.def Info: inc/img/choice2.pdf  used on input line 211.
 (pdftex.def)             Requested size: 341.98923pt x 284.52756pt.
-<inc/img/w3.pdf, id=902, 729.72626pt x 290.08376pt>
+<inc/img/w3.pdf, id=1008, 729.72626pt x 290.08376pt>
 File: inc/img/w3.pdf Graphic file (type pdf)
 <use inc/img/w3.pdf>
-Package pdftex.def Info: inc/img/w3.pdf  used on input line 166.
+Package pdftex.def Info: inc/img/w3.pdf  used on input line 215.
 (pdftex.def)             Requested size: 501.02863pt x 199.16928pt.
 
-Overfull \hbox (31.55814pt too wide) in paragraph at lines 166--166
+Overfull \hbox (31.55814pt too wide) in paragraph at lines 215--215
  [] 
  []
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[40 <./inc/img/but2.pdf> <./inc/img/choice2.pdf
+[41 <./inc/img/but2.pdf> <./inc/img/choice2.pdf
 
 pdfTeX warning: /usr/bin/pdflatex (file ./inc/img/choice2.pdf): PDF inclusion: 
 multiple pdfs with page group included in a single page
->]) [41 <./inc/img/w3.pdf>]
+>]) [42 <./inc/img/w3.pdf>]
 \openout2 = `40-research.aux'.
 
  (./40-research.tex
@@ -2157,7 +2180,7 @@ Overfull \hbox (5.82652pt too wide) in paragraph at lines 25--26
 и за-ме-ров оста-ва-лись,
  []
 
-[42
+[43
 
 
 
@@ -2208,7 +2231,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 43--44
 \T2A/LibertinusSerif-TLF/b/n/14.4 сов-ки кад-ра,
  []
 
-<inc/img/graph.pdf, id=933, 462.52798pt x 346.89601pt>
+<inc/img/graph.pdf, id=1040, 462.52798pt x 346.89601pt>
 File: inc/img/graph.pdf Graphic file (type pdf)
 <use inc/img/graph.pdf>
 Package pdftex.def Info: inc/img/graph.pdf  used on input line 61.
@@ -2216,10 +2239,10 @@ Package pdftex.def Info: inc/img/graph.pdf  used on input line 61.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[43]) [44 <./inc/img/graph.pdf>]
+[44]) [45 <./inc/img/graph.pdf>]
 \openout2 = `50-conclusion.aux'.
 
- (./50-conclusion.tex) [45
+ (./50-conclusion.tex) [46
 
 
 
@@ -2270,7 +2293,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 73--79
 B8 % D0 % B8 %
  []
 
-[46
+[47
 
 
 
@@ -2282,7 +2305,7 @@ n/17.28 https : / / www . linux . org/$[] \T2A/LibertinusSerif-TLF/m/n/16 (да-т
 а об-ра-ще-ния:
  []
 
-)) [47] (./report.aux (./01-contents.aux) (./02-intro.aux) (./10-analysis.aux)
+)) [48] (./report.aux (./01-contents.aux) (./02-intro.aux) (./10-analysis.aux)
 (./20-design.aux) (./30-impl.aux) (./40-research.aux) (./50-conclusion.aux)
 (./51-biblio.aux))
 
@@ -2293,18 +2316,18 @@ LaTeX Font Warning: Size substitutions with differences
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
 Package rerunfilecheck Info: File `report.out' has not changed.
-(rerunfilecheck)             Checksum: 02B9153516B997242660AD4D30F9244F;10041.
+(rerunfilecheck)             Checksum: EF738C6B68DE3893F175DC88E5D6B19D;10869.
  ) 
 Here is how much of TeX's memory you used:
- 45225 strings out of 479721
- 1004098 string characters out of 5887697
- 1655501 words of memory out of 5000000
- 61885 multiletter control sequences out of 15000+600000
+ 45431 strings out of 479721
+ 1007567 string characters out of 5887697
+ 1656509 words of memory out of 5000000
+ 61993 multiletter control sequences out of 15000+600000
  554338 words of font info for 157 fonts, out of 8000000 for 9000
  430 hyphenation exceptions out of 8191
- 106i,17n,127p,759b,1652s stack positions out of 5000i,500n,10000p,200000b,80000s
- </home/nastya/.texlive2021/texmf-var/fonts/pk/ljfour/lh/lh-t2a/larm1728.600p
-k> </home/nastya/.texlive2021/texmf-var/fonts/pk/ljfour/lh/lh-t2a/larm1000.600p
+ 106i,17n,127p,759b,2296s stack positions out of 5000i,500n,10000p,200000b,80000s
+ </home/nastya/.texlive2021/texmf-var/fonts/pk/ljfour/lh/lh-t2a/larm1000.600p
+k> </home/nastya/.texlive2021/texmf-var/fonts/pk/ljfour/lh/lh-t2a/larm1728.600p
 k>{/usr/share/texlive/texmf-dist/fonts/enc/dvips/libertinus-type1/lbts_674lrv.e
 nc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/libertinus-type1/lbts_yuwgqp.
 enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/libertinus-type1/lbts_inpbes
@@ -2314,10 +2337,10 @@ type1/LibertinusSerif-Regular.pfb></usr/share/texlive/texmf-dist/fonts/type1/pu
 blic/newtx/NewTXMI.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/newtx/
 txexs.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/newtx/txmiaX.pfb></
 usr/share/texlive/texmf-dist/fonts/type1/public/newtx/txsys.pfb>
-Output written on report.pdf (47 pages, 3143800 bytes).
+Output written on report.pdf (48 pages, 3154224 bytes).
 PDF statistics:
- 1270 PDF objects out of 1440 (max. 8388607)
- 957 compressed objects within 10 object streams
- 396 named destinations out of 1000 (max. 500000)
- 441 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1402 PDF objects out of 1440 (max. 8388607)
+ 1080 compressed objects within 11 object streams
+ 481 named destinations out of 1000 (max. 500000)
+ 457 words of extra memory for PDF output out of 10000 (max. 10000000)
 

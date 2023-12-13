@@ -96,34 +96,19 @@ void MainWindow::handleTimerSignal()
 {
 	sphereMovement(matrixes[0], sphereSpeed);
 	oglw->getObject(0)->setGlobalTransform(matrixes[0]);
-	if (flags[0]) {
-		swingSpeeds[0] = 0.0;
-		flags[0] = false;
-		timers[0]->start(sleep);
-	}
 
-	if (flags[1]) {
-		swingSpeeds[1] = 0.0;
-		flags[1] = false;
-		timers[1]->start(sleep);
-	}
+	for (int i = 0; i < OBJ_NUMBER-1; i++)
+		if (flags[i]) {
+			swingSpeeds[i] = 0.0;
+			flags[i] = false;
+			timers[i]->start(sleep);
+		}
 
-	if (flags[2]) {
-		swingSpeeds[2] = 0.0;
-		flags[2] = false;
-		timers[2]->start(sleep);
-	}
-
-	if (flags[3]) {
-		swingSpeeds[3] = 0.0;
-		flags[3] = false;
-		timers[3]->start(sleep);
-	}
-
-	swingsMovement(matrixes[1], 22.5, RADIUS, swingSpeeds[0], &drives[0], oglw->getObject(1), &flags[0]);
-	swingsMovement(matrixes[2], 67.5, RADIUS, swingSpeeds[1], &drives[1], oglw->getObject(2), &flags[1]);
-	swingsMovement(matrixes[3], 112.5, RADIUS, swingSpeeds[2], &drives[2], oglw->getObject(3), &flags[2]);
-	swingsMovement(matrixes[4], 157.5, RADIUS, swingSpeeds[3], &drives[3], oglw->getObject(4), &flags[3]);
+	for (int i = 0; i < OBJ_NUMBER-1; i++)
+		swingsMovement(matrixes[i+1], degrees[i],
+					   RADIUS, swingSpeeds[i],
+					   &drives[i], oglw->getObject(i+1),
+					   &flags[i]);
 
 	oglw->update();
 }
@@ -304,7 +289,7 @@ double MainWindow::measureTime()
 		auto start = std::chrono::steady_clock::now();
 		oglw->drawing();
 		auto end = std::chrono::steady_clock::now();
-		std::chrono::duration<double, std::nano> duration = end - start;
+		std::chrono::duration<double> duration = end - start;
 		sum += duration.count();
 	}
 
